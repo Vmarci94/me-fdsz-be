@@ -1,4 +1,4 @@
-package hu.me.fdsz.Repository;
+package hu.me.fdsz.repository;
 
 import hu.me.fdsz.model.User;
 import org.springframework.data.repository.CrudRepository;
