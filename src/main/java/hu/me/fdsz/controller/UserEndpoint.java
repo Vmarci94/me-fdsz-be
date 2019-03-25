@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.LoginException;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,12 @@ public class UserEndpoint {
     }
 
     @PostMapping(value = "/sign-in", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addNewUser(@RequestBody UserDTO userForm) {
-        return Optional.of(userService.signIn(userForm))
-                .map(userDTO -> new ResponseEntity(HttpStatus.OK))
-                .orElse(new ResponseEntity(HttpStatus.FORBIDDEN));
+    public void addNewUser(@RequestBody UserDTO userForm, HttpServletResponse response) {
+        if (userService.signIn(userForm) != null) {
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }
     }
 
     @GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,14 +40,19 @@ public class UserEndpoint {
     }
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity login(@RequestBody UserDTO userDTO) throws LoginException {
-        return userService.login(userDTO) ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.FORBIDDEN);
+    public void login(@RequestBody UserDTO userDTO, HttpServletResponse response) throws LoginException {
+        if (userService.login(userDTO)) {
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }
     }
 
     @GetMapping(value = "/get-default-token", produces = MediaType.APPLICATION_JSON_VALUE)
-    public JWTTokenDTO getDefaultToken(){
+    public JWTTokenDTO getDefaultToken() {
         JWTTokenDTO result = new JWTTokenDTO();
-        result.setToken(userService.createDefaultToken());;
+        result.setToken(userService.createDefaultToken());
+        ;
         return result;
     }
 

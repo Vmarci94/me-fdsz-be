@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean login(UserDTO userDTO) throws LoginException {
-        return userRepositroy.findByUserName(userDTO.getUserName())
+        return userRepositroy.findByEmail(userDTO.getEmail())
                 .map(user -> user.getPassword().equals(userDTO.getPassword()))
                 .orElseThrow(() -> new LoginException("hibás adatok"));
     }
