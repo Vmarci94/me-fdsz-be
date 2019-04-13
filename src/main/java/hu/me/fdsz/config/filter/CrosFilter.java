@@ -1,4 +1,4 @@
-package hu.me.fdsz.filter;
+package hu.me.fdsz.config.filter;
 
 import org.springframework.stereotype.Component;
 
