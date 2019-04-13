@@ -4,13 +4,13 @@ import hu.me.fdsz.Service.api.UserService;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.UserRepositroy;
+import hu.me.fdsz.security.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.LoginException;
@@ -24,9 +24,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepositroy userRepositroy;
 
+    private final ModelMapper modelMapper;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    public UserServiceImpl(UserRepositroy userRepositroy) {
+    public UserServiceImpl(UserRepositroy userRepositroy, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider) {
         this.userRepositroy = userRepositroy;
+        this.modelMapper = modelMapper;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -37,16 +43,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO signIn(UserDTO userForm) {
-        ModelMapper modelMapper = new ModelMapper();
-        User newUser = modelMapper.map(userForm, User.class);
-        return modelMapper.map(userRepositroy.save(newUser), UserDTO.class);
+    public UserDTO signup(UserDTO userForm) {
+        User newUser = userRepositroy.save(modelMapper.map(userForm, User.class));
+        String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());
+        return modelMapper.map(newUser, UserDTO.class);
     }
 
     @Override
-    public boolean login(UserDTO userDTO) throws LoginException {
+    public boolean signin(UserDTO userDTO) throws LoginException {
         return userRepositroy.findByEmail(userDTO.getEmail())
-                .map(user -> user.getPassword().equals(userDTO.getPassword()))
+                .map(user -> {
+                    boolean result = user.getPassword().equals(userDTO.getPassword());
+                    String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+                    return result;
+                })
                 .orElseThrow(() -> new LoginException("hibás adatok"));
     }
 

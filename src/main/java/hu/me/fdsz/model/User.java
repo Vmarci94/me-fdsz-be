@@ -3,6 +3,7 @@ package hu.me.fdsz.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,10 +24,13 @@ public class User {
     @Column(name = "personal_name")
     private String personalName;
 
-    @Column(name = "user_name", nullable = false)
-    private String userName;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Role> roles;
 
 }

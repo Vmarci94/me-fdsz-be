@@ -3,16 +3,14 @@ package hu.me.fdsz.controller;
 import hu.me.fdsz.Service.api.UserService;
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -25,9 +23,9 @@ public class UserEndpoint {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/sign-in", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void addNewUser(@RequestBody UserDTO userForm, HttpServletResponse response) {
-        if (userService.signIn(userForm) != null) {
+    @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void signup(@RequestBody UserDTO userForm, HttpServletResponse response) {
+        if (userService.signup(userForm) != null) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -39,9 +37,10 @@ public class UserEndpoint {
         return userService.getAllUsers();
     }
 
-    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void login(@RequestBody UserDTO userDTO, HttpServletResponse response) throws LoginException {
-        if (userService.login(userDTO)) {
+    @PostMapping(value = "/signin", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "${UserEndpoint.signin}")
+    public void signin(@RequestBody UserDTO userDTO, HttpServletResponse response) throws LoginException {
+        if (userService.signin(userDTO)) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -52,7 +51,6 @@ public class UserEndpoint {
     public JWTTokenDTO getDefaultToken() {
         JWTTokenDTO result = new JWTTokenDTO();
         result.setToken(userService.createDefaultToken());
-        ;
         return result;
     }
 
