@@ -1,9 +1,10 @@
 package hu.me.fdsz.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import hu.me.fdsz.Service.api.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,7 +17,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
     public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -34,7 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()//
                 .antMatchers("/users/signup").permitAll()//
                 .antMatchers("/users/signin").permitAll()//
-                .antMatchers("/h2-console/**/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
@@ -48,21 +47,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // http.httpBasic();
     }
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        // Allow swagger to be accessed without authentication
-//        web.ignoring().antMatchers("/v2/api-docs")//
-//                .antMatchers("/swagger-resources/**")//
-//                .antMatchers("/swagger-ui.html")//
-//                .antMatchers("/configuration/**")//
-//                .antMatchers("/webjars/**")//
-//                .antMatchers("/public")
-//
-//                // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
-//                .and()
-//                .ignoring()
-//                .antMatchers("/h2-console/**/**");;
-//    }
+    @Override
+    public void configure(WebSecurity web) {
+        // Allow swagger to be accessed without authentication
+        web.ignoring().antMatchers("/v2/api-docs")//
+                .antMatchers("/swagger-resources/**")//
+                .antMatchers("/swagger-ui.html")//
+                .antMatchers("/configuration/**")//
+                .antMatchers("/webjars/**")//
+                .antMatchers("/public");
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

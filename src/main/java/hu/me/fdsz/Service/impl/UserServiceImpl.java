@@ -1,20 +1,17 @@
 package hu.me.fdsz.Service.impl;
 
+import hu.me.fdsz.Service.api.JwtTokenProvider;
 import hu.me.fdsz.Service.api.UserService;
 import hu.me.fdsz.dto.UserDTO;
+import hu.me.fdsz.model.Role;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.UserRepositroy;
-import hu.me.fdsz.security.JwtTokenProvider;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.LoginException;
-import java.security.Key;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -45,6 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO signup(UserDTO userForm) {
         User newUser = userRepositroy.save(modelMapper.map(userForm, User.class));
+        newUser.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
         String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());
         return modelMapper.map(newUser, UserDTO.class);
     }
@@ -58,16 +56,6 @@ public class UserServiceImpl implements UserService {
                     return result;
                 })
                 .orElseThrow(() -> new LoginException("hibás adatok"));
-    }
-
-    @Override
-    public String createDefaultToken() {
-        Claims claims = Jwts.claims().setSubject("me-fdsz");
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        return Jwts.builder()
-                .setClaims(claims)
-                .signWith(key)
-                .compact();
     }
 
 }
