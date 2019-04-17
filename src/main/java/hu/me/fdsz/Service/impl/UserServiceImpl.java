@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO signup(UserDTO userForm) {
         User newUser = userRepositroy.save(modelMapper.map(userForm, User.class));
         newUser.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
-        String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());
+        String token = jwtTokenProvider.createToken();
         return modelMapper.map(newUser, UserDTO.class);
     }
 
@@ -52,10 +52,15 @@ public class UserServiceImpl implements UserService {
         return userRepositroy.findByEmail(userDTO.getEmail())
                 .map(user -> {
                     boolean result = user.getPassword().equals(userDTO.getPassword());
-                    String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+                    String token = jwtTokenProvider.createToken();
                     return result;
                 })
                 .orElseThrow(() -> new LoginException("hibás adatok"));
+    }
+
+    @Override
+    public String createToken() {
+        return jwtTokenProvider.createToken();
     }
 
 }

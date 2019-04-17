@@ -3,6 +3,7 @@ package hu.me.fdsz.security;
 import hu.me.fdsz.Service.api.JwtTokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -16,14 +17,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private JwtTokenProvider jwtTokenProvider;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProviderImpl) {
+
+    JwtTokenFilter(JwtTokenProvider jwtTokenProviderImpl) {
         this.jwtTokenProvider = jwtTokenProviderImpl;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(httpServletRequest);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
+        if (!StringUtils.isEmpty(token) && !token.equals("null") && jwtTokenProvider.validateToken(token)) {
             Authentication auth = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }

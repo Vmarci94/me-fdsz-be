@@ -1,7 +1,6 @@
 package hu.me.fdsz.security;
 
 import hu.me.fdsz.Service.api.JwtTokenProvider;
-import hu.me.fdsz.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,17 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class JwtTokenProviderImpl implements JwtTokenProvider {
@@ -46,11 +41,23 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String username, List<Role> roles) {
+    @Override
+    public String createToken() {
 
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("auth", roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toList()));
-
+//        Claims claims = Jwts.claims().setSubject(username);
+//        claims.put("auth", roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toList()));
+//
+//        Date now = new Date();
+//        Date validity = new Date(now.getTime() + validityInMilliseconds);
+//
+//        return Jwts.builder()//
+//                .setClaims(claims)//
+//                .setIssuedAt(now)//
+//                .setExpiration(validity)//
+//                .signWith(SignatureAlgorithm.HS256, secretKey) // TODO váltsunk frissebbre!
+//                .compact();
+//
+        Claims claims = Jwts.claims().setSubject("teszt");
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -58,8 +65,9 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
                 .setClaims(claims)//
                 .setIssuedAt(now)//
                 .setExpiration(validity)//
-                .signWith(SignatureAlgorithm.HS256, secretKey)//
+                .signWith(SignatureAlgorithm.HS256, secretKey) // TODO váltsunk frissebbre!
                 .compact();
+
     }
 
     public Authentication getAuthentication(String token) {

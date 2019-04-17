@@ -47,11 +47,9 @@ public class UserEndpoint {
         }
     }
 
-    @GetMapping(value = "/get-default-token", produces = MediaType.APPLICATION_JSON_VALUE)
-    public JWTTokenDTO getDefaultToken() {
-        JWTTokenDTO result = new JWTTokenDTO();
-        result.setToken(userService.createDefaultToken());
-        return result;
+    @GetMapping(value = "/pre-auth-token", produces = MediaType.APPLICATION_JSON_VALUE)
+    public JWTTokenDTO getPreAuthToken(){
+        return new JWTTokenDTO(userService.createToken());
     }
 
 }

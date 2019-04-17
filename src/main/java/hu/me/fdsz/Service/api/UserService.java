@@ -18,4 +18,6 @@ public interface UserService {
 
     boolean signin(UserDTO userDTO) throws LoginException;
 
+    String createToken();
+
 }

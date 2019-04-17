@@ -13,6 +13,7 @@ public class JWTTokenDTO {
 
     private String token;
 
-    private String userName;
-
+    public JWTTokenDTO(String token) {
+        this.token = token;
+    }
 }
