@@ -24,7 +24,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String token = jwtTokenProvider.resolveToken(httpServletRequest);
+        String token = resolveToken(httpServletRequest);
         if (!StringUtils.isEmpty(token) && jwtTokenProvider.validateToken(token)) {
             Authentication auth = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -32,5 +32,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);  //itt teszi bele a header-be sezerintem
     }
+
+    private String resolveToken(HttpServletRequest req) {
+        String bearerToken = req.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
+
 
 }
