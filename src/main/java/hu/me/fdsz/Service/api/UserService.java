@@ -1,5 +1,6 @@
 package hu.me.fdsz.Service.api;
 
+import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
 
 import javax.security.auth.login.LoginException;
@@ -14,10 +15,10 @@ public interface UserService {
      * @param userForm az új felhasználó adatai
      * @return a már perzisztált felhasználó adatai
      */
-    UserDTO signup(UserDTO userForm);
+    UserDTO signup(UserDTO userForm) throws Exception;
 
-    boolean signin(UserDTO userDTO) throws LoginException;
+    JWTTokenDTO signin(UserDTO userDTO) throws LoginException;
 
-    String createToken();
+    JWTTokenDTO createToken(String userEmail);
 
 }

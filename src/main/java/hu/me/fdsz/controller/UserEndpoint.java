@@ -23,8 +23,9 @@ public class UserEndpoint {
         this.userService = userService;
     }
 
+    //Regisztráció
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void signup(@RequestBody UserDTO userForm, HttpServletResponse response) {
+    public void signup(@RequestBody UserDTO userForm, HttpServletResponse response) throws Exception {
         if (userService.signup(userForm) != null) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
@@ -37,19 +38,24 @@ public class UserEndpoint {
         return userService.getAllUsers();
     }
 
+    //Bejelentkezés
     @PostMapping(value = "/signin", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "${UserEndpoint.signin}")
-    public void signin(@RequestBody UserDTO userDTO, HttpServletResponse response) throws LoginException {
-        if (userService.signin(userDTO)) {
+    public JWTTokenDTO signin(@RequestBody UserDTO userDTO, HttpServletResponse response) {
+        JWTTokenDTO result = null;
+        try {
+            result = userService.signin(userDTO);
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        } else {
+        }catch (LoginException le){
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
+        return result;
     }
 
     @GetMapping(value = "/pre-auth-token", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Deprecated
     public JWTTokenDTO getPreAuthToken(){
-        return new JWTTokenDTO(userService.createToken());
+        return userService.createToken("tralala");
     }
 
 }

@@ -2,6 +2,7 @@ package hu.me.fdsz.Service.impl;
 
 import hu.me.fdsz.Service.api.JwtTokenProvider;
 import hu.me.fdsz.Service.api.UserService;
+import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.Role;
 import hu.me.fdsz.model.User;
@@ -35,32 +36,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAllUsers() {
         return StreamSupport.stream(userRepositroy.findAll().spliterator(), false)
-                .map(user -> new ModelMapper().map(user, UserDTO.class))
+                .map(user ->  modelMapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserDTO signup(UserDTO userForm) {
-        User newUser = userRepositroy.save(modelMapper.map(userForm, User.class));
-        newUser.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
-        String token = jwtTokenProvider.createToken();
+    public UserDTO signup(UserDTO userForm) throws Exception {
+        User newUser = modelMapper.map(userForm, User.class);
+        if(userRepositroy.existsByEmailAndUsername(newUser.getEmail(), newUser.getUsername())){
+            //ha létezik már ilyen regisztráció, akkor hibát dobunk
+            throw new Exception("Ezekkel az adatokkal már regisztráltak!"); //FIXME csináljunk tisztességes kivételkezelést
+        }else {
+            newUser.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
+            userRepositroy.save(newUser);
+        }
+//        String token = jwtTokenProvider.createToken(); //FIXME ezt még nem tudom minek
         return modelMapper.map(newUser, UserDTO.class);
     }
 
     @Override
-    public boolean signin(UserDTO userDTO) throws LoginException {
+    public JWTTokenDTO signin(UserDTO userDTO) throws LoginException {
         return userRepositroy.findByEmail(userDTO.getEmail())
-                .map(user -> {
-                    boolean result = user.getPassword().equals(userDTO.getPassword());
-                    String token = jwtTokenProvider.createToken();
-                    return result;
-                })
+                .filter(currentUser -> currentUser.getPassword().equals(userDTO.getPassword()))
+                .map(user -> createToken(user.getEmail()))
                 .orElseThrow(() -> new LoginException("hibás adatok"));
     }
 
     @Override
-    public String createToken() {
-        return jwtTokenProvider.createToken();
+    public JWTTokenDTO createToken(String userEmail) { //TODO felesleges?
+        return new JWTTokenDTO(jwtTokenProvider.createToken(userEmail));
     }
 
 }

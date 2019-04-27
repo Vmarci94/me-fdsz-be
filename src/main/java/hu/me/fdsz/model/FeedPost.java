@@ -16,13 +16,16 @@ public class FeedPost {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue
-    Long id;
+    private Long id;
 
     @Column(name = "title", nullable = false)
-    String Title;
+    private String title;
 
     @Column(name = "content_text")
-    String contentText;
+    private String contentText;
+
+    @Column(name = "iamge_url")
+    private String imageUrl;
 
     @OneToOne
     @JoinColumn(name = "author", referencedColumnName = "id")
