@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO signup(UserDTO userForm) throws Exception {
         User newUser = modelMapper.map(userForm, User.class);
-        if(userRepositroy.existsByEmailAndUsername(newUser.getEmail(), newUser.getUsername())){
+        if (userRepositroy.existsByEmailAndUserName(newUser.getEmail(), newUser.getUserName())) {
             //ha létezik már ilyen regisztráció, akkor hibát dobunk
             throw new Exception("Ezekkel az adatokkal már regisztráltak!"); //FIXME csináljunk tisztességes kivételkezelést
         }else {
