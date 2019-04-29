@@ -1,6 +1,7 @@
 package hu.me.fdsz.Service.impl;
 
 import hu.me.fdsz.Service.api.JwtTokenProvider;
+import hu.me.fdsz.exception.InvalidTokenException;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.UserRepositroy;
 import io.jsonwebtoken.Claims;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -84,14 +84,13 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) throws InvalidTokenException {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            logger.error("Expired or invalid JWT token" + HttpStatus.INTERNAL_SERVER_ERROR.toString());
+            throw new InvalidTokenException("Expired or invalid JWT token", e);
         }
-        return false;
     }
 
     @Override
