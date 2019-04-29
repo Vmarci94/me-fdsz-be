@@ -1,16 +1,15 @@
 package hu.me.fdsz.exception;
 
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public class CustomException extends RuntimeException {
 
-    private final HttpStatus httpStatus;
+    private final CustomExceptionDTO customExceptionDTO;
 
-    public CustomException(String message, Throwable err, HttpStatus httpStatus) {
+    public CustomException(String message, Throwable err, CustomExceptionDTO customExceptionDTO) {
         super(message, err);
-        this.httpStatus = httpStatus;
+        this.customExceptionDTO = customExceptionDTO;
     }
 
 }
