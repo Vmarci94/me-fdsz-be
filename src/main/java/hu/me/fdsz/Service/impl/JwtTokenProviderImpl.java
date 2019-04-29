@@ -1,6 +1,7 @@
 package hu.me.fdsz.Service.impl;
 
 import hu.me.fdsz.Service.api.JwtTokenProvider;
+import hu.me.fdsz.exception.CustomExceptionDTO;
 import hu.me.fdsz.exception.InvalidTokenException;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.UserRepositroy;
@@ -89,7 +90,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidTokenException("Expired or invalid JWT token", e);
+            throw new InvalidTokenException(new CustomExceptionDTO("Expired or invalid JWT token"));
         }
     }
 

@@ -6,11 +6,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class InvalidTokenException extends RuntimeException {
 
-    private HttpStatus httpStatus;
+    private final CustomExceptionDTO customExceptionDTO;
 
-    public InvalidTokenException(String message, HttpStatus httpStatus) {
-        super(message);
-        this.httpStatus = httpStatus;
+    public InvalidTokenException(CustomExceptionDTO customExceptionDTO) {
+        super(customExceptionDTO.getErrorMessage());
+        customExceptionDTO.setHttpStatus(HttpStatus.UNAUTHORIZED);
+        this.customExceptionDTO = customExceptionDTO;
     }
 
 }

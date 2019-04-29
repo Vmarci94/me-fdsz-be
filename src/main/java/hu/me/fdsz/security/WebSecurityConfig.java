@@ -35,9 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()//
                 .antMatchers("/users/signup").permitAll()//
                 .antMatchers("/users/signin").permitAll()//
+                .antMatchers("/error").permitAll()//
                 // Disallow everything else..
                 .anyRequest().authenticated();
-
+//                ;
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/signin");
 
