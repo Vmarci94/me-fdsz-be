@@ -19,6 +19,6 @@ public interface UserService {
 
     JWTTokenDTO signin(UserDTO userDTO) throws LoginException;
 
-    JWTTokenDTO createToken(String userEmail);
+    UserDTO getUserName();
 
 }

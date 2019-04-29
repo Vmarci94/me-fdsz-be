@@ -49,7 +49,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public String createToken(String userEmail) {
+    public String signin(String userEmail) {
 
         Claims claims = Jwts.claims().setSubject(userEmail);
 //      FIXME: claims.put("auth", roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toList()));
@@ -69,8 +69,18 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         //userEmail from token
         String userEmail = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-        UserDetails userDetails = createUserDetails(userEmail);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return userRepositroy.findByEmail(userEmail).map(currentUser -> {
+            UserDetails userDetails = org.springframework.security.core.userdetails.User
+                    .withUsername(userEmail) // TODO: Egyenlőre így jó lesz, bár elég zavaró
+                    .password(currentUser.getPassword())//
+                    .authorities(currentUser.getRoles())//
+                    .accountExpired(false)//
+                    .accountLocked(false)//
+                    .credentialsExpired(false)//
+                    .disabled(false)//
+                    .build();
+            return new UsernamePasswordAuthenticationToken(currentUser, "", userDetails.getAuthorities());
+        }).orElseThrow(() -> new UsernameNotFoundException("User '" + userEmail + "' not found"));
     }
 
     @Override
@@ -85,28 +95,15 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public User getUser() {
-        return (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(Authentication::getPrincipal)
-                .orElseThrow(() -> new UsernameNotFoundException("Nincs bejelentkezett felhasználó!"));
-    }
-
-    /**
-     * create {@link org.springframework.security.core.userdetails.User} from {@link User}
-     *
-     * @return {@link UserDetails}
-     */
-    private UserDetails createUserDetails(String userEmail) throws UsernameNotFoundException {
-        return userRepositroy.findByEmail(userEmail)
-                .map(currentUser -> org.springframework.security.core.userdetails.User
-                        .withUsername(userEmail) // TODO: Egyenlőre így jó lesz, bár elég zavaró
-                        .password(currentUser.getPassword())//
-                        .authorities(currentUser.getRoles())//
-                        .accountExpired(false)//
-                        .accountLocked(false)//
-                        .credentialsExpired(false)//
-                        .disabled(false)//
-                        .build()).orElseThrow(() -> new UsernameNotFoundException("User '" + userEmail + "' not found"));
+    public User getUser() throws UsernameNotFoundException {
+        try {
+            return (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                    .map(Authentication::getPrincipal)
+                    .orElseThrow(() -> new UsernameNotFoundException("Nincs bejelentkezett felhasználó!"));
+        } catch (ClassCastException cce) {
+            logger.error("Hibás felhasználó készítés", cce);
+            throw new UsernameNotFoundException("Nem sikerült authentikálni a felhasználót!");
+        }
     }
 
 }

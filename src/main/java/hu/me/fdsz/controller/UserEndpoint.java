@@ -52,10 +52,9 @@ public class UserEndpoint {
         return result;
     }
 
-    @GetMapping(value = "/pre-auth-token", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Deprecated
-    public JWTTokenDTO getPreAuthToken(){
-        return userService.createToken("tralala");
+    @GetMapping(value = "/get-current-username", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO getUserName() {
+        return userService.getUserName();
     }
 
 }

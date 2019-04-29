@@ -9,6 +9,7 @@ import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.UserRepositroy;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.LoginException;
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
             newUser.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
             userRepositroy.save(newUser);
         }
-//        String token = jwtTokenProvider.createToken(); //FIXME ezt még nem tudom minek
+//        String token = jwtTokenProvider.signin(); //FIXME ezt még nem tudom minek
         return modelMapper.map(newUser, UserDTO.class);
     }
 
@@ -58,13 +59,18 @@ public class UserServiceImpl implements UserService {
     public JWTTokenDTO signin(UserDTO userDTO) throws LoginException {
         return userRepositroy.findByEmail(userDTO.getEmail())
                 .filter(currentUser -> currentUser.getPassword().equals(userDTO.getPassword()))
-                .map(user -> createToken(user.getEmail()))
+                .map(user -> new JWTTokenDTO(jwtTokenProvider.signin(user.getEmail())))
                 .orElseThrow(() -> new LoginException("hibás adatok"));
     }
 
     @Override
-    public JWTTokenDTO createToken(String userEmail) { //TODO felesleges?
-        return new JWTTokenDTO(jwtTokenProvider.createToken(userEmail));
+    public UserDTO getUserName() {
+        try {
+            User user = jwtTokenProvider.getUser();
+            return modelMapper.map(user, UserDTO.class);
+        } catch (UsernameNotFoundException e) {
+            return null;
+        }
     }
 
 }
