@@ -21,4 +21,5 @@ public interface UserService {
 
     UserDTO getUserName();
 
+    UserDTO getUserData();
 }

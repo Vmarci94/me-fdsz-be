@@ -57,4 +57,14 @@ public class UserEndpoint {
         return userService.getUserName();
     }
 
+    @GetMapping(value = "/get-user-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO getUserData() {
+        return userService.getUserData();
+    }
+
+    @PostMapping(value = "/update-user-data")
+    public void updateUserData(@RequestBody UserDTO userDTO) {
+
+    }
+
 }

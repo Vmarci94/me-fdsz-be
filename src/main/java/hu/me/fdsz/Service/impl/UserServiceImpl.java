@@ -73,4 +73,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserDTO getUserData() {
+        return modelMapper.map(jwtTokenProvider.getUser(), UserDTO.class);
+    }
+
 }
