@@ -9,7 +9,6 @@ import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.UserRepositroy;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.LoginException;
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAllUsers() {
         return StreamSupport.stream(userRepositroy.findAll().spliterator(), false)
-                .map(user ->  modelMapper.map(user, UserDTO.class))
+                .map(user -> modelMapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
         if (userRepositroy.existsByEmailAndUserName(newUser.getEmail(), newUser.getUserName())) {
             //ha létezik már ilyen regisztráció, akkor hibát dobunk
             throw new Exception("Ezekkel az adatokkal már regisztráltak!"); //FIXME csináljunk tisztességes kivételkezelést
-        }else {
+        } else {
             newUser.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
             userRepositroy.save(newUser);
         }
@@ -64,18 +63,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserName() {
-        try {
-            User user = jwtTokenProvider.getUser();
-            return modelMapper.map(user, UserDTO.class);
-        } catch (UsernameNotFoundException e) {
-            return null;
-        }
+    public UserDTO getCurrentUser() {
+        UserDTO userDTO = modelMapper.map(jwtTokenProvider.getUser(), UserDTO.class);
+        userDTO.setPassword(null);
+        return userDTO;
     }
 
     @Override
-    public UserDTO getUserData() {
-        return modelMapper.map(jwtTokenProvider.getUser(), UserDTO.class);
+    public UserDTO updateUserData(UserDTO userDTO) {
+        User currentUser = jwtTokenProvider.getUser();
+        currentUser.setPersonalName(userDTO.getPersonalName());
+        UserDTO modifiedUser = modelMapper.map(userRepositroy.save(currentUser), UserDTO.class);
+        return modifiedUser;
     }
 
 }

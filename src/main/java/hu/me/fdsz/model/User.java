@@ -30,6 +30,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    private String phoneNumber;
+
+    private String location;
+
+
     @Column(name = "roles", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;

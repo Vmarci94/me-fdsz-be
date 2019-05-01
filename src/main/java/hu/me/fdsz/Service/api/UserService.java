@@ -19,7 +19,7 @@ public interface UserService {
 
     JWTTokenDTO signin(UserDTO userDTO) throws LoginException;
 
-    UserDTO getUserName();
+    UserDTO getCurrentUser();
 
-    UserDTO getUserData();
+    UserDTO updateUserData(UserDTO userDTO);
 }

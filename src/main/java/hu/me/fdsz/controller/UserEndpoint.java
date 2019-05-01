@@ -52,19 +52,14 @@ public class UserEndpoint {
         return result;
     }
 
-    @GetMapping(value = "/get-current-username", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get-currnet-user", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO getUserName() {
-        return userService.getUserName();
-    }
-
-    @GetMapping(value = "/get-user-data", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO getUserData() {
-        return userService.getUserData();
+        return userService.getCurrentUser();
     }
 
     @PostMapping(value = "/update-user-data")
-    public void updateUserData(@RequestBody UserDTO userDTO) {
-
+    public UserDTO updateUserData(@RequestBody UserDTO userDTO) {
+        return userService.updateUserData(userDTO);
     }
 
 }

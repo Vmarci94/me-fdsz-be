@@ -1,12 +1,9 @@
 package hu.me.fdsz.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Column;
 
 @Getter
 @Setter
@@ -21,5 +18,9 @@ public class UserDTO {
     private String userName;
 
     private String password;
+
+    private String phoneNumber;
+
+    private String location;
 
 }
