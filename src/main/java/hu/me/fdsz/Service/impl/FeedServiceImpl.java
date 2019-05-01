@@ -5,7 +5,6 @@ import hu.me.fdsz.Service.api.JwtTokenProvider;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.User;
-import hu.me.fdsz.repository.FeedPostImageContentStore;
 import hu.me.fdsz.repository.FeedPostRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.io.InputStreamResource;
@@ -15,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,14 +30,10 @@ public class FeedServiceImpl implements FeedService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final FeedPostImageContentStore feedPostImageContentStore;
-
-    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider,
-                           FeedPostImageContentStore feedPostImageContentStore) {
+    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider) {
         this.feedPostRepository = feedPostRepository;
         this.modelMapper = modelMapper;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.feedPostImageContentStore = feedPostImageContentStore;
     }
 
     @Override
@@ -54,29 +52,39 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file) {
-        return feedPostRepository.findById(feedPostId).map(feedPost -> {
-            feedPost.setMimeType(file.getContentType());
-            try {
-                feedPostImageContentStore.setContent(feedPost, file.getInputStream());
-                feedPostRepository.save(feedPost);
-                return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+    public ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file) throws IOException, SQLException {
+        Blob image = new SerialBlob(file.getBytes());
+        feedPostRepository.findById(feedPostId)
+                .ifPresent(feedPost -> {
+                    feedPost.setImage(image);
+                    feedPostRepository.save(feedPost);
+                });
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<InputStreamResource> getContent(Long feedPostId) {
         return feedPostRepository.findById(feedPostId).map(feedPost -> {
-            InputStreamResource inputStreamResource = new InputStreamResource(feedPostImageContentStore.getContent(feedPost));
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentLength(feedPost.getContentLength());
-            headers.set("Content-Type", feedPost.getMimeType());
-            return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
+            try {
+                InputStreamResource inputStreamResource = new InputStreamResource(feedPost.getImage().getBinaryStream());
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentLength(feedPost.getImage().length());
+                return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
         }).orElseThrow(() -> new IllegalArgumentException("Hiba"));
+    }
+
+    public byte[] getContentByteArr(Long feedPostId) {
+        return feedPostRepository.findById(feedPostId).map(feedPost -> {
+            try {
+                return feedPost.getImage().getBytes(1, Long.valueOf(feedPost.getImage().length()).intValue());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 }

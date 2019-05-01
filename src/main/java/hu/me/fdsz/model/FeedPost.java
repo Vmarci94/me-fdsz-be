@@ -1,11 +1,9 @@
 package hu.me.fdsz.model;
 
 import lombok.*;
-import org.springframework.content.commons.annotations.ContentId;
-import org.springframework.content.commons.annotations.ContentLength;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.sql.Blob;
 
 @Entity
 @Getter
@@ -30,12 +28,8 @@ public class FeedPost {
     @Column(name = "iamge_url")
     private String imageUrl;
 
-    @ContentId
-    private UUID contentId;
-    @ContentLength
-    private long contentLength;
-
-    private String mimeType; //= "text/plain";
+    @Lob
+    private Blob image;
 
     @OneToOne
     @JoinColumn(name = "author", referencedColumnName = "id")
