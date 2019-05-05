@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -40,15 +38,13 @@ public class FeedPageEndpoint {
         return "oh no";
     }
 
-    @RequestMapping(value = "/files/{fileId}", method = RequestMethod.PUT)
-    public ResponseEntity<HttpStatus> addImage(@PathVariable("fileId") Long id, @RequestParam("file") MultipartFile file) throws IOException, SQLException {
+    @RequestMapping(value = "/upload-image/{feedPostId}", method = RequestMethod.PUT)
+    public ResponseEntity<HttpStatus> addImage(@PathVariable("feedPostId") Long id, @RequestParam("image") MultipartFile file) {
         return feedService.setContent(id, file);
     }
 
-    @RequestMapping(value = "/files/{fileId}", method = RequestMethod.GET, produces = "image/*")
-    public ResponseEntity getImage(@PathVariable("fileId") Long id) {
+    @RequestMapping(value = "/files/{fileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public FeedPostDTO getImage(@PathVariable("fileId") Long id) {
         return feedService.getContent(id);
     }
-
-
 }

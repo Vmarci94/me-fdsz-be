@@ -1,28 +1,32 @@
 package hu.me.fdsz.Service.impl;
 
 import hu.me.fdsz.Service.api.FeedService;
+import hu.me.fdsz.Service.api.ImageService;
 import hu.me.fdsz.Service.api.JwtTokenProvider;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.model.FeedPost;
+import hu.me.fdsz.model.Image;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.FeedPostRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.sql.rowset.serial.SerialBlob;
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+
 
 @Service
 public class FeedServiceImpl implements FeedService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FeedService.class.getName());
 
     private final FeedPostRepository feedPostRepository;
 
@@ -30,10 +34,13 @@ public class FeedServiceImpl implements FeedService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider) {
+    private final ImageService imageService;
+
+    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageService imageService) {
         this.feedPostRepository = feedPostRepository;
         this.modelMapper = modelMapper;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.imageService = imageService;
     }
 
     @Override
@@ -52,39 +59,29 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file) throws IOException, SQLException {
-        Blob image = new SerialBlob(file.getBytes());
-        feedPostRepository.findById(feedPostId)
-                .ifPresent(feedPost -> {
-                    feedPost.setImage(image);
-                    feedPostRepository.save(feedPost);
-                });
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file) {
+        return feedPostRepository.findById(feedPostId).map(feedPost -> {
+            try {
+                Image newImage = imageService.addNewImage(file);
+                feedPost.setImage(newImage);
+                return feedPostRepository.save(feedPost);
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+                throw new IllegalArgumentException();
+            }
+        }).isPresent() ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    public ResponseEntity<InputStreamResource> getContent(Long feedPostId) {
+    public FeedPostDTO getContent(Long feedPostId) {
         return feedPostRepository.findById(feedPostId).map(feedPost -> {
-            try {
-                InputStreamResource inputStreamResource = new InputStreamResource(feedPost.getImage().getBinaryStream());
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentLength(feedPost.getImage().length());
-                return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }).orElseThrow(() -> new IllegalArgumentException("Hiba"));
-    }
-
-    public byte[] getContentByteArr(Long feedPostId) {
-        return feedPostRepository.findById(feedPostId).map(feedPost -> {
-            try {
-                return feedPost.getImage().getBytes(1, Long.valueOf(feedPost.getImage().length()).intValue());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+            String imageInRaw = "data:image/*;base64,"
+                    +
+                    new String(Base64.getEncoder().encode(feedPost.getImage().getData()));
+            FeedPostDTO result = modelMapper.map(feedPost, FeedPostDTO.class);
+            result.setImage(imageInRaw);
+            return result;
+        }).orElseThrow(EntityNotFoundException::new);
     }
 
 }

@@ -1,7 +1,6 @@
 package hu.me.fdsz.dto;
 
 import lombok.*;
-import org.springframework.core.io.InputStreamResource;
 
 @NoArgsConstructor
 @Getter
@@ -16,6 +15,6 @@ public class FeedPostDTO {
 
     private String imageUrl;
 
-    private InputStreamResource image;
+    private String image;
 
 }

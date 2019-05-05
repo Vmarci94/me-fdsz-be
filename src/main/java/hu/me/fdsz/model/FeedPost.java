@@ -3,7 +3,6 @@ package hu.me.fdsz.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Blob;
 
 @Entity
 @Getter
@@ -28,8 +27,9 @@ public class FeedPost {
     @Column(name = "iamge_url")
     private String imageUrl;
 
-    @Lob
-    private Blob image;
+    @OneToOne
+    @JoinColumn(name = "image", referencedColumnName = "id")
+    public Image image;
 
     @OneToOne
     @JoinColumn(name = "author", referencedColumnName = "id")
