@@ -13,8 +13,6 @@ public class FeedPostDTO {
 
     private String contentText;
 
-    private String imageUrl;
-
-    private String image;
+    private String imageSrc;
 
 }

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,7 +17,7 @@ public class Image {
 
     @Id
     @GeneratedValue
-    private UUID id;
+    private int id;
 
     private String imageName;
 

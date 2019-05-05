@@ -46,7 +46,14 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public List<FeedPostDTO> getAll() {
         List<FeedPostDTO> result = new ArrayList<>();
-        feedPostRepository.findAll().iterator().forEachRemaining(feedPost -> result.add(modelMapper.map(feedPost, FeedPostDTO.class)));
+
+        feedPostRepository.findAll().iterator().forEachRemaining(feedPost -> {
+            FeedPostDTO feedPostDTO = modelMapper
+                    .map(feedPost, FeedPostDTO.class);
+            feedPostDTO.setImageSrc(convertImageToString(feedPost.getImage()));
+            result.add(feedPostDTO);
+
+        });
         return result;
     }
 
@@ -75,13 +82,14 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public FeedPostDTO getContent(Long feedPostId) {
         return feedPostRepository.findById(feedPostId).map(feedPost -> {
-            String imageInRaw = "data:image/*;base64,"
-                    +
-                    new String(Base64.getEncoder().encode(feedPost.getImage().getData()));
             FeedPostDTO result = modelMapper.map(feedPost, FeedPostDTO.class);
-            result.setImage(imageInRaw);
+            result.setImageSrc(convertImageToString(feedPost.getImage()));
             return result;
         }).orElseThrow(EntityNotFoundException::new);
+    }
+
+    private String convertImageToString(Image image) {
+        return "data:image/jpeg;base64," + new String(Base64.getEncoder().encode(image.getData()));
     }
 
 }
