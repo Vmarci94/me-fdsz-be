@@ -10,31 +10,19 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+@ToString(of = "userName")
 @Table(name = "user")
-@EqualsAndHashCode(of = {"id"})
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class User extends Person {
 
     @Column(nullable = false, unique = true)
     private String email;
-
-    @Column(name = "personal_name")
-    private String personalName;
 
     @Column(name = "username", nullable = false)
     private String userName;
 
     @Column(nullable = false)
     private String password;
-
-    private String phoneNumber;
-
-    private String location;
-
 
     @Column(name = "roles", nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)

@@ -29,8 +29,8 @@ public class Room {
     @Column(name = "price")
     private Long price;
 
-    @Column(name = "room_ovner")
-    private User roomOwner;
+//    @Column(name = "room_ovner")
+//    private User roomOwner;
 
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -26,11 +27,10 @@ public class UserEndpoint {
     //Regisztráció
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public void signup(@RequestBody UserDTO userForm, HttpServletResponse response) throws Exception {
-        if (userService.signup(userForm) != null) {
-            response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        } else {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
+        response.setStatus(Optional.of(userService.signup(userForm))
+                .map(userDTO -> HttpServletResponse.SC_ACCEPTED)
+                .orElse(HttpServletResponse.SC_FORBIDDEN));
+
     }
 
     @GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,7 +46,7 @@ public class UserEndpoint {
         try {
             result = userService.signin(userDTO);
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        }catch (LoginException le){
+        } catch (LoginException le) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
         return result;

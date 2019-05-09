@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,7 +17,11 @@ public class UserDTO {
 
     private String email;
 
-    private String personalName;
+    private String title;
+
+    private String firstName;
+
+    private String secoundName;
 
     private String userName;
 
@@ -22,5 +30,8 @@ public class UserDTO {
     private String phoneNumber;
 
     private String location;
+
+    @Temporal(TemporalType.DATE)
+    private Date birthDay;
 
 }

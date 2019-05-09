@@ -72,7 +72,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateUserData(UserDTO userDTO) {
         User currentUser = jwtTokenProvider.getUser();
-        currentUser.setPersonalName(userDTO.getPersonalName());
         UserDTO modifiedUser = modelMapper.map(userRepositroy.save(currentUser), UserDTO.class);
         return modifiedUser;
     }
