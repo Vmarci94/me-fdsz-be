@@ -1,5 +1,6 @@
 package hu.me.fdsz.model;
 
+import hu.me.fdsz.model.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
