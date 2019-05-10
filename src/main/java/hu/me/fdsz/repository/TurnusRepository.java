@@ -1,17 +1,16 @@
 package hu.me.fdsz.repository;
 
 import hu.me.fdsz.model.Turnus;
-import hu.me.fdsz.model.key.TurnusKey;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface TurnusRepository extends CrudRepository<Turnus, TurnusKey> {
+public interface TurnusRepository extends CrudRepository<Turnus, LocalDate> {
 
-    Optional<List<Turnus>> findAllById_StartDateBetweenOrderById_StartDateDesc(LocalDate startDate, LocalDate endDate);
+    Optional<List<Turnus>> findAllByStartDateBetweenOrderByStartDateDesc(LocalDate startDate, LocalDate endDate);
 
-    Optional<List<Turnus>> findAllById_YearOrderById_StartDateDesc(int year);
+    Optional<List<Turnus>> findAllByStartDateIsGreaterThanOrderByStartDate(LocalDate startDate);
 
 }

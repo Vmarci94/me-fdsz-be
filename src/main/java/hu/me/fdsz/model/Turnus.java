@@ -1,12 +1,10 @@
 package hu.me.fdsz.model;
 
-import hu.me.fdsz.model.key.TurnusKey;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,24 +14,21 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 public class Turnus {
 
-    @EmbeddedId
-    private TurnusKey id;
+    @Id
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
-    @Column(nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
     @Column(nullable = false)
-    private Long numberOfDays;
+    private boolean enabled;
 
-//    @OneToMany
-//    @JoinColumns({
-//            @JoinColumn(name = "year", referencedColumnName = "year"),
-//            @JoinColumn(name = "start_date", referencedColumnName = "start_date")
-//    })
-//    private List<Reservation> reservationList;
+    @OneToMany
+    @JoinColumn(name = "start_date", referencedColumnName = "start_date")
+    private List<Reservation> reservation;
 
-    @Column(nullable = false)
-    private boolean full;
-
+    @OneToMany
+    private List<Room> aviableRooms;
 
 }

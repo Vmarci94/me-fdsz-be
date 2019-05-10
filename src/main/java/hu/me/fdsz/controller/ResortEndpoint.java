@@ -24,8 +24,8 @@ public class ResortEndpoint {
     }
 
     @PostMapping(value = "/add-new-turnus", produces = MediaType.APPLICATION_JSON_VALUE)
-    public TurnusDTO addNewTurnus(@RequestBody TurnusDTO turnusDTO) {
-        return turnusService.addNewTurnus(turnusDTO);
+    public void addNewTurnus(@RequestBody TurnusDTO turnusDTO) {
+        turnusService.addNewTurnus(turnusDTO);
     }
 
     @PostMapping(value = "/add-new-room", produces = MediaType.APPLICATION_JSON_VALUE)

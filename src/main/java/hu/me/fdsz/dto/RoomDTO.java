@@ -13,8 +13,6 @@ public class RoomDTO {
 
     private long roomNumber;
 
-    private int numberOfBeds;
-
     private RoomType roomType;
 
     private Long price;

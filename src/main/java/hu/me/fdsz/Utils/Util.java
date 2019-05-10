@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class Util {
 
-    public static <T> List<T> toCollection(Iterable<T> iterable) {
+    public static <T> List<T> toList(Iterable<T> iterable) {
 
         if (iterable instanceof Collection) {
             return (List<T>) iterable;

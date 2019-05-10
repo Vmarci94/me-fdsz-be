@@ -3,6 +3,7 @@ package hu.me.fdsz.Service.impl;
 import hu.me.fdsz.Service.api.ReservationService;
 import hu.me.fdsz.Service.api.RoomService;
 import hu.me.fdsz.Service.api.TurnusService;
+import hu.me.fdsz.Utils.Util;
 import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Turnus;
 import hu.me.fdsz.repository.TurnusRepository;
@@ -35,24 +36,20 @@ public class TurnusServiceImpl implements TurnusService {
     }
 
     @Override
-    public List<TurnusDTO> getAllTurnusInYear(LocalDate localDate) {
-        return turnusRepository.findAllById_YearOrderById_StartDateDesc(localDate.getYear())
+    public List<TurnusDTO> getAllAviableTurnus() {
+        return turnusRepository.findAllByStartDateIsGreaterThanOrderByStartDate(LocalDate.now())
                 .map(turnusList -> turnusList.stream().map(turnus -> modelMapper.map(turnus, TurnusDTO.class)))
                 .orElseThrow(EntityNotFoundException::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public TurnusDTO addNewTurnus(TurnusDTO turnusDTO) {
-
+    public void addNewTurnus(TurnusDTO turnusDTO) {
         Turnus newTurnus = modelMapper.map(turnusDTO, Turnus.class);
-        newTurnus.setEndDate(turnusDTO.getTurnusKey().getStartDate().plusDays(turnusDTO.getNumberOfDays()));
-        if (turnusDTO.getRoomList() == null || turnusDTO.getRoomList().isEmpty()) {
-//            newTurnus.setReservationList(reservationService.getAllReservationToTurnus(newTurnus.getId()));
+        if (newTurnus.getAviableRooms() == null || newTurnus.getAviableRooms().isEmpty()) {
+            newTurnus.setAviableRooms(Util.toList(roomService.getAllRoom()));
         }
-
-        return modelMapper.emptyTypeMap(Turnus.class, TurnusDTO.class).map(turnusRepository.save(newTurnus));
-
+        turnusRepository.save(newTurnus);
     }
 
 }

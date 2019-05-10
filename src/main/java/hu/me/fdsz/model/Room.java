@@ -6,9 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,18 +20,16 @@ public class Room {
     @Column(name = "room_number")
     private long roomNumber;
 
-    @Column(name = "number_of_beds", nullable = false)
-    private int numberOfBeds;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "room_type", nullable = false)
     private RoomType roomType;
 
     @Column(name = "price")
     private Long price;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "room_id", referencedColumnName = "room_number")
-//    private List<Reservation> reservationList;
+    @OneToMany
+    @JoinColumn(name = "room_id", referencedColumnName = "room_number")
+    private List<Reservation> reservationList;
 
 
 }

@@ -1,11 +1,10 @@
 package hu.me.fdsz.dto;
 
 import hu.me.fdsz.model.Room;
-import hu.me.fdsz.model.key.TurnusKey;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,14 +13,16 @@ import java.util.Collection;
 @AllArgsConstructor
 public class TurnusDTO {
 
-    private TurnusKey turnusKey;
+    private LocalDate startDate;
 
     private LocalDate endDate;
 
-    private int numberOfDays;
+    private Integer numberOfDays;
 
-    private Collection<Room> roomList;
+    private List<Room> aviableRooms;
 
-    private boolean full;
+    private Boolean full;
+
+    private Boolean enabled;
 
 }
