@@ -28,4 +28,8 @@ public class User extends Person {
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
 
+    @OneToMany
+    @JoinColumn(name = "author", referencedColumnName = "id")
+    List<FeedPost> feedPostList;
+
 }

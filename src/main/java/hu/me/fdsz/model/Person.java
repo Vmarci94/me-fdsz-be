@@ -29,7 +29,6 @@ public abstract class Person {
     private String secoundName;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
     private Date birthDay;
 
     private String phoneNumber;
