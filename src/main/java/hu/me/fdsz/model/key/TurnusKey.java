@@ -2,8 +2,10 @@ package hu.me.fdsz.model.key;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -13,8 +15,10 @@ import java.io.Serializable;
 @ToString
 public class TurnusKey implements Serializable {
 
-    private Long number;
+    @Column(name = "year")
+    private int year;
 
-    private Long year;
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
 }

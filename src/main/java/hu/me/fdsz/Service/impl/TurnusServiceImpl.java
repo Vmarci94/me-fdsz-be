@@ -1,59 +1,58 @@
 package hu.me.fdsz.Service.impl;
 
+import hu.me.fdsz.Service.api.ReservationService;
+import hu.me.fdsz.Service.api.RoomService;
 import hu.me.fdsz.Service.api.TurnusService;
 import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Turnus;
-import hu.me.fdsz.model.key.TurnusKey;
 import hu.me.fdsz.repository.TurnusRepository;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TurnusServiceImpl implements TurnusService {
 
     private final TurnusRepository turnusRepository;
 
+    private final RoomService roomService;
+
+    private final ReservationService reservationService;
+
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TurnusServiceImpl(TurnusRepository turnusRepository, ModelMapper modelMapper) {
+    public TurnusServiceImpl(TurnusRepository turnusRepository, RoomService roomService, ReservationService reservationService, ModelMapper modelMapper) {
         this.turnusRepository = turnusRepository;
+        this.roomService = roomService;
+        this.reservationService = reservationService;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<TurnusDTO> getAllTurnusInYear(Long year) {
-        turnusRepository.findAllById_Year(year).map(turnusList -> {
-
-        });
-
-        return null;
+    public List<TurnusDTO> getAllTurnusInYear(LocalDate localDate) {
+        return turnusRepository.findAllById_YearOrderById_StartDateDesc(localDate.getYear())
+                .map(turnusList -> turnusList.stream().map(turnus -> modelMapper.map(turnus, TurnusDTO.class)))
+                .orElseThrow(EntityNotFoundException::new)
+                .collect(Collectors.toList());
     }
 
     @Override
     public TurnusDTO addNewTurnus(TurnusDTO turnusDTO) {
 
-        TypeMap<TurnusDTO, Turnus> typeMap = modelMapper.emptyTypeMap(TurnusDTO.class, Turnus.class);
+        Turnus newTurnus = modelMapper.map(turnusDTO, Turnus.class);
+        newTurnus.setEndDate(turnusDTO.getTurnusKey().getStartDate().plusDays(turnusDTO.getNumberOfDays()));
+        if (turnusDTO.getRoomList() == null || turnusDTO.getRoomList().isEmpty()) {
+//            newTurnus.setReservationList(reservationService.getAllReservationToTurnus(newTurnus.getId()));
+        }
 
-        Converter<Integer, Date> endDateConverter = ctx -> new Date(ctx.getDestination().getTime() + (1000 * 60 * 60 * 24 * ctx.getSource()));
-        typeMap.addMappings(mapper -> mapper.using(endDateConverter).map(TurnusDTO::getNumberOfDays, Turnus::setEndDate));
+        return modelMapper.emptyTypeMap(Turnus.class, TurnusDTO.class).map(turnusRepository.save(newTurnus));
 
-        Converter<Date, TurnusKey> turnusKeyConverter = ctx -> {
-            ctx.getSource().get
-        };
-
-
-        return null;
-    }
-
-    public long getNextTurnusNumberInYear(Long year) {
-        return turnusRepository.countById_Year(year) + 1;
     }
 
 }

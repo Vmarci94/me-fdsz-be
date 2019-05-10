@@ -3,9 +3,10 @@ package hu.me.fdsz.model;
 import hu.me.fdsz.model.key.TurnusKey;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -18,19 +19,21 @@ public class Turnus {
     @EmbeddedId
     private TurnusKey id;
 
-    private Date startDate;
+    @Column(nullable = false)
+    private LocalDate endDate;
 
-    private Date endDate;
-
+    @Column(nullable = false)
     private Long numberOfDays;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "room_turnus",
-            joinColumns = {@JoinColumn(name = "turnus_number"), @JoinColumn(name = "turnus_year")},
-            inverseJoinColumns = {@JoinColumn(name = "room_id")}
-    )
-    private List<Room> rooms;
+//    @OneToMany
+//    @JoinColumns({
+//            @JoinColumn(name = "year", referencedColumnName = "year"),
+//            @JoinColumn(name = "start_date", referencedColumnName = "start_date")
+//    })
+//    private List<Reservation> reservationList;
+
+    @Column(nullable = false)
+    private boolean full;
 
 
 }

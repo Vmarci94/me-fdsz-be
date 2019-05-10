@@ -3,7 +3,7 @@ package hu.me.fdsz.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,7 +29,7 @@ public abstract class Person {
     private String secoundName;
 
     @Column(nullable = false)
-    private Date birthDay;
+    private LocalDate birthDay;
 
     private String phoneNumber;
 

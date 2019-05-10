@@ -6,18 +6,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(of = "roomNumber")
+@ToString(of = "roomNumber")
 public class Room {
 
     @Id
-    private Long id;
+    @Column(name = "room_number")
+    private long roomNumber;
 
     @Column(name = "number_of_beds", nullable = false)
     private int numberOfBeds;
@@ -28,12 +30,9 @@ public class Room {
     @Column(name = "price")
     private Long price;
 
-    @ManyToOne
-    @JoinColumn(name = "room_owner", referencedColumnName = "id")
-    private User roomOwner;
-
-    @ManyToMany(mappedBy = "rooms")
-    private Set<Turnus> turnusSet;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "room_id", referencedColumnName = "room_number")
+//    private List<Reservation> reservationList;
 
 
 }
