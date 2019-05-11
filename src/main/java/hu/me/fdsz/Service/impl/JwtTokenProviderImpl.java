@@ -11,7 +11,6 @@ import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +30,6 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
     private SecretKey secretKey;
 
-    @Value("${security.jwt.token.expire-length}")
     private long validityInMilliseconds;
 
     private final UserRepositroy userRepositroy;
@@ -45,6 +43,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     protected void init() {
         //creates a spec-compliant secure-random key:
         secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256); //or HS384 or HS512
+        validityInMilliseconds = 3600000;
     }
 
     @Override

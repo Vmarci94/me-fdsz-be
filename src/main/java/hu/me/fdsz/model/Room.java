@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,8 +26,8 @@ public class Room {
 
     @Column(name = "price")
     private Long price;
-//
-//    @ManyToMany(mappedBy = "rooms")
-//    private Set<Turnus> turnusList;
+
+    @ManyToMany(mappedBy = "rooms")
+    private List<Turnus> turnusList;
 
 }

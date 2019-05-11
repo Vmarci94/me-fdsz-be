@@ -28,16 +28,13 @@ public class Turnus {
     @JoinColumn(name = "start_date", referencedColumnName = "start_date")
     private List<Reservation> reservation;
 
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "aviable_room",
-//            joinColumns = { @JoinColumn(name = "start_date") },
-//            inverseJoinColumns = { @JoinColumn(name = "room_number") }
-//    )
-//    private Set<Room> rooms;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "aviable_room",
+            joinColumns = {@JoinColumn(name = "start_date")},
+            inverseJoinColumns = {@JoinColumn(name = "room_number")}
+    )
+    private List<Room> rooms;
 
-    @OneToMany
-    @JoinColumn(name = "start_date", referencedColumnName = "start_date")
-    private List<AviableRoom> aviableRooms;
 
 }

@@ -3,7 +3,6 @@ package hu.me.fdsz.controller;
 import hu.me.fdsz.Service.api.UserService;
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +39,6 @@ public class UserEndpoint {
 
     //Bejelentkezés
     @PostMapping(value = "/signin", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "${UserEndpoint.signin}")
     public JWTTokenDTO signin(@RequestBody UserDTO userDTO, HttpServletResponse response) {
         JWTTokenDTO result = null;
         try {
