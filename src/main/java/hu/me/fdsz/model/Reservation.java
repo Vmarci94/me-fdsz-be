@@ -17,10 +17,6 @@ public class Reservation {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "room_number", referencedColumnName = "room_number")
-    private Room room;
-
-    @ManyToOne
     @JoinColumn(name = "start_date", referencedColumnName = "start_date")
     private Turnus turnus;
 

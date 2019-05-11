@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,10 +25,8 @@ public class Room {
 
     @Column(name = "price")
     private Long price;
-
-    @OneToMany
-    @JoinColumn(name = "room_id", referencedColumnName = "room_number")
-    private List<Reservation> reservationList;
-
+//
+//    @ManyToMany(mappedBy = "rooms")
+//    private Set<Turnus> turnusList;
 
 }

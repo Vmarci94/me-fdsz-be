@@ -19,7 +19,7 @@ public class TurnusDTO {
 
     private Integer numberOfDays;
 
-    private List<Room> aviableRooms;
+    private List<Room> rooms;
 
     private Boolean full;
 
