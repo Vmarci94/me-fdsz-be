@@ -1,6 +1,5 @@
 package hu.me.fdsz.Service.api;
 
-import hu.me.fdsz.exception.InvalidTokenException;
 import hu.me.fdsz.model.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +18,6 @@ public interface JwtTokenProvider {
 
     User getUser() throws UsernameNotFoundException;
 
-    boolean validateToken(String token) throws InvalidTokenException;
+    boolean validateToken(String token);
 
 }

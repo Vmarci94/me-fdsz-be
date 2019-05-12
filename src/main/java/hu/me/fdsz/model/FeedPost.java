@@ -24,8 +24,9 @@ public class FeedPost {
     @Column(name = "content_text")
     private String contentText;
 
-    @Column(name = "iamge_url")
-    private String imageUrl;
+    @OneToOne
+    @JoinColumn(name = "image", referencedColumnName = "id")
+    public Image image;
 
     @OneToOne
     @JoinColumn(name = "author", referencedColumnName = "id")
