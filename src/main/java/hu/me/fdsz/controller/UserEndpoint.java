@@ -4,7 +4,9 @@ import hu.me.fdsz.Service.api.UserService;
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.LoginException;
@@ -25,11 +27,10 @@ public class UserEndpoint {
 
     //Regisztráció
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void signup(@RequestBody UserDTO userForm, HttpServletResponse response) throws Exception {
-        response.setStatus(Optional.of(userService.signup(userForm))
-                .map(userDTO -> HttpServletResponse.SC_ACCEPTED)
-                .orElse(HttpServletResponse.SC_FORBIDDEN));
-
+    public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userForm) throws Exception {
+        return Optional.of(userService.signup(userForm))
+                .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,6 +49,16 @@ public class UserEndpoint {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
         return result;
+    }
+
+    @GetMapping(value = "/get-all-client-users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserDTO> getAllClientUsers() {
+        return userService.getAllClientUser();
+    }
+
+    @GetMapping(value = "/get-client-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserDTO> getClientUsersByName(String fullName) {
+        return userService.findClientUsersByName(fullName);
     }
 
     @GetMapping(value = "/get-currnet-user", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -3,7 +3,7 @@ package hu.me.fdsz.model.enums;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-  ROLE_ADMIN, ROLE_CLIENT;
+    ADMIN, CLIENT;
 
   public String getAuthority() {
     return name();

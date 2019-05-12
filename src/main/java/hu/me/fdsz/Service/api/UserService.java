@@ -22,4 +22,9 @@ public interface UserService {
     UserDTO getCurrentUser();
 
     UserDTO updateUserData(UserDTO userDTO);
+
+
+    List<UserDTO> getAllClientUser();
+
+    List<UserDTO> findClientUsersByName(String fullName);
 }

@@ -9,10 +9,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString(of = "userName")
 @Table(name = "user")
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class User extends Person {
 
     @Column(nullable = false, unique = true)
@@ -24,12 +24,17 @@ public class User extends Person {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "roles", nullable = false)
-    @ElementCollection(fetch = FetchType.EAGER)
-    List<Role> roles;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    private long image;
+
+//    @OneToOne
+//    @JoinColumn(name = "id", referencedColumnName = "image")
+//    private Image image;
 
     @OneToMany
     @JoinColumn(name = "author", referencedColumnName = "id")
-    List<FeedPost> feedPostList;
+    private List<FeedPost> feedPostList;
 
 }

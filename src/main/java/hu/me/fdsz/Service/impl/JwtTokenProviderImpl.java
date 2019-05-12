@@ -71,7 +71,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
             UserDetails userDetails = org.springframework.security.core.userdetails.User
                     .withUsername(userEmail) // TODO: Egyenlőre így jó lesz, bár elég zavaró
                     .password(currentUser.getPassword())//
-                    .authorities(currentUser.getRoles())//
+                    .authorities(currentUser.getRole())//
                     .accountExpired(false)//
                     .accountLocked(false)//
                     .credentialsExpired(false)//

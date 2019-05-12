@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(of = "email")
+@EqualsAndHashCode(of = {"email", "userName"})
 public class UserDTO {
 
     private String email;
