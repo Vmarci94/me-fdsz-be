@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         User newUser = modelMapper.map(userForm, User.class);
         newUser.setFullName(Stream.of(userForm.getTitle(), userForm.getFirstName(), userForm.getSecoundName())
                 .filter(Objects::nonNull)
-                .collect(Collectors.joining()));
+                .collect(Collectors.joining(" ")));
         if (userRepositroy.existsByEmailAndUserName(newUser.getEmail(), newUser.getUserName())) {
             //ha létezik már ilyen regisztráció, akkor hibát dobunk
             throw new Exception("Ezekkel az adatokkal már regisztráltak!"); //FIXME csináljunk tisztességes kivételkezelést
