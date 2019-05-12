@@ -1,6 +1,8 @@
 package hu.me.fdsz.security;
 
 import hu.me.fdsz.Service.api.JwtTokenProvider;
+import hu.me.fdsz.Utils.Util;
+import hu.me.fdsz.exception.CustomExceptionDTO;
 import hu.me.fdsz.exception.InvalidTokenException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,9 +35,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                             SecurityContextHolder.getContext().setAuthentication(auth);
                         }
                     });
-        } catch (InvalidTokenException ex) {
+        } catch (InvalidTokenException ite) {
             SecurityContextHolder.clearContext();
-            httpServletResponse.sendError(ex.getCustomExceptionDTO().getHttpStatus().value(), ex.getMessage());
+            httpServletResponse.sendError(ite.getStatusCode(), Util.convertObjectToJson(new CustomExceptionDTO(ite)));
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);  //itt teszi bele a header-be sezerintem
     }
@@ -45,7 +47,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 .filter(bearerToken -> bearerToken.startsWith("Bearer "))
                 .map(bearerToken -> bearerToken.substring(7));
     }
-
 
 
 }

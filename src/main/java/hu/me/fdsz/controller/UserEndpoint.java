@@ -3,6 +3,7 @@ package hu.me.fdsz.controller;
 import hu.me.fdsz.Service.api.UserService;
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
+import hu.me.fdsz.exception.InvalidTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,11 @@ public class UserEndpoint {
     @Autowired
     public UserEndpoint(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping(value = "/error")
+    public void getError() {
+        throw new InvalidTokenException("mizu?", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //Regisztráció
