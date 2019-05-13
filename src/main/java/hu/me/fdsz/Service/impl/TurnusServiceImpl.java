@@ -3,7 +3,6 @@ package hu.me.fdsz.Service.impl;
 import hu.me.fdsz.Service.api.ReservationService;
 import hu.me.fdsz.Service.api.RoomService;
 import hu.me.fdsz.Service.api.TurnusService;
-import hu.me.fdsz.Utils.Util;
 import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Turnus;
 import hu.me.fdsz.repository.TurnusRepository;
@@ -48,9 +47,6 @@ public class TurnusServiceImpl implements TurnusService {
     @Override
     public void addNewTurnus(TurnusDTO turnusDTO) {
         Turnus newTurnus = modelMapper.map(turnusDTO, Turnus.class);
-        if (newTurnus.getRooms() == null || newTurnus.getRooms().isEmpty()) {
-            newTurnus.setRooms(Util.toList(roomService.getAllRoom()));
-        }
         turnusRepository.save(newTurnus);
     }
 

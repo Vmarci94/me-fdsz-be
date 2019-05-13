@@ -2,9 +2,10 @@ package hu.me.fdsz.model;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
@@ -23,18 +24,6 @@ public class Turnus {
 
     @Column(nullable = false)
     private boolean enabled;
-
-    @OneToMany
-    @JoinColumn(name = "start_date", referencedColumnName = "start_date")
-    private List<Reservation> reservation;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "aviable_room",
-            joinColumns = {@JoinColumn(name = "start_date")},
-            inverseJoinColumns = {@JoinColumn(name = "room_number")}
-    )
-    private List<Room> rooms;
 
 
 }

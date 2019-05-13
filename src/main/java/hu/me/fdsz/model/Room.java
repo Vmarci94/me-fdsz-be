@@ -27,7 +27,8 @@ public class Room {
     @Column(name = "price")
     private Long price;
 
-    @ManyToMany(mappedBy = "rooms")
-    private List<Turnus> turnusList;
+    @OneToMany
+    @JoinColumn(name = "room_number", referencedColumnName = "room_number")
+    private List<Reservation> reservations;
 
 }
