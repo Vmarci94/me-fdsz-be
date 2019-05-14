@@ -3,6 +3,7 @@ package hu.me.fdsz.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -11,22 +12,24 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Reservation {
+public class Reservation implements Serializable {
 
     @Id
     @GeneratedValue
     private long id;
 
-    private LocalDate reservationStartDate;
+    @Column(name = "start_date", nullable = false, unique = true)
+    private LocalDate startDate;
 
-    private LocalDate reservationEndDate;
+    @Column(name = "end_date", nullable = false, unique = true)
+    private LocalDate endDate;
 
     @ManyToOne
-    @JoinColumn(name = "room_number", referencedColumnName = "room_number")
+    @JoinColumn(name = "room_number", referencedColumnName = "room_number", nullable = false)
     private Room room;
 
     @ManyToOne
-    @JoinColumn(name = "room_owner", referencedColumnName = "id")
+    @JoinColumn(name = "room_owner", referencedColumnName = "id", nullable = false)
     private User roomOwner;
 
 

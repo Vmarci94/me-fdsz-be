@@ -9,8 +9,7 @@ import java.util.Optional;
 
 public interface TurnusRepository extends CrudRepository<Turnus, LocalDate> {
 
-    Optional<List<Turnus>> findAllByStartDateBetweenOrderByStartDateDesc(LocalDate startDate, LocalDate endDate);
-
     Optional<List<Turnus>> findAllByStartDateIsGreaterThanOrderByStartDate(LocalDate startDate);
+
 
 }
