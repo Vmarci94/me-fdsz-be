@@ -94,7 +94,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public User getUser() throws UsernameNotFoundException {
+    public User getAuthenticatedUser() throws UsernameNotFoundException {
         try {
             return (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                     .map(Authentication::getPrincipal)

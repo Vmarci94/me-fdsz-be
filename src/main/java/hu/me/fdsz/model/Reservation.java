@@ -18,10 +18,10 @@ public class Reservation implements Serializable {
     @GeneratedValue
     private long id;
 
-    @Column(name = "start_date", nullable = false, unique = true)
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "end_date", nullable = false, unique = true)
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
     @ManyToOne

@@ -1,11 +1,8 @@
 package hu.me.fdsz.dto;
 
-import hu.me.fdsz.model.Room;
-import hu.me.fdsz.model.Turnus;
-import hu.me.fdsz.model.User;
 import lombok.*;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,11 +11,11 @@ import java.util.List;
 @EqualsAndHashCode
 public class ReservationDTO {
 
-    private Long id;
+    private LocalDate startDate;
 
-    private Turnus turnus;
+    private LocalDate endDate;
 
-    private List<Room> roomList;
+    private Long roomNumber;
 
-    private User owner;
+    private Long userId;
 }

@@ -5,7 +5,6 @@ import hu.me.fdsz.dao.api.TurnusDao;
 import hu.me.fdsz.dto.RoomDTO;
 import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Room;
-import hu.me.fdsz.model.Turnus;
 import hu.me.fdsz.repository.ReservationRepository;
 import hu.me.fdsz.repository.RoomRepository;
 import org.modelmapper.ModelMapper;
@@ -53,9 +52,6 @@ public class RoomServiceImpl implements RoomService {
                 .findAllByStartDateEqualsAndEndDateEquals(turnusDTO.getStartDate(), turnusDTO.getEndDate())
                 .map(reservations -> reservations.stream().map(reservation -> reservation.getRoom().getRoomNumber()).collect(Collectors.toList()))
                 .orElse(Collections.emptyList());
-
-
-        List<Room> bookedRooms = turnusDao.getBookedRooms(modelMapper.map(turnusDTO, Turnus.class));
 
         return roomRepository.findAllByRoomNumberIsNotIn(bookedRoomNumbersInTurnus)
                 .map(rooms -> rooms.stream().map(room -> modelMapper.map(room, RoomDTO.class)).collect(Collectors.toList()))

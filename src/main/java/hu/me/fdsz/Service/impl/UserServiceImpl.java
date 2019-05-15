@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getCurrentUser() {
-        UserDTO userDTO = modelMapper.map(jwtTokenProvider.getUser(), UserDTO.class);
+        UserDTO userDTO = modelMapper.map(jwtTokenProvider.getAuthenticatedUser(), UserDTO.class);
         userDTO.setPassword(null);
         return userDTO;
     }
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateUserData(UserDTO userDTO) {
         logger.error("Implement me!");
-        User currentUser = jwtTokenProvider.getUser();
+        User currentUser = jwtTokenProvider.getAuthenticatedUser();
         UserDTO modifiedUser = modelMapper.map(userRepositroy.save(currentUser), UserDTO.class);
         return modifiedUser;
     }

@@ -16,7 +16,7 @@ public interface JwtTokenProvider {
      */
     Authentication getAuthentication(String token);
 
-    User getUser() throws UsernameNotFoundException;
+    User getAuthenticatedUser() throws UsernameNotFoundException;
 
     boolean validateToken(String token);
 

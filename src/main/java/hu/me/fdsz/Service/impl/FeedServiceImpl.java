@@ -60,7 +60,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public void add(FeedPostDTO feedPostDTO) {
         FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
-        User currentUser = jwtTokenProvider.getUser();
+        User currentUser = jwtTokenProvider.getAuthenticatedUser();
         newFeedPost.setAuthor(currentUser);
         feedPostRepository.save(newFeedPost);
     }
