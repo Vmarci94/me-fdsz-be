@@ -11,5 +11,8 @@ public interface TurnusRepository extends CrudRepository<Turnus, LocalDate> {
 
     Optional<List<Turnus>> findAllByStartDateIsGreaterThanOrderByStartDate(LocalDate startDate);
 
+    Optional<List<Turnus>> findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate);
 
+    @Override
+    List<Turnus> findAll();
 }

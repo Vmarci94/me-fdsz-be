@@ -10,14 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController(value = "/resort")
+@RestController
+@RequestMapping(value = "/resort")
 public class ResortEndpoint {
 
     private final TurnusService turnusService;
@@ -36,6 +34,16 @@ public class ResortEndpoint {
     @GetMapping(value = "/get-all-turnus", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TurnusDTO> getAllTurnus() {
         return turnusService.getAllAviableTurnus();
+    }
+
+    @GetMapping(value = "/get-all-turnus-in-year", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TurnusDTO> getAllTurnusInYear(Integer year) {
+        return turnusService.getAllTurnusInYear(year);
+    }
+
+    @GetMapping(value = "/get-turnus-years", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Integer> getTurnusYears() {
+        return turnusService.getTurnusYears();
     }
 
     @PostMapping(value = "/get-all-avaiable-rooms", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -95,14 +95,10 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
     @Override
     public User getAuthenticatedUser() throws UsernameNotFoundException {
-        try {
-            return (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                    .map(Authentication::getPrincipal)
-                    .orElseThrow(() -> new UsernameNotFoundException("Nincs bejelentkezett felhasználó!"));
-        } catch (ClassCastException cce) {
-            logger.error("Hibás felhasználó készítés", cce);
-            throw new UsernameNotFoundException("Nem sikerült authentikálni a felhasználót!");
-        }
+        return (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getPrincipal)
+                .orElseThrow(() -> new InvalidTokenException("Nincs bejelentkezett felhasználó!", HttpStatus.UNAUTHORIZED));
+
     }
 
 }

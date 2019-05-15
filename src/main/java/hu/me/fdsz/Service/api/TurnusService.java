@@ -10,4 +10,7 @@ public interface TurnusService {
 
     void addNewTurnus(TurnusDTO turnusDTO);
 
+    List<Integer> getTurnusYears();
+
+    List<TurnusDTO> getAllTurnusInYear(Integer year);
 }
