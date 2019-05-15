@@ -96,8 +96,9 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     @Override
     public User getAuthenticatedUser() throws UsernameNotFoundException {
         return (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(Authentication::getPrincipal)
-                .orElseThrow(() -> new InvalidTokenException("Nincs bejelentkezett felhasználó!", HttpStatus.UNAUTHORIZED));
+                .map(authentication ->
+                        authentication.getPrincipal().toString().equals("anonymousUser") ? null : authentication.getPrincipal()
+                ).orElseThrow(() -> new InvalidTokenException("Nincs bejelentkezett felhasználó!", HttpStatus.UNAUTHORIZED));
 
     }
 
