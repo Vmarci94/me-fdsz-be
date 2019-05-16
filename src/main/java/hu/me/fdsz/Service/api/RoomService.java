@@ -11,5 +11,5 @@ public interface RoomService {
 
     Room addNewRoom(RoomDTO roomDTO);
 
-    List<RoomDTO> getAllAvaiableRooms(TurnusDTO turnusDTO);
+    List<RoomDTO> getAvaiableRooms(TurnusDTO turnusDTO);
 }

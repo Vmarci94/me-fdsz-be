@@ -46,9 +46,9 @@ public class ResortEndpoint {
         return turnusService.getTurnusYears();
     }
 
-    @PostMapping(value = "/get-all-avaiable-rooms", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RoomDTO> getAllAvaiableRooms(@RequestBody TurnusDTO turnusDTO) {
-        return roomService.getAllAvaiableRooms(turnusDTO);
+    @PostMapping(value = "/get-avaiable-rooms", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<RoomDTO> getAvaiableRooms(@RequestBody TurnusDTO turnusDTO) {
+        return roomService.getAvaiableRooms(turnusDTO);
     }
 
     @PostMapping(value = "/add-new-turnus", produces = MediaType.APPLICATION_JSON_VALUE)

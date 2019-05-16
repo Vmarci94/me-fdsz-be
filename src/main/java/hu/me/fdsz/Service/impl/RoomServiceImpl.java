@@ -46,7 +46,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomDTO> getAllAvaiableRooms(TurnusDTO turnusDTO) {
+    public List<RoomDTO> getAvaiableRooms(TurnusDTO turnusDTO) {
 
         List<Long> bookedRoomNumbersInTurnus = reservationRepository
                 .findAllByStartDateEqualsAndEndDateEquals(turnusDTO.getStartDate(), turnusDTO.getEndDate())
@@ -56,15 +56,6 @@ public class RoomServiceImpl implements RoomService {
         return roomRepository.findAllByRoomNumberIsNotIn(bookedRoomNumbersInTurnus)
                 .map(rooms -> rooms.stream().map(room -> modelMapper.map(room, RoomDTO.class)).collect(Collectors.toList()))
                 .orElse(Collections.emptyList());
-
-//        return reservationRepository
-//                .findAllByReservationStartDateIsGreaterThanEqualAndReservationEndDateIsLessThanEqual(turnusDTO.getStartDate(), turnusDTO.getEndDate())
-//                .map(reservations -> reservations.stream().map(reservation -> reservation.getRoom().getRoomNumber()).collect(Collectors.toList()))
-//                .map(roomRepository::findAllByRoomNumberIsNotIn)
-//                .map(aviableRooms -> aviableRooms
-//                        .map(rooms -> rooms.stream().map(room -> modelMapper.map(room, RoomDTO.class)).collect(Collectors.toList()))
-//                        .orElseGet(ArrayList::new))
-//                .orElse(roomRepository.findAll().stream().map(room -> modelMapper.map(room, RoomDTO.class)).collect(Collectors.toList()));
     }
 
 
