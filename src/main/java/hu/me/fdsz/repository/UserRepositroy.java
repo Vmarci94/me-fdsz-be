@@ -9,6 +9,9 @@ import java.util.Optional;
 
 public interface UserRepositroy extends CrudRepository<User, Long> {
 
+    @Override
+    List<User> findAll();
+
     Optional<User> findByUserName(String userName);
 
     Optional<User> findByEmail(String email);
@@ -18,4 +21,6 @@ public interface UserRepositroy extends CrudRepository<User, Long> {
     Optional<List<User>> findAllByRole(Role role);
 
     Optional<List<User>> findAllByFullName(String fullName);
+
+    Optional<List<User>> findAllByFullNameContaining(String fullName);
 }

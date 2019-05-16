@@ -15,7 +15,7 @@ public class CustomGlobalExceptionHandlerController extends ResponseEntityExcept
 
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<CustomExceptionDTO> handleInvalidTokenException(InvalidTokenException ex, WebRequest request) {
-        logger.error(ex.getMessage());
+        logger.error(ex.getErrorMessage());
         return ex.getResponse();
     }
 

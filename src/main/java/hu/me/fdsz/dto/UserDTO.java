@@ -1,5 +1,6 @@
 package hu.me.fdsz.dto;
 
+import hu.me.fdsz.model.enums.Role;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,7 @@ public class UserDTO {
     private String location;
 
     private LocalDate birthDay;
+
+    private Role role;
 
 }

@@ -2,6 +2,8 @@ package hu.me.fdsz.Service.api;
 
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.security.auth.login.LoginException;
 import java.util.List;
@@ -21,10 +23,9 @@ public interface UserService {
 
     UserDTO getCurrentUser();
 
-    UserDTO updateUserData(UserDTO userDTO);
-
-
-    List<UserDTO> getAllClientUser();
+    ResponseEntity<HttpStatus> updateUserData(UserDTO userDTO);
 
     List<UserDTO> findClientUsersByName(String fullName);
+
+    List<UserDTO> searchUserByName(String searchTerm);
 }

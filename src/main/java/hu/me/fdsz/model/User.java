@@ -18,7 +18,7 @@ public class User extends Person {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String userName;
 
     @Column(nullable = false)

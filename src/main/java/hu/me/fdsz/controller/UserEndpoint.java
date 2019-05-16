@@ -57,11 +57,6 @@ public class UserEndpoint {
         return result;
     }
 
-    @GetMapping(value = "/get-all-client-users", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> getAllClientUsers() {
-        return userService.getAllClientUser();
-    }
-
     @GetMapping(value = "/get-client-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTO> getClientUsersByName(String fullName) {
         return userService.findClientUsersByName(fullName);
@@ -73,8 +68,14 @@ public class UserEndpoint {
     }
 
     @PostMapping(value = "/update-user-data")
-    public UserDTO updateUserData(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<HttpStatus> updateUserData(@RequestBody UserDTO userDTO) {
         return userService.updateUserData(userDTO);
     }
+
+    @GetMapping(value = "/search-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserDTO> searchUserByName(String searchTerm) {
+        return userService.searchUserByName(searchTerm);
+    }
+
 
 }
