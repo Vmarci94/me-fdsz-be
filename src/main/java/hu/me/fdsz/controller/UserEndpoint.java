@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.LoginException;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,15 +45,12 @@ public class UserEndpoint {
 
     //Bejelentkezés
     @PostMapping(value = "/signin", produces = MediaType.APPLICATION_JSON_VALUE)
-    public JWTTokenDTO signin(@RequestBody UserDTO userDTO, HttpServletResponse response) {
-        JWTTokenDTO result = null;
+    public ResponseEntity<JWTTokenDTO> signin(@RequestBody UserDTO userDTO) {
         try {
-            result = userService.signin(userDTO);
-            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return new ResponseEntity<>(userService.signin(userDTO), HttpStatus.OK);
         } catch (LoginException le) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
-        return result;
     }
 
     @GetMapping(value = "/get-client-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)

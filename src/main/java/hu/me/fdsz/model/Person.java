@@ -1,5 +1,6 @@
 package hu.me.fdsz.model;
 
+import hu.me.fdsz.model.enums.DiscountType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = "id")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor
-public abstract class Person implements Serializable {
+public class Person implements Serializable {
 
     @Id
     @GeneratedValue
@@ -35,5 +36,8 @@ public abstract class Person implements Serializable {
     private String phoneNumber;
 
     private String location;
+
+    @Enumerated(EnumType.STRING)
+    private DiscountType discountType;
 
 }
