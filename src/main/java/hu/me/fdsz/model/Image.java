@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -13,7 +14,7 @@ import javax.persistence.Lob;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Image {
+public class Image implements Serializable {
 
     @Id
     @GeneratedValue

@@ -3,6 +3,7 @@ package hu.me.fdsz.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = "id")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @NoArgsConstructor
-public abstract class Person {
+public abstract class Person implements Serializable {
 
     @Id
     @GeneratedValue

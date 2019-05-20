@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode(of = "roomNumber")
 @ToString(of = "roomNumber")
-public class Room {
+public class Room implements Serializable {
 
     @Id
     @Column(name = "room_number")

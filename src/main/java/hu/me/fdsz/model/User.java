@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(of = "userName")
-@Table(name = "user")
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class User extends Person {
@@ -27,11 +26,13 @@ public class User extends Person {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private long image;
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "image")
+    private Image image;
 
-//    @OneToOne
-//    @JoinColumn(name = "id", referencedColumnName = "image")
-//    private Image image;
+    @OneToMany
+    @JoinColumn(name = "room_owner", referencedColumnName = "id")
+    private List<Reservation> reservationList;
 
     @OneToMany
     @JoinColumn(name = "author", referencedColumnName = "id")

@@ -39,14 +39,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/feeds/get-all").permitAll()//
                 // Disallow everything else..
                 .anyRequest().authenticated();
-//        ; //FIXME
+
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/signin");
 
         http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
-        // Optional, if you want to test the API from a browser
-        // http.httpBasic();
     }
 
     @Override
