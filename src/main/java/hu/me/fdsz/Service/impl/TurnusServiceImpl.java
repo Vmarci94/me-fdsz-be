@@ -4,6 +4,8 @@ import hu.me.fdsz.Service.api.ReservationService;
 import hu.me.fdsz.Service.api.RoomService;
 import hu.me.fdsz.Service.api.TurnusService;
 import hu.me.fdsz.dto.TurnusDTO;
+import hu.me.fdsz.model.Reservation;
+import hu.me.fdsz.model.Room;
 import hu.me.fdsz.model.Turnus;
 import hu.me.fdsz.repository.TurnusRepository;
 import org.modelmapper.ModelMapper;
@@ -64,6 +66,13 @@ public class TurnusServiceImpl implements TurnusService {
                 .map(turnuses ->
                         turnuses.stream().map(turnus -> modelMapper.map(turnus, TurnusDTO.class)).collect(Collectors.toList())
                 ).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public List<Room> getBookedRooms(Turnus turnus) {
+        return turnusRepository.getAllReservation(turnus.getId())
+                .map(reservations -> reservations.stream().map(Reservation::getRoom).collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
     }
 
 }

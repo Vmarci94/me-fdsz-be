@@ -1,7 +1,6 @@
 package hu.me.fdsz.Service.impl;
 
 import hu.me.fdsz.Service.api.RoomService;
-import hu.me.fdsz.dao.api.TurnusDao;
 import hu.me.fdsz.dto.RoomDTO;
 import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Room;
@@ -22,15 +21,12 @@ public class RoomServiceImpl implements RoomService {
 
     private final ReservationRepository reservationRepository;
 
-    private final TurnusDao turnusDao;
-
     private final ModelMapper modelMapper;
 
     @Autowired
-    public RoomServiceImpl(RoomRepository roomRepository, ReservationRepository reservationRepository, TurnusDao turnusDao, ModelMapper modelMapper) {
+    public RoomServiceImpl(RoomRepository roomRepository, ReservationRepository reservationRepository, ModelMapper modelMapper) {
         this.roomRepository = roomRepository;
         this.reservationRepository = reservationRepository;
-        this.turnusDao = turnusDao;
         this.modelMapper = modelMapper;
     }
 

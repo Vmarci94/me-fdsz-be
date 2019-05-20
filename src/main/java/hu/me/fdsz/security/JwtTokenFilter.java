@@ -39,7 +39,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             SecurityContextHolder.clearContext();
             httpServletResponse.sendError(ite.getStatusCode(), Util.convertObjectToJson(new CustomExceptionDTO(ite)));
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);  //itt teszi bele a header-be sezerintem
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     private Optional<String> resolveToken(HttpServletRequest req) {

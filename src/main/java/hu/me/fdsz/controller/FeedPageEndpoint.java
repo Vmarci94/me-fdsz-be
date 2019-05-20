@@ -25,17 +25,23 @@ public class FeedPageEndpoint {
     @GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FeedPostDTO> getAllPosts(){
         return feedService.getAll();
-
     }
 
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void addNewFeedPost(@RequestBody FeedPostDTO feedPostDTO){
-        feedService.add(feedPostDTO);
+    public ResponseEntity<HttpStatus> addNewFeedPost(@RequestBody FeedPostDTO feedPostDTO) {
+        return feedService.add(feedPostDTO) != null ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @GetMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String test(){
-        return "oh no";
+    @DeleteMapping(value = "/delete/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> delete(@PathVariable("postId") Long feedPostId) {
+        return feedService.delete(feedPostId) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @PostMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public FeedPostDTO update(@RequestBody FeedPostDTO feedPostDTO) {
+        return feedService.update(feedPostDTO);
     }
 
     @RequestMapping(value = "/upload-image/{feedPostId}", method = RequestMethod.PUT)
@@ -43,8 +49,9 @@ public class FeedPageEndpoint {
         return feedService.setContent(id, file);
     }
 
-    @RequestMapping(value = "/files/{fileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/files/{fileId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FeedPostDTO getImage(@PathVariable("fileId") Long id) {
         return feedService.getContent(id);
     }
+
 }

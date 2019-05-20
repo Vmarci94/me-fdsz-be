@@ -58,11 +58,11 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public void add(FeedPostDTO feedPostDTO) {
+    public FeedPost add(FeedPostDTO feedPostDTO) {
         FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
         User currentUser = jwtTokenProvider.getAuthenticatedUser();
         newFeedPost.setAuthor(currentUser);
-        feedPostRepository.save(newFeedPost);
+        return feedPostRepository.save(newFeedPost);
     }
 
     @Override
@@ -86,6 +86,16 @@ public class FeedServiceImpl implements FeedService {
             result.setImageSrc(convertImageToString(feedPost.getImage()));
             return result;
         }).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public boolean delete(Long feedPostId) {
+        return false;
+    }
+
+    @Override
+    public FeedPostDTO update(FeedPostDTO feedPostDTO) {
+        return null;
     }
 
     private String convertImageToString(Image image) {
