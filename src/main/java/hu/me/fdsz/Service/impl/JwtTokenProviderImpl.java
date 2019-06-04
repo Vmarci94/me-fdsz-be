@@ -52,7 +52,6 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     public String signin(String userEmail) {
 
         Claims claims = Jwts.claims().setSubject(userEmail);
-//      FIXME: claims.put("auth", roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toList()));
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
