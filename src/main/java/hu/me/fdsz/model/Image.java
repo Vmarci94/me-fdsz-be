@@ -1,18 +1,21 @@
 package hu.me.fdsz.model;
 
 import lombok.*;
+import org.springframework.content.commons.annotations.ContentId;
+import org.springframework.content.commons.annotations.ContentLength;
+import org.springframework.content.commons.annotations.MimeType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(of = "id")
+@ToString(of = {"id", "imageName"})
 public class Image {
 
     @Id
@@ -21,9 +24,13 @@ public class Image {
 
     private String imageName;
 
-    private String imageType;
+    private Date created = new Date();
 
-    @Lob
-    private byte[] data;
+    @ContentId
+    private String contentId;
+    @ContentLength
+    private long contentLength;
+    @MimeType
+    private String mimeType = "text/plain";
 
 }

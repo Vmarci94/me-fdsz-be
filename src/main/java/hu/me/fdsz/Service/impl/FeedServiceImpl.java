@@ -1,7 +1,6 @@
 package hu.me.fdsz.Service.impl;
 
 import hu.me.fdsz.Service.api.FeedService;
-import hu.me.fdsz.Service.api.ImageService;
 import hu.me.fdsz.Service.api.JwtTokenProvider;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.model.FeedPost;
@@ -19,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 
@@ -34,13 +32,11 @@ public class FeedServiceImpl implements FeedService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final ImageService imageService;
 
-    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageService imageService) {
+    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider) {
         this.feedPostRepository = feedPostRepository;
         this.modelMapper = modelMapper;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.imageService = imageService;
     }
 
     @Override
@@ -67,16 +63,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file) {
-        return feedPostRepository.findById(feedPostId).map(feedPost -> {
-            try {
-                Image newImage = imageService.addNewImage(file);
-                feedPost.setImage(newImage);
-                return feedPostRepository.save(feedPost);
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-                throw new IllegalArgumentException();
-            }
-        }).isPresent() ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return null;
     }
 
     @Override
@@ -89,7 +76,8 @@ public class FeedServiceImpl implements FeedService {
     }
 
     private String convertImageToString(Image image) {
-        return "data:image/jpeg;base64," + new String(Base64.getEncoder().encode(image.getData()));
+//        return "data:image/jpeg;base64," + new String(Base64.getEncoder().encode(image.getData()));
+        return null;
     }
 
 }

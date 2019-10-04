@@ -36,10 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/signup").permitAll()//
                 .antMatchers("/users/signin").permitAll()//
                 .antMatchers("/users/get-currnet-user").permitAll()//
+                .antMatchers("/users/get-all").permitAll()
                 .antMatchers("/feeds/get-all").permitAll()//
                 // Disallow everything else..
-                .anyRequest().authenticated();
-//        ; //FIXME
+//                .anyRequest().authenticated();
+        ; //FIXME
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/signin");
 
