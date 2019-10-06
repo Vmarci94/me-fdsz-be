@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 
 @Service
@@ -54,6 +55,14 @@ public class ImageServiceImpl implements ImageService {
                     return new ResponseEntity<>(new InputStreamResource(imageContentStore.getContent(image)),
                             headers, HttpStatus.OK);
                 }).orElse(new ResponseEntity<>(HttpStatus.OK));
+    }
+
+    @Override
+    public boolean deleteImage(long id) throws EntityNotFoundException {
+        Image image = imageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        imageContentStore.unsetContent(image);
+        imageRepository.deleteById(id);
+        return false;
     }
 
 }
