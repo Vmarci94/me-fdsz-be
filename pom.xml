@@ -67,11 +67,22 @@
             <artifactId>spring-content-fs-boot-starter</artifactId>
             <version>${spring-content-version}</version>
         </dependency>
+
         <dependency>
-            <groupId>com.github.paulcwarren</groupId>
-            <artifactId>spring-content-rest-boot-starter</artifactId>
-            <version>${spring-content-version}</version>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.woodstox</groupId>
+                    <artifactId>wstx-asl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
 <!--        [ END ] spring content depencencies-->
 
 

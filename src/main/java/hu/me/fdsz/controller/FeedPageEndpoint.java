@@ -33,10 +33,6 @@ public class FeedPageEndpoint {
         feedService.add(feedPostDTO);
     }
 
-    @GetMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String test(){
-        return "oh no";
-    }
 
     @RequestMapping(value = "/upload-image/{feedPostId}", method = RequestMethod.PUT)
     public ResponseEntity<HttpStatus> addImage(@PathVariable("feedPostId") Long id, @RequestParam("image") MultipartFile file) {
