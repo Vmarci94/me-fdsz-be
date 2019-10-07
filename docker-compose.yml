@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_USER: "marci"
+      MYSQL_PASSWORD: "userpass"
+      MYSQL_ROOT_PASSWORD: "rootpass"
+      ports: "33061:3306"
+    networks:
+      - mynetwork
+  backend:
+    image: me-fdsz-be
+    links:
+      - "db:database"
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
+    driver: "bridge"
