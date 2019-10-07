@@ -7,19 +7,21 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@ToString
+@ToString(of = {"id", "title"})
 @Table(name = "post")
 @EqualsAndHashCode(of = {"id"})
 public class FeedPost {
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     @GeneratedValue
     private Long id;
 
     @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "introduction", nullable = false)
+    private String introduction;
 
     @Column(name = "content_text")
     private String contentText;

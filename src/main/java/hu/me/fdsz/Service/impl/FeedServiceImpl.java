@@ -46,7 +46,6 @@ public class FeedServiceImpl implements FeedService {
         feedPostRepository.findAll().iterator().forEachRemaining(feedPost -> {
             FeedPostDTO feedPostDTO = modelMapper
                     .map(feedPost, FeedPostDTO.class);
-            feedPostDTO.setImageSrc(convertImageToString(feedPost.getImage()));
             result.add(feedPostDTO);
 
         });
@@ -70,7 +69,6 @@ public class FeedServiceImpl implements FeedService {
     public FeedPostDTO getContent(Long feedPostId) {
         return feedPostRepository.findById(feedPostId).map(feedPost -> {
             FeedPostDTO result = modelMapper.map(feedPost, FeedPostDTO.class);
-            result.setImageSrc(convertImageToString(feedPost.getImage()));
             return result;
         }).orElseThrow(EntityNotFoundException::new);
     }
