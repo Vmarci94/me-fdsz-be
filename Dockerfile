@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM maven:3.6.2-jdk-11
 LABEL maintainer="vmarci94@gmail.com"
 RUN apt-get update && apt-get install -y \
     openjdk-11-jdk \
