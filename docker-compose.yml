@@ -7,15 +7,11 @@ services:
       MYSQL_USER: "marci"
       MYSQL_PASSWORD: "userpass"
       MYSQL_ROOT_PASSWORD: "rootpass"
-      ports: "33061:3306"
-    networks:
-      - mynetwork
+    ports:
+      - "33061:3306"
   backend:
-    image: me-fdsz-be
+    build: .
     links:
       - "db:database"
-    networks:
-      - mynetwork
-networks:
-  mynetwork:
-    driver: "bridge"
+    ports:
+      - "8080:8081"
