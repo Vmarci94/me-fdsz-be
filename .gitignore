@@ -139,3 +139,5 @@ HELP.md
 /.nb-gradle/
 /build/
 
+### spring content ###
+/files/
