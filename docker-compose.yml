@@ -2,6 +2,7 @@ version: "3"
 
 services:
   db:
+    container_name: me-fdsz-database-dev
     image: mysql
     environment:
       MYSQL_USER: "marci"
@@ -9,13 +10,17 @@ services:
       MYSQL_ROOT_PASSWORD: "rootpass"
     ports:
       - 33061:3306
-    expose:
-      - 33061
+#    expose:
+#      - 33061
   backend:
-    build: .
+    container_name: me-fdsz-backend-dev
+    build:
+      context: .
+#      dockerfile: Dockerfile-dev
     links:
       - db:database
     ports:
       - 8080:8081
     depends_on:
       - db # start db before backend
+    tty: true
