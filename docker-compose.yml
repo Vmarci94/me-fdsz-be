@@ -23,4 +23,3 @@ services:
       - 8080:8081
     depends_on:
       - db # start db before backend
-    tty: true
