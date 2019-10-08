@@ -8,7 +8,7 @@ services:
       MYSQL_USER: marci
       MYSQL_PASSWORD: userpass
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: teszt
+      MYSQL_DATABASE: ME_FDSZ
     ports:
       - 33061:3306
 #    expose:
