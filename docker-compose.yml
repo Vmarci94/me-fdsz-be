@@ -5,9 +5,10 @@ services:
     container_name: me-fdsz-database-dev
     image: mysql
     environment:
-      MYSQL_USER: "marci"
-      MYSQL_PASSWORD: "userpass"
-      MYSQL_ROOT_PASSWORD: "rootpass"
+      MYSQL_USER: marci
+      MYSQL_PASSWORD: userpass
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: teszt
     ports:
       - 33061:3306
 #    expose:
