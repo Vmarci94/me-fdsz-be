@@ -8,10 +8,14 @@ services:
       MYSQL_PASSWORD: "userpass"
       MYSQL_ROOT_PASSWORD: "rootpass"
     ports:
-      - "33061:3306"
+      - 33061:3306
+    expose:
+      - 33061
   backend:
     build: .
     links:
-      - "db:database"
+      - db:database
     ports:
-      - "8080:8081"
+      - 8080:8081
+    depends_on:
+      - db # start db before backend
