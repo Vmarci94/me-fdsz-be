@@ -23,7 +23,7 @@ public class ImageEndpoint {
     }
 
     @PutMapping(value = "/add-new-image", headers = {"content-type!=application/hal+json"})
-    public ResponseEntity<?> addNewImage(@RequestParam("file") MultipartFile image){
+    public ResponseEntity<?> addNewImage(@RequestParam("image") MultipartFile image){
         return new ResponseEntity<>(imageService.addNewImage(image) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
