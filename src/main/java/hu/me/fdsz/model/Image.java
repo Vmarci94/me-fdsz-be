@@ -5,10 +5,8 @@ import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
 import org.springframework.content.commons.annotations.MimeType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
+import java.io.InputStream;
 import java.util.Date;
 
 @Entity
@@ -31,6 +29,11 @@ public class Image {
     @ContentLength
     private long contentLength;
     @MimeType
-    private String mimeType = "text/plain";
+    private String mimeType;
+
+    @Transient
+    private InputStream inputStream;
+
+
 
 }

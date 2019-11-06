@@ -4,6 +4,7 @@ import hu.me.fdsz.model.FeedPost;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FeedPostRepository extends CrudRepository<FeedPost, Long> {
@@ -14,6 +15,6 @@ public interface FeedPostRepository extends CrudRepository<FeedPost, Long> {
     @Override
     Iterable<FeedPost> findAllById(Iterable<Long> iterable);
 
-    @Override
-    Iterable<FeedPost> findAll();
+    List<FeedPost> findAll();
+
 }

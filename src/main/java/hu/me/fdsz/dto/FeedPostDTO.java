@@ -1,7 +1,7 @@
 package hu.me.fdsz.dto;
 
-import hu.me.fdsz.model.Image;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @Getter
@@ -12,10 +12,10 @@ public class FeedPostDTO {
 
     private String title;
 
-    private String introduction;
+    private String introductionText;
 
     private String contentText;
 
-    private Image image;
+    private byte[] image;
 
 }
