@@ -1,10 +1,10 @@
 package hu.me.fdsz.config;
 
 import hu.me.fdsz.dto.FeedPostDTO;
+import hu.me.fdsz.dto.ImageDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
 import hu.me.fdsz.repository.ImageContentStore;
-import hu.me.fdsz.repository.ImageRepository;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +21,25 @@ import java.io.IOException;
 public class ModelMapperConfig {
 
 
+    private final ImageContentStore imageContentStore;
+
+    @Autowired
+    public ModelMapperConfig(ImageContentStore imageContentStore) {
+        this.imageContentStore = imageContentStore;
+    }
+
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
-    @Autowired
-    public ModelMapper modelMapper(ImageContentStore imageContentStore) {
+    public ModelMapper modelMapper() {
         ModelMapper singletonModelMapper = new ModelMapper();
-        setCustomConverters(singletonModelMapper, imageContentStore);
+        setCustomConverters(singletonModelMapper);
         return singletonModelMapper;
     }
 
     /**
      * @param singletonModelMapper referenciaként hivatkozva, beállítja a szükséges convertereket.
-     * @param imageContentStore
      */
-    private void setCustomConverters(final ModelMapper singletonModelMapper, ImageContentStore imageContentStore) {
+    private void setCustomConverters(final ModelMapper singletonModelMapper) {
         singletonModelMapper.addConverter(
                 new AbstractConverter<MultipartFile, Image>() {
                     @Override
@@ -61,11 +66,14 @@ public class ModelMapperConfig {
                         result.setTitle(source.getTitle());
                         result.setContentText(source.getContentText());
                         result.setIntroductionText(source.getIntroduction());
+                        ImageDTO imageDTO = new ImageDTO();
                         try {
-                            result.setImage( imageContentStore.getContent(source.getImage()).readAllBytes() );
+                            imageDTO.setRawImage(imageContentStore.getContent(source.getImage()).readAllBytes());
+                            imageDTO.setImageType(source.getImage().getMimeType());
                         } catch (IOException e) {
-                            e.printStackTrace(); //FIXME kell log arról, hogy nagy baj van
+                            e.printStackTrace();
                         }
+                        result.setImage(imageDTO);
                         return result;
                     }
                 }
