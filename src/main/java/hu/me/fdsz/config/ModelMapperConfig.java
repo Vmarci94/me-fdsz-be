@@ -15,12 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Optional;
 
 @Configuration
 public class ModelMapperConfig {
@@ -45,6 +40,24 @@ public class ModelMapperConfig {
      * @param singletonModelMapper referenciaként hivatkozva, beállítja a szükséges convertereket.
      */
     private void setCustomConverters(final ModelMapper singletonModelMapper) {
+        singletonModelMapper.addConverter(
+                new AbstractConverter<MultipartFile, Image>() {
+                    @Override
+                    protected Image convert(MultipartFile source) {
+                        Image resultImage = new Image();
+                        resultImage.setContentLength(source.getSize());
+                        resultImage.setMimeType(source.getContentType());
+                        resultImage.setImageName(source.getOriginalFilename());
+                        try {
+                            resultImage.setInputStream(source.getInputStream());
+                        } catch (IOException e) {
+                            e.printStackTrace(); //FIXME logger kellene
+                        }
+                        return resultImage;
+                    }
+                }
+        );
+
         singletonModelMapper.addConverter(
                 new AbstractConverter<FeedPost, FeedPostDTO>() {
                     @Override
