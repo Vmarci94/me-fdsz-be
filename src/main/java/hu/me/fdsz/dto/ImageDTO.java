@@ -11,6 +11,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class ImageDTO {
 
+    private long imageId;
+
     private byte[] rawImage;
 
     private String imageType;

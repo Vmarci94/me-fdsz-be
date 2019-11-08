@@ -70,6 +70,7 @@ public class ModelMapperConfig {
                         try {
                             imageDTO.setRawImage(imageContentStore.getContent(source.getImage()).readAllBytes());
                             imageDTO.setImageType(source.getImage().getMimeType());
+                            imageDTO.setImageId(source.getImage().getId());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
