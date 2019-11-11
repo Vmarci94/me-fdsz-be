@@ -1,7 +1,6 @@
 package hu.me.fdsz.config;
 
 import hu.me.fdsz.dto.FeedPostDTO;
-import hu.me.fdsz.dto.ImageDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
 import hu.me.fdsz.repository.ImageContentStore;
@@ -66,15 +65,7 @@ public class ModelMapperConfig {
                         result.setTitle(source.getTitle());
                         result.setContentText(source.getContentText());
                         result.setIntroductionText(source.getIntroduction());
-                        ImageDTO imageDTO = new ImageDTO();
-                        try {
-                            imageDTO.setRawImage(imageContentStore.getContent(source.getImage()).readAllBytes());
-                            imageDTO.setImageType(source.getImage().getMimeType());
-                            imageDTO.setImageId(source.getImage().getId());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        result.setImage(imageDTO);
+                        result.setImageId(source.getImage().getId());
                         return result;
                     }
                 }

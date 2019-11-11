@@ -17,6 +17,6 @@ public class FeedPostDTO {
 
     private String contentText;
 
-    private ImageDTO image;
+    private Long imageId;
 
 }
