@@ -7,8 +7,6 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     restart: always
-    networks:
-      - backend
     ports:
       #<outside>:<inside>
       - 8081:8081
@@ -26,7 +24,5 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: ME_FDSZ
     restart: always
-    networks:
-      - backend
     volumes:
       - "./volumes/database:/var/lib/mysql"
