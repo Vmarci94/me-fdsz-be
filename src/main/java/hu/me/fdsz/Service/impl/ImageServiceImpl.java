@@ -7,6 +7,7 @@ import hu.me.fdsz.repository.ImageRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.imgscalr.Scalr;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,20 +34,18 @@ public class ImageServiceImpl implements ImageService {
 
     private final ImageContentStore imageContentStore;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
-    public ImageServiceImpl(ImageRepository imageRepository, ImageContentStore imageContentStore) {
+    public ImageServiceImpl(ImageRepository imageRepository, ImageContentStore imageContentStore, ModelMapper modelMapper) {
         this.imageRepository = imageRepository;
         this.imageContentStore = imageContentStore;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public Optional<Image> addNewImage(MultipartFile multipartFile) {
-        try {
-            return Optional.of(imageRepository.save(createImageFromMultipartFile(multipartFile)));
-        } catch (IOException e) {
-            logger.error("IO hiba a kép mentésénél", e);
-        }
-        return Optional.empty();
+        return Optional.of(modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile));
     }
 
     @Override
