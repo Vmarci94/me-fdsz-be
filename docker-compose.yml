@@ -1,26 +1,34 @@
-version: "3"
+version: "3.7"
 
 services:
+  backend:
+    container_name: me-fdsz-backend
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 8080:8081
+    depends_on:
+      - db # start db before backend
   db:
-    container_name: me-fdsz-database-dev
+    container_name: me-fdsz-database
     image: mysql
     environment:
       MYSQL_USER: marci
       MYSQL_PASSWORD: userpass
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: ME_FDSZ
-    ports:
-      - 33061:3306
-#    expose:
-#      - 33061
+#    ports:
+#      - 33061:3306
+    restart: always
+    networks:
+      - backend
+    volumes:
+      - "./volumes/database:/var/lib/mysql"
+
+# Networks to be created to facilitate communication between containers
+networks:
   backend:
-    container_name: me-fdsz-backend-dev
-    build:
-      context: .
-#      dockerfile: Dockerfile-dev
-    links:
-      - db:database
-    ports:
-      - 8080:8081
-    depends_on:
-      - db # start db before backend

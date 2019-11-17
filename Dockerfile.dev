@@ -1,0 +1,10 @@
+FROM maven:3.6.2-jdk-11
+LABEL maintainer="vmarci94@gmail.com"
+
+# compiled binary path
+ARG JAR_FILE_PATH=target/me-fdsz-1.0-SNAPSHOT.jar
+
+# copy jar binary to container
+COPY $JAR_FILE_PATH /
+
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "me-fdsz-1.0-SNAPSHOT.jar"]
