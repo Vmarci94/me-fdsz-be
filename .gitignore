@@ -141,3 +141,6 @@ HELP.md
 
 ### spring content ###
 /files/
+
+### docker mysql db volumes ###
+/volumes/
