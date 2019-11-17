@@ -10,9 +10,13 @@ services:
     networks:
       - backend
     ports:
-      - 8080:8081
+      #<outside>:<inside>
+      - 8081:8081
+      - 33061:3306 #Add this only if you want to expose the mysql to outer world.
     depends_on:
       - db # start db before backend
+    links:
+      - "db:database"
   db:
     container_name: me-fdsz-database
     image: mysql
@@ -21,14 +25,8 @@ services:
       MYSQL_PASSWORD: userpass
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: ME_FDSZ
-#    ports:
-#      - 33061:3306
     restart: always
     networks:
       - backend
     volumes:
       - "./volumes/database:/var/lib/mysql"
-
-# Networks to be created to facilitate communication between containers
-networks:
-  backend:
