@@ -12,6 +12,7 @@ import hu.me.fdsz.repository.ImageRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +62,6 @@ public class FeedServiceImpl implements FeedService {
         // A MultipartFile Interfacet realizáló osztályok nem találnak rá autómatikusan a megfelelő TypeMap-re.
         Image image = modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile);
         //add neki contentId-t
-        imageContentStore.setContent(image, image.getInputStream());
         //majd mentjük, mert contentId-val együtt kell perzisztálni.
         image = imageRepository.save(image); //Visszaadja a már perzisztált Entitást
         newFeedPost.setImage(image);
@@ -84,9 +83,11 @@ public class FeedServiceImpl implements FeedService {
         }).orElseThrow(EntityNotFoundException::new);
     }
 
-    private String convertImageToString(Image image) {
-//        return "data:image/jpeg;base64," + new String(Base64.getEncoder().encode(image.getData()));
-        return null;
+    @Override
+    public List<FeedPostDTO> getPostsWithLimit(int limit) {
+        return feedPostRepository.findByOrderByLastModification(PageRequest.of(0, 5))
+                .map(feedPost -> modelMapper.map(feedPost, FeedPostDTO.class))
+                .collect(Collectors.toList());
     }
 
 }

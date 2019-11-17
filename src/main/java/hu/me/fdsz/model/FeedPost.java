@@ -3,6 +3,7 @@ package hu.me.fdsz.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -33,6 +34,9 @@ public class FeedPost {
     @OneToOne
     @JoinColumn(name = "author", referencedColumnName = "id")
     private User author;
+
+    @Column(name = "last_modification", nullable = false)
+    private LocalDate lastModification = LocalDate.now();
 
 
 }

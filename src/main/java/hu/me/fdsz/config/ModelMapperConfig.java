@@ -1,12 +1,14 @@
 package hu.me.fdsz.config;
 
+import hu.me.fdsz.Service.api.ImageService;
+import hu.me.fdsz.Service.impl.ImageServiceImpl;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
-import hu.me.fdsz.repository.ImageContentStore;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,17 +17,19 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Configuration
 public class ModelMapperConfig {
 
+    private static final Logger logger = LogManager.getLogger("Model mapping");
 
-    private final ImageContentStore imageContentStore;
+    private final ImageService imageService;
 
-    @Autowired
-    public ModelMapperConfig(ImageContentStore imageContentStore) {
-        this.imageContentStore = imageContentStore;
+    public ModelMapperConfig(ImageService imageService) {
+        this.imageService = imageService;
     }
+
 
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -43,16 +47,12 @@ public class ModelMapperConfig {
                 new AbstractConverter<MultipartFile, Image>() {
                     @Override
                     protected Image convert(MultipartFile source) {
-                        Image resultImage = new Image();
-                        resultImage.setContentLength(source.getSize());
-                        resultImage.setMimeType(source.getContentType());
-                        resultImage.setImageName(source.getOriginalFilename());
                         try {
-                            resultImage.setInputStream(source.getInputStream());
+                            return imageService.createImageFromMultipartFile(source);
                         } catch (IOException e) {
-                            e.printStackTrace(); //FIXME logger kellene
+                            logger.error("Nem sikerült létrehozni a image fájlt.");
                         }
-                        return resultImage;
+                        return null;
                     }
                 }
         );

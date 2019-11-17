@@ -6,12 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.net.URI;
+import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public interface ImageService {
 
-    boolean addNewImage(MultipartFile multipartFile);
+    Optional<Image> addNewImage(MultipartFile multipartFile);
+
+    Image createImageFromMultipartFile(MultipartFile multipartFile) throws IOException;
 
     ResponseEntity<?> getImage(long id);
 

@@ -3,6 +3,7 @@ package hu.me.fdsz.Service.api;
 import hu.me.fdsz.dto.FeedPostDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,4 +19,6 @@ public interface FeedService {
 
     FeedPostDTO getContent(Long feedPostId);
 
+    @Transactional(readOnly = true)
+    List<FeedPostDTO> getPostsWithLimit(int limit);
 }

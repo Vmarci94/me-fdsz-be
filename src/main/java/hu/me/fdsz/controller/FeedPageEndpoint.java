@@ -3,6 +3,7 @@ package hu.me.fdsz.controller;
 import hu.me.fdsz.Service.api.FeedService;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.model.Image;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,11 @@ public class FeedPageEndpoint {
     @Autowired
     public FeedPageEndpoint(FeedService feedService) {
         this.feedService = feedService;
+    }
+
+    @GetMapping(value = "/get-top-posts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<FeedPostDTO> getTopFeedPost(@RequestParam(value = "limit") int limit) {
+        return feedService.getPostsWithLimit(limit);
     }
 
     @GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)

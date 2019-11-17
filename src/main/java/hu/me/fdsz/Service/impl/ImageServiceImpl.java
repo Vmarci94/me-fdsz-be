@@ -4,6 +4,9 @@ import hu.me.fdsz.Service.api.ImageService;
 import hu.me.fdsz.model.Image;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -12,11 +15,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageServiceImpl implements ImageService {
+
+    private static final Logger logger = LogManager.getLogger(ImageServiceImpl.class);
 
     private final ImageRepository imageRepository;
 
@@ -29,20 +42,24 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public boolean addNewImage(MultipartFile multipartFile) {
+    public Optional<Image> addNewImage(MultipartFile multipartFile) {
+        try {
+            return Optional.of(imageRepository.save(createImageFromMultipartFile(multipartFile)));
+        } catch (IOException e) {
+            logger.error("IO hiba a kép mentésénél", e);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Image createImageFromMultipartFile(MultipartFile multipartFile) throws IOException {
         Image image = new Image();
         image.setContentLength(multipartFile.getSize());
         image.setMimeType(multipartFile.getContentType());
         image.setImageName(multipartFile.getOriginalFilename());
-        try {
-            //add neki contentId-t
-            imageContentStore.setContent(image, multipartFile.getInputStream());
-            imageRepository.save(image); //contentId-val együtt kell perzisztálni.
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        InputStream resizedImage = resizeImage(multipartFile, 730, 410);
+        imageContentStore.setContent(image, resizedImage); //add neki contentId-t
+        return image;
     }
 
     @Override
@@ -63,6 +80,23 @@ public class ImageServiceImpl implements ImageService {
         imageContentStore.unsetContent(image);
         imageRepository.deleteById(id);
         return false;
+    }
+
+    private InputStream resizeImage(final MultipartFile multipartFile, int width, int height) throws IOException, IllegalStateException {
+        BufferedImage imageToScale = ImageIO.read(multipartFile.getInputStream());
+        IllegalStateException e = new IllegalStateException("ismeretlen a kép típusa");
+        String imageType = Optional.ofNullable(multipartFile.getContentType())
+                .map(contentType -> {
+                    String[] types = contentType.split("/");
+                    if(types.length >= 2) {
+                        return types[1];
+                    } else {
+                        throw e;
+                    }
+                }).orElseThrow(() -> e);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(Scalr.resize(imageToScale, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, width, height), imageType, baos);
+        return new ByteArrayInputStream(baos.toByteArray());
     }
 
 }
