@@ -12,6 +12,7 @@ import hu.me.fdsz.repository.ImageRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,6 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 @Service
 public class FeedServiceImpl implements FeedService {
@@ -39,7 +39,7 @@ public class FeedServiceImpl implements FeedService {
 
     private final ImageContentStore imageContentStore;
 
-
+    @Autowired
     public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageRepository imageRepository, ImageContentStore imageContentStore) {
         this.feedPostRepository = feedPostRepository;
         this.modelMapper = modelMapper;
@@ -85,7 +85,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public List<FeedPostDTO> getPostsWithLimit(int limit) {
-        return feedPostRepository.findByOrderByLastModification(PageRequest.of(0, 5))
+        return feedPostRepository.findByOrderByLastModifiedDate(PageRequest.of(0, 5))
                 .map(feedPost -> modelMapper.map(feedPost, FeedPostDTO.class))
                 .collect(Collectors.toList());
     }

@@ -13,13 +13,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
-public class Turnus implements Serializable {
-
-    @Id
-    @GeneratedValue
-    private long id;
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+public class Turnus extends BaseEntity {
 
     @Column(name = "start_date", unique = true, nullable = false)
     private LocalDate startDate;

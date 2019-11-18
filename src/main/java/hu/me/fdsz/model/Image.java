@@ -12,14 +12,12 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
-@ToString(of = {"id", "imageName"})
-public class Image {
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+public class Image extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private long id;
-
+    @ToString.Include
     private String imageName;
 
     private Date created = new Date();

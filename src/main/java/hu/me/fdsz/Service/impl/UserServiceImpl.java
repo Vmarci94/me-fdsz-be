@@ -51,14 +51,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO signup(UserDTO userForm) throws Exception {
-//        TypeMap<UserDTO, User> typeMap = modelMapper.createTypeMap(UserDTO.class, User.class);
-//
-//        typeMap.addMapping(
-//                src -> Stream.of(src.getTitle(), src.getFirstName(), src.getSecoundName())
-//                        .filter(Objects::nonNull)
-//                        .collect(Collectors.joining()),
-//                User::setFullName);
-
         User newUser = modelMapper.map(userForm, User.class);
         newUser.setFullName(Stream.of(userForm.getTitle(), userForm.getFirstName(), userForm.getSecoundName())
                 .filter(Objects::nonNull)

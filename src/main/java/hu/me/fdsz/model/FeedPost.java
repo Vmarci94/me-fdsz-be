@@ -8,17 +8,14 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@ToString(of = {"id", "title"})
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 @Table(name = "post")
-@EqualsAndHashCode(of = {"id"})
-public class FeedPost {
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue
-    private Long id;
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+public class FeedPost extends BaseEntity {
 
     @Column(name = "title", nullable = false)
+    @ToString.Include
     private String title;
 
     @Column(name = "introduction", nullable = false)
@@ -34,9 +31,6 @@ public class FeedPost {
     @OneToOne
     @JoinColumn(name = "author", referencedColumnName = "id")
     private User author;
-
-    @Column(name = "last_modification", nullable = false)
-    private LocalDate lastModification = LocalDate.now();
 
 
 }

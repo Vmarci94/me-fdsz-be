@@ -1,10 +1,7 @@
 package hu.me.fdsz.model;
 
 import hu.me.fdsz.model.enums.RoomType;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,12 +9,14 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode(of = "roomNumber")
-@ToString(of = "roomNumber")
-public class Room {
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+public class Room extends BaseEntity {
 
-    @Id
-    @Column(name = "room_number")
+    @Column(name = "room_number", unique = true, nullable = false)
+    @ToString.Include
+    @EqualsAndHashCode.Include
     private long roomNumber;
 
     @Enumerated(EnumType.STRING)

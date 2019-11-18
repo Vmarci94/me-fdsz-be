@@ -19,6 +19,6 @@ public interface FeedPostRepository extends CrudRepository<FeedPost, Long> {
 
     List<FeedPost> findAll();
 
-    Stream<FeedPost> findByOrderByLastModification(Pageable pageable);
+    Stream<FeedPost> findByOrderByLastModifiedDate(Pageable pageable);
 
 }

@@ -10,13 +10,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
-public class Reservation implements Serializable {
-
-    @Id
-    @GeneratedValue
-    private long id;
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+public class Reservation extends BaseEntity {
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;

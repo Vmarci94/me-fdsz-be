@@ -5,24 +5,19 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@Entity
 @Table(name = "user_report")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
-public class UserReport {
+public class UserReport extends BaseEntity {
 
-    @OneToOne
-    @JoinColumn(name = "author", referencedColumnName = "id")
-    private User author;
-
+    @Column(nullable = false)
     private String statement;
-
 
 }

@@ -31,7 +31,7 @@ public class UserEndpoint {
         throw new InvalidTokenException("mizu?", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //Regisztráció
+//    Regisztráció
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userForm) throws Exception {
         return Optional.of(userService.signup(userForm))
