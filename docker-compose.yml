@@ -24,3 +24,5 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: ME_FDSZ
     restart: always
+#    volumes:
+#      - "./volumes/database:/var/lib/mysql"
