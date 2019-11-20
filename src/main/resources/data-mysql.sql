@@ -21,23 +21,28 @@ insert into user (id, created_date, modified_date, birth_day, first_name, full_n
     value (4, NOW(), NOW(), '1994-11-22', 'Alap', 'Dr. Alap Elek', 'Miskolc', 06305257026, 'Elek', 'Dr.',
            'alap.elek@kamu.hu', 3, 'asdasd', 'ADMIN', 'alap.elek');
 
+insert into user (id, created_date, modified_date, birth_day, first_name, full_name, location, phone_number,
+                  secound_name, title, email, image, password, role, username)
+    value (5, NOW(), NOW(), '1956-04-26', 'Barack', 'Barack Ákos', 'Budapest', 06201598523, 'Ákos', null,
+           'barack.akos@kamu.hu', null, 'asdasd', 'CLIENT', 'barack.akos');
+
 -- Alap posztok generálása
 insert into post (id, created_date, modified_date, content_text, introduction, title, author, image)
-values (5, NOW(), NOW(), 'Ez az első poszt hosszú tartalma. Sok érdekes infóval.', 'Ez az első poszt rövid leírása',
+values (6, NOW(), NOW(), 'Ez az első poszt hosszú tartalma. Sok érdekes infóval.', 'Ez az első poszt rövid leírása',
         'Ez az első poszt címe.', 4, 0);
 
 insert into post (id, created_date, modified_date, content_text, introduction, title, author, image)
-values (6, NOW(), NOW(), 'Ez a második poszt hosszú tartalma. Sok érdekes infóval.',
+values (7, NOW(), NOW(), 'Ez a második poszt hosszú tartalma. Sok érdekes infóval.',
         'Ez a második poszt rövid leírása',
         'Ez az első poszt címe.', 4, 1);
 
 insert into post (id, created_date, modified_date, content_text, introduction, title, author, image)
-values (7, NOW(), NOW(), 'Ez a harmadik poszt hosszú tartalma. Sok érdekes infóval.',
+values (8, NOW(), NOW(), 'Ez a harmadik poszt hosszú tartalma. Sok érdekes infóval.',
         'Ez a harmadik poszt rövid leírása',
         'Ez az első poszt címe.', 4, 2);
 
 -- direkt az összes sort frissítem
 update hibernate_sequence
-set next_val= 8;
+set next_val= 9;
 
 commit;
