@@ -45,7 +45,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Optional<Image> addNewImage(MultipartFile multipartFile) {
-        return Optional.of(modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile));
+        Optional<Image> result = Optional.of(modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile));
+        result.ifPresent(imageRepository::save);
+        return result;
     }
 
     @Override
