@@ -39,7 +39,7 @@ values (8, CURDATE(), CURDATE(), 'Ez a harmadik poszt hosszú tartalma. Sok érd
         'Ez az első poszt címe.', 4, 2);
 
 -- Alap felhasználói visszajelzések generálása
-insert into user_report (id, created_date, modified_date, statement)
+insert into user_report (id, created_date, modified_date, report)
 values (9, CURDATE(), CURDATE(), 'Ez az első véleményem, és király');
 
 insert into user_report (id, created_date, modified_date, report)
