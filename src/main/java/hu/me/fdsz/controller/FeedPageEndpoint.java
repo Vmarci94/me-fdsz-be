@@ -38,13 +38,15 @@ public class FeedPageEndpoint {
         feedService.add(feedPostDTO, image);
     }
 
-    @GetMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String test() {
-        return "oh no";
+    @PostMapping(value = "/edit/{postId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public FeedPostDTO edit(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
+                            @RequestPart(name = "image") MultipartFile image) throws IOException {
+        return null;
     }
 
-    @RequestMapping(value = "/files/{fileId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public FeedPostDTO getImage(@PathVariable("fileId") Long id) {
-        return feedService.getContent(id);
+    @GetMapping(value = "/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public FeedPostDTO getPost(@PathVariable("postId") long postId) {
+        return feedService.findById(postId);
     }
+
 }

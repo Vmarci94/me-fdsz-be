@@ -1,4 +1,4 @@
-FROM maven:3.6.2-jdk-11
+FROM openjdk
 LABEL maintainer="vmarci94@gmail.com"
 
 #RUN apt-get update && apt-get install -y git

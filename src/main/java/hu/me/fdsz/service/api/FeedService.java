@@ -23,4 +23,7 @@ public interface FeedService {
 
     @Transactional(readOnly = true)
     List<FeedPostDTO> getPostsWithLimit(int limit);
+
+    FeedPostDTO findById(long postId);
+
 }

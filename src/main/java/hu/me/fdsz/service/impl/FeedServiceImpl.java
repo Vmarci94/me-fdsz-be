@@ -90,4 +90,12 @@ public class FeedServiceImpl implements FeedService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public FeedPostDTO findById(long postId) {
+        return feedPostRepository.findById(postId)
+                .map(feedPost -> modelMapper.getTypeMap(FeedPost.class, FeedPostDTO.class).map(feedPost))
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+
 }
