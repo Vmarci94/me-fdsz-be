@@ -39,17 +39,17 @@ values (8, CURDATE(), CURDATE(), 'Ez a harmadik poszt hosszú tartalma. Sok érd
         'Ez az első poszt címe.', 4, 2);
 
 -- Alap felhasználói visszajelzések generálása
-insert into user_report (id, created_date, modified_date, statement, user)
-values (9, CURDATE(), CURDATE(), 'Ez az első véleményem, és király', 4);
+insert into user_report (id, created_date, modified_date, statement)
+values (9, CURDATE(), CURDATE(), 'Ez az első véleményem, és király');
 
-insert into user_report (id, created_date, modified_date, statement, user)
-values (10, CURDATE(), CURDATE(), 'Ez az mádosik véleményem, és király', 4);
+insert into user_report (id, created_date, modified_date, report)
+values (10, CURDATE(), CURDATE(), 'Ez az mádosik véleményem, és király');
 
-insert into user_report (id, created_date, modified_date, statement, user)
-values (11, CURDATE(), CURDATE(), 'Ez az harmadik véleményem, és király', 4);
+insert into user_report (id, created_date, modified_date, report)
+values (11, CURDATE(), CURDATE(), 'Ez az harmadik véleményem, és király');
 
-insert into user_report (id, created_date, modified_date, statement, user)
-values (12, CURDATE(), CURDATE(), 'Ez most egy másik felhasználó véleménye', 5);
+insert into user_report (id, created_date, modified_date, report)
+values (12, CURDATE(), CURDATE(), 'Ez most egy másik felhasználó véleménye');
 
 -- Hibernate seq frissítése, hogy tudomást szerezzen a test adatok insertálásáról
 -- direkt az összes sort frissítem

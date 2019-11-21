@@ -2,14 +2,14 @@ package hu.me.fdsz.dto;
 
 import lombok.*;
 
-import java.net.URI;
-
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString(of = {"title"})
 @EqualsAndHashCode
 public class FeedPostDTO {
+
+    private Long id;
 
     private String title;
 

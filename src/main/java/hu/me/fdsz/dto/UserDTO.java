@@ -3,17 +3,19 @@ package hu.me.fdsz.dto;
 import hu.me.fdsz.model.enums.Role;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@EqualsAndHashCode(of = {"email", "username"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class UserDTO {
 
+    @ToString.Include
+    @EqualsAndHashCode.Include
     private String email;
 
     private String title;
@@ -33,5 +35,7 @@ public class UserDTO {
     private LocalDate birthDay;
 
     private Role role;
+
+    private Long imageId;
 
 }

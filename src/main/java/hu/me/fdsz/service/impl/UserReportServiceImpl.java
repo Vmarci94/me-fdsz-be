@@ -1,8 +1,9 @@
 package hu.me.fdsz.service.impl;
 
+import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.dto.UserReportDTO;
-import hu.me.fdsz.model.UserReport;
 import hu.me.fdsz.repository.UserReportRepository;
+import hu.me.fdsz.repository.UserRepositroy;
 import hu.me.fdsz.service.api.UserReportService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -20,11 +21,14 @@ public class UserReportServiceImpl implements UserReportService {
 
     private final UserReportRepository userReportRepository;
 
+    private final UserRepositroy userRepositroy;
+
     private final ModelMapper modelMapper;
 
     @Autowired
-    public UserReportServiceImpl(UserReportRepository userReportRepository, ModelMapper modelMapper) {
+    public UserReportServiceImpl(UserReportRepository userReportRepository, UserRepositroy userRepositroy, ModelMapper modelMapper) {
         this.userReportRepository = userReportRepository;
+        this.userRepositroy = userRepositroy;
         this.modelMapper = modelMapper;
     }
 
@@ -33,7 +37,11 @@ public class UserReportServiceImpl implements UserReportService {
     public List<UserReportDTO> getTopUserReport(int numberOfReports) {
         logger.debug("FIXME getTopUserReport");
         return userReportRepository.findAll()
-                .stream().map(userReport -> modelMapper.getTypeMap(UserReport.class, UserReportDTO.class).map(userReport))
+                .stream().map(userReport -> {
+                    UserReportDTO result = modelMapper.map(userReport, UserReportDTO.class);
+                    result.setAuthorUser(modelMapper.map(userRepositroy.findById(4L).get(), UserDTO.class)); //FIXME MOKKK
+                    return result;
+                })
                 .collect(Collectors.toList());
     }
 

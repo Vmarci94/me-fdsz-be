@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class UserReport extends BaseEntity {
 
     @Column(nullable = false)
-    private String statement;
+    private String report;
 
 //    @CreatedBy
 //    private User user;
