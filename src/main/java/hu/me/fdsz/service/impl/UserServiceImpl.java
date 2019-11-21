@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         newUser.setFullName(Stream.of(userForm.getTitle(), userForm.getFirstName(), userForm.getSecoundName())
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(" ")));
-        if (userRepositroy.existsByEmailAndUserName(newUser.getEmail(), newUser.getUserName())) {
+        if (userRepositroy.existsByEmailAndUsername(newUser.getEmail(), newUser.getUsername())) {
             //ha létezik már ilyen regisztráció, akkor hibát dobunk
             throw new Exception("Ezekkel az adatokkal már regisztráltak!"); //FIXME csináljunk tisztességes kivételkezelést
         } else {
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getCurrentUser() {
+    public UserDTO getCurrentUserWithoutPassword() {
         UserDTO userDTO = modelMapper.map(jwtTokenProvider.getAuthenticatedUser(), UserDTO.class);
         userDTO.setPassword(null);
         return userDTO;
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<HttpStatus> updateUserData(UserDTO userDTO) {
         if (jwtTokenProvider.getAuthenticatedUser().getRole().equals(Role.ADMIN)) {
-            return userRepositroy.findByUserName(userDTO.getUserName())
+            return userRepositroy.findByUsername(userDTO.getUsername())
                     .map(user -> {
                         User mUser = modelMapper.map(userDTO, User.class);
 

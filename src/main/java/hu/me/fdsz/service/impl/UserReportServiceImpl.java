@@ -5,14 +5,18 @@ import hu.me.fdsz.model.UserReport;
 import hu.me.fdsz.repository.UserReportRepository;
 import hu.me.fdsz.service.api.UserReportService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserReportServiceImpl implements UserReportService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserReportServiceImpl.class.getName());
 
     private final UserReportRepository userReportRepository;
 
@@ -26,9 +30,11 @@ public class UserReportServiceImpl implements UserReportService {
 
 
     @Override
-    public Stream<UserReportDTO> getTopUserReport(int numberOfReports) {
-        return userReportRepository.findByOrderByLastModifiedDate(PageRequest.of(0, numberOfReports))
-                .map(userReport -> modelMapper.getTypeMap(UserReport.class, UserReportDTO.class).map(userReport));
+    public List<UserReportDTO> getTopUserReport(int numberOfReports) {
+        logger.debug("FIXME getTopUserReport");
+        return userReportRepository.findAll()
+                .stream().map(userReport -> modelMapper.getTypeMap(UserReport.class, UserReportDTO.class).map(userReport))
+                .collect(Collectors.toList());
     }
 
 }

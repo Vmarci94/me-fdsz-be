@@ -23,7 +23,7 @@ public interface UserService {
 
     JWTTokenDTO signin(UserDTO userDTO) throws LoginException;
 
-    UserDTO getCurrentUser();
+    UserDTO getCurrentUserWithoutPassword();
 
     ResponseEntity<HttpStatus> updateUserData(UserDTO userDTO);
 

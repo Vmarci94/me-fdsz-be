@@ -86,7 +86,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public List<FeedPostDTO> getPostsWithLimit(int limit) {
         return feedPostRepository.findByOrderByLastModifiedDate(PageRequest.of(0, 5))
-                .map(feedPost -> modelMapper.map(feedPost, FeedPostDTO.class))
+                .stream().map(feedPost -> modelMapper.map(feedPost, FeedPostDTO.class))
                 .collect(Collectors.toList());
     }
 

@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -68,18 +67,9 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         //userEmail from token
         String userEmail = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-        return userRepositroy.findByEmail(userEmail).map(currentUser -> {
-            UserDetails userDetails = org.springframework.security.core.userdetails.User
-                    .withUsername(userEmail) // TODO: Egyenlőre így jó lesz, bár elég zavaró
-                    .password(currentUser.getPassword())//
-                    .authorities(currentUser.getRole())//
-                    .accountExpired(false)//
-                    .accountLocked(false)//
-                    .credentialsExpired(false)//
-                    .disabled(false)//
-                    .build();
-            return new UsernamePasswordAuthenticationToken(currentUser, "", userDetails.getAuthorities());
-        }).orElseThrow(() -> new UsernameNotFoundException("User '" + userEmail + "' not found"));
+        return userRepositroy.findByEmail(userEmail).map(currentUser ->
+                new UsernamePasswordAuthenticationToken(currentUser, "", currentUser.getAuthorities())
+        ).orElseThrow(() -> new UsernameNotFoundException("User '" + userEmail + "' not found"));
     }
 
     @Override
@@ -94,9 +84,9 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
     @Override
     public User getAuthenticatedUser() throws UsernameNotFoundException {
-        return (User) Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                .map(authentication ->
-                        authentication.getPrincipal().toString().equals("anonymousUser") ? null : authentication.getPrincipal()
+        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .filter(authentication -> authentication.getPrincipal() instanceof User) //muszáj mert az API Object-et add vissza :/
+                .map(authentication -> ((User) authentication.getPrincipal())
                 ).orElseThrow(() -> new InvalidTokenException("Nincs bejelentkezett felhasználó!", HttpStatus.UNAUTHORIZED));
 
     }

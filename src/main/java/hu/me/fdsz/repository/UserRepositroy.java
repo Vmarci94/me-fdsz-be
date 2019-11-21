@@ -12,11 +12,11 @@ public interface UserRepositroy extends CrudRepository<User, Long> {
     @Override
     List<User> findAll();
 
-    Optional<User> findByUserName(String userName);
+    Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);
 
-    boolean existsByEmailAndUserName(String email, String username);
+    boolean existsByEmailAndUsername(String email, String username);
 
     Optional<List<User>> findAllByRole(Role role);
 

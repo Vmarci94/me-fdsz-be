@@ -63,8 +63,8 @@ public class UserEndpoint {
     }
 
     @GetMapping(value = "/get-currnet-user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO getUserName() {
-        return userService.getCurrentUser();
+    public UserDTO getUsername() {
+        return userService.getCurrentUserWithoutPassword();
     }
 
     @PostMapping(value = "/update-user-data")

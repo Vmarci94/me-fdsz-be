@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
+import static javax.persistence.TemporalType.DATE;
 
 @Getter
 @Setter
@@ -28,12 +28,12 @@ public abstract class BaseEntity implements Serializable {
 
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
-    @Temporal(TIMESTAMP)
+    @Temporal(DATE)
     private Date createdDate;
 
     @Column(name = "modified_date")
     @LastModifiedDate
-    @Temporal(TIMESTAMP)
+    @Temporal(DATE)
     private Date lastModifiedDate;
 
 }
