@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ public class UserReport extends BaseEntity {
     @Column(nullable = false)
     private String statement;
 
-    @CreatedBy
-    private User user;
+//    @CreatedBy
+//    private User user;
 
 }
