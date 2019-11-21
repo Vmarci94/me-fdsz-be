@@ -31,12 +31,12 @@ values (6, CURDATE(), CURDATE(), 'Ez az első poszt hosszú tartalma. Sok érdek
 insert into post (id, created_date, modified_date, content_text, introduction, title, author, image)
 values (7, CURDATE(), CURDATE(), 'Ez a második poszt hosszú tartalma. Sok érdekes infóval.',
         'Ez a második poszt rövid leírása',
-        'Ez az első poszt címe.', 4, 1);
+        'Ez a második poszt címe.', 4, 1);
 
 insert into post (id, created_date, modified_date, content_text, introduction, title, author, image)
 values (8, CURDATE(), CURDATE(), 'Ez a harmadik poszt hosszú tartalma. Sok érdekes infóval.',
         'Ez a harmadik poszt rövid leírása',
-        'Ez az első poszt címe.', 4, 2);
+        'Ez a harmadik poszt címe.', 4, 2);
 
 -- Alap felhasználói visszajelzések generálása
 insert into user_report (id, created_date, modified_date, report)
