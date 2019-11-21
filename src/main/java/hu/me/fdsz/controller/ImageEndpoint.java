@@ -15,7 +15,6 @@ public class ImageEndpoint {
 
     private final ImageService imageService;
 
-
     @Autowired
     public ImageEndpoint(ImageService imageService) {
         this.imageService = imageService;

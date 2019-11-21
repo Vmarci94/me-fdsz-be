@@ -6,8 +6,6 @@ import org.springframework.content.commons.annotations.ContentLength;
 import org.springframework.content.commons.annotations.MimeType;
 
 import javax.persistence.Entity;
-import javax.persistence.Transient;
-import java.io.InputStream;
 
 @Entity
 @Getter
@@ -26,10 +24,4 @@ public class Image extends BaseEntity {
     private long contentLength;
     @MimeType
     private String mimeType;
-
-    @Transient
-    private InputStream inputStream;
-
-
-
 }

@@ -6,8 +6,10 @@ LABEL maintainer="vmarci94@gmail.com"
 
 # compiled binary path
 ARG JAR_FILE_PATH=target/me-fdsz-1.0-SNAPSHOT.jar
+ARG DEF_IMAGE_PATH=files/test*
 
 # copy jar binary to container
 COPY $JAR_FILE_PATH /
+COPY $DEF_IMAGE_PATH /files/
 
 ENTRYPOINT ["java", "-Dspring.profiles.active=docker", "-jar", "me-fdsz-1.0-SNAPSHOT.jar"]
