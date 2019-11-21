@@ -27,7 +27,9 @@ public class User extends Person {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private long image;
+    @ManyToOne
+    @JoinColumn(name = "image", referencedColumnName = "ID")
+    private Image image;
 
 //    @OneToOne
 //    @JoinColumn(name = "id", referencedColumnName = "image")

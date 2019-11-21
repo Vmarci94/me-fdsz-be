@@ -1,9 +1,9 @@
-package hu.me.fdsz.Service.impl;
+package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.Service.api.ImageService;
 import hu.me.fdsz.model.Image;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
+import hu.me.fdsz.service.api.ImageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.imgscalr.Scalr;

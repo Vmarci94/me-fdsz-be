@@ -1,6 +1,6 @@
 package hu.me.fdsz.controller;
 
-import hu.me.fdsz.Service.api.ImageService;
+import hu.me.fdsz.service.api.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

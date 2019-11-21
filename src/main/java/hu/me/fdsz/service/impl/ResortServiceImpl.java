@@ -1,4 +1,4 @@
-package hu.me.fdsz.Service.impl;
+package hu.me.fdsz.service.impl;
 
 import org.springframework.stereotype.Service;
 

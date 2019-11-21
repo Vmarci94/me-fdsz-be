@@ -1,4 +1,4 @@
-package hu.me.fdsz.Service.api;
+package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.dto.FeedPostDTO;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package hu.me.fdsz.security;
 
-import hu.me.fdsz.Service.api.JwtTokenProvider;
+import hu.me.fdsz.service.api.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -1,12 +1,12 @@
-package hu.me.fdsz.Service.impl;
+package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.Service.api.JwtTokenProvider;
-import hu.me.fdsz.Service.api.UserService;
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.UserRepositroy;
+import hu.me.fdsz.service.api.JwtTokenProvider;
+import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

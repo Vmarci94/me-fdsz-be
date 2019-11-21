@@ -1,9 +1,9 @@
 package hu.me.fdsz.security;
 
-import hu.me.fdsz.Service.api.JwtTokenProvider;
 import hu.me.fdsz.Utils.Util;
 import hu.me.fdsz.exception.CustomExceptionDTO;
 import hu.me.fdsz.exception.InvalidTokenException;
+import hu.me.fdsz.service.api.JwtTokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;

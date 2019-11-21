@@ -1,7 +1,5 @@
-package hu.me.fdsz.Service.impl;
+package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.Service.api.FeedService;
-import hu.me.fdsz.Service.api.JwtTokenProvider;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
@@ -9,6 +7,8 @@ import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.FeedPostRepository;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
+import hu.me.fdsz.service.api.FeedService;
+import hu.me.fdsz.service.api.JwtTokenProvider;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

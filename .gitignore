@@ -140,7 +140,9 @@ HELP.md
 /build/
 
 ### spring content ###
-/files/
+/files/*
+### viszont a data seed-hez a test képek kellenek :) ###
+!/files/test*
 
 ### docker mysql db volumes ###
 /volumes/

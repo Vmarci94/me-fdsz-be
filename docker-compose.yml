@@ -3,9 +3,10 @@ version: "3.7"
 services:
   backend:
     container_name: me-fdsz-backend
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    image: vmarci94/me-fdsz-be:latest
+    #    build:
+    #      context: .
+    #      dockerfile: Dockerfile.dev
     restart: always
     ports:
       #<outside>:<inside>
@@ -13,6 +14,7 @@ services:
       - 33061:3306 #Add this only if you want to expose the mysql to outer world.
     depends_on:
       - db # start db before backend
+    #    command: ["./wait-for-it.sh", "db:3306", "--", "echo", "db is udp"]
     links:
       - "db:database"
   db:

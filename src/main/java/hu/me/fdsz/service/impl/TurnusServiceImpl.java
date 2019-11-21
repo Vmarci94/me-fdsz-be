@@ -1,11 +1,11 @@
-package hu.me.fdsz.Service.impl;
+package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.Service.api.ReservationService;
-import hu.me.fdsz.Service.api.RoomService;
-import hu.me.fdsz.Service.api.TurnusService;
 import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Turnus;
 import hu.me.fdsz.repository.TurnusRepository;
+import hu.me.fdsz.service.api.ReservationService;
+import hu.me.fdsz.service.api.RoomService;
+import hu.me.fdsz.service.api.TurnusService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

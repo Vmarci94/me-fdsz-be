@@ -1,10 +1,9 @@
 package hu.me.fdsz.config;
 
-import hu.me.fdsz.Service.api.ImageService;
-import hu.me.fdsz.Service.impl.ImageServiceImpl;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
+import hu.me.fdsz.service.api.ImageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.AbstractConverter;
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Configuration
 public class ModelMapperConfig {

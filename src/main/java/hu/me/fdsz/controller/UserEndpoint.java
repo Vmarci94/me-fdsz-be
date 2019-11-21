@@ -1,9 +1,9 @@
 package hu.me.fdsz.controller;
 
-import hu.me.fdsz.Service.api.UserService;
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.exception.InvalidTokenException;
+import hu.me.fdsz.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

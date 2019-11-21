@@ -1,11 +1,11 @@
 package hu.me.fdsz.controller;
 
-import hu.me.fdsz.Service.api.ReservationService;
-import hu.me.fdsz.Service.api.RoomService;
-import hu.me.fdsz.Service.api.TurnusService;
 import hu.me.fdsz.dto.ReservationDTO;
 import hu.me.fdsz.dto.RoomDTO;
 import hu.me.fdsz.dto.TurnusDTO;
+import hu.me.fdsz.service.api.ReservationService;
+import hu.me.fdsz.service.api.RoomService;
+import hu.me.fdsz.service.api.TurnusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

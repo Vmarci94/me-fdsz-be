@@ -1,9 +1,9 @@
-package hu.me.fdsz.Service.impl;
+package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.Service.api.JwtTokenProvider;
 import hu.me.fdsz.exception.InvalidTokenException;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.UserRepositroy;
+import hu.me.fdsz.service.api.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

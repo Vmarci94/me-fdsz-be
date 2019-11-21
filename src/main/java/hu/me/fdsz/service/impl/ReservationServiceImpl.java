@@ -1,11 +1,11 @@
-package hu.me.fdsz.Service.impl;
+package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.Service.api.JwtTokenProvider;
-import hu.me.fdsz.Service.api.ReservationService;
 import hu.me.fdsz.dto.ReservationDTO;
 import hu.me.fdsz.model.Reservation;
 import hu.me.fdsz.repository.ReservationRepository;
 import hu.me.fdsz.repository.RoomRepository;
+import hu.me.fdsz.service.api.JwtTokenProvider;
+import hu.me.fdsz.service.api.ReservationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
