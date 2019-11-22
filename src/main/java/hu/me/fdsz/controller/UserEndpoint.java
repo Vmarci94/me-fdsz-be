@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,7 @@ public class UserEndpoint {
         this.userService = userService;
     }
 
-//    Regisztráció
+    //    Regisztráció
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userForm) throws Exception {
         return Optional.of(userService.signup(userForm))
@@ -56,14 +57,15 @@ public class UserEndpoint {
         return userService.findClientUsersByName(fullName);
     }
 
-    @GetMapping(value = "/get-currnet-user", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get-current-user", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO getUsername() {
         return userService.getCurrentUserWithoutPassword();
     }
 
-    @PostMapping(value = "/update-user-data")
-    public ResponseEntity<HttpStatus> updateUserData(@RequestBody UserDTO userDTO) {
-        return userService.updateUserData(userDTO);
+    @PostMapping(value = "/update-user-data", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> updateUserData(@RequestPart(name = "user") UserDTO userDTO,
+                                                     @RequestPart(name = "image") MultipartFile multipartFile) {
+        return new ResponseEntity<>(userService.updateUserData(userDTO, multipartFile) ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     }
 
     @GetMapping(value = "/search-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)

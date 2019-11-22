@@ -8,7 +8,8 @@ import hu.me.fdsz.repository.FeedPostRepository;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.FeedService;
-import hu.me.fdsz.service.api.JwtTokenProvider;
+import hu.me.fdsz.service.api.ImageService;
+import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,19 +35,22 @@ public class FeedServiceImpl implements FeedService {
 
     private final ModelMapper modelMapper;
 
-    private final JwtTokenProvider jwtTokenProvider;
-
     private final ImageRepository imageRepository;
 
     private final ImageContentStore imageContentStore;
 
+    private final UserService userService;
+
+    private final ImageService imageService;
+
     @Autowired
-    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageRepository imageRepository, ImageContentStore imageContentStore) {
+    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, ImageRepository imageRepository, ImageContentStore imageContentStore, UserService userService, ImageService imageService) {
         this.feedPostRepository = feedPostRepository;
         this.modelMapper = modelMapper;
-        this.jwtTokenProvider = jwtTokenProvider;
         this.imageRepository = imageRepository;
         this.imageContentStore = imageContentStore;
+        this.userService = userService;
+        this.imageService = imageService;
     }
 
     @Override
@@ -66,7 +70,7 @@ public class FeedServiceImpl implements FeedService {
         //majd mentjük, mert contentId-val együtt kell perzisztálni.
         image = imageRepository.save(image); //Visszaadja a már perzisztált Entitást
         newFeedPost.setImage(image);
-        User currentUser = jwtTokenProvider.getAuthenticatedUser();
+        User currentUser = userService.getCurrentUser().orElseThrow(() -> new RuntimeException("Nincs bejelentkezett user!"));
         newFeedPost.setAuthor(currentUser);
         newFeedPost = feedPostRepository.save(newFeedPost);
         return modelMapper.map(newFeedPost, FeedPostDTO.class);
@@ -79,10 +83,9 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public FeedPostDTO getContent(Long feedPostId) {
-        return feedPostRepository.findById(feedPostId).map(feedPost -> {
-            FeedPostDTO result = modelMapper.map(feedPost, FeedPostDTO.class);
-            return result;
-        }).orElseThrow(EntityNotFoundException::new);
+        return feedPostRepository.findById(feedPostId)
+                .map(feedPost -> modelMapper.map(feedPost, FeedPostDTO.class))
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -110,28 +113,7 @@ public class FeedServiceImpl implements FeedService {
             FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
 
             //Azért, hogy módosítás esetén törölni is lehessen a képet, mindig frissítjük a képt is.
-
-            if (newFeedPost.getImage() != null) {
-                //ha volt régi kép akkor először minden féle képpen töröljük
-                Image oldImage = newFeedPost.getImage();
-                //TODO: nem elég csak a rekordot törlni, és akkor törlődik a fájl is?
-                imageContentStore.unsetContent(oldImage); //fájl törlése
-                imageRepository.delete(oldImage); //rekord törlése
-            }
-
-            if (multipartFile != null) {
-                //ha jött kép az FE-ről akkor elmentjük.
-
-                //csinálunk az input-ból Image objektumot, ez menti is a fájlt
-                Image newImage = modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile);
-                newImage = imageRepository.save(newImage); //mentjük a rekordot
-                newFeedPost.setImage(newImage);
-            } else {
-                //ha nem jött kép, akkor nem akarunk újatt beállítani
-                //biztonság kedvéért azért nullozunk egyet.
-                newFeedPost.setImage(null);
-            }
-
+            imageService.updateImage(newFeedPost, multipartFile);
             //majd mentjük a változásokat, ez elvileg ráment a régire mert az ID-ja megegyezik a feedPost objektuméval.
             newFeedPost = feedPostRepository.save(newFeedPost);
             return modelMapper.map(newFeedPost, FeedPostDTO.class);
@@ -146,9 +128,7 @@ public class FeedServiceImpl implements FeedService {
     public boolean delete(long postId) {
         try {
             feedPostRepository.findById(postId).ifPresent(feedPost -> {
-                if (feedPost.getImage() != null) {
-                    imageContentStore.unsetContent(feedPost.getImage());
-                }
+                feedPost.getImage().ifPresent(imageContentStore::unsetContent);
                 feedPostRepository.delete(feedPost);
             });
             return true;

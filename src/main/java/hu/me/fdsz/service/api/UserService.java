@@ -2,12 +2,13 @@ package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import hu.me.fdsz.model.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.security.auth.login.LoginException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface UserService {
@@ -25,7 +26,9 @@ public interface UserService {
 
     UserDTO getCurrentUserWithoutPassword();
 
-    ResponseEntity<HttpStatus> updateUserData(UserDTO userDTO);
+    Optional<User> getCurrentUser();
+
+    boolean updateUserData(UserDTO userDTO, MultipartFile multipartFile);
 
     List<UserDTO> findClientUsersByName(String fullName);
 

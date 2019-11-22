@@ -1,5 +1,6 @@
 package hu.me.fdsz.model;
 
+import hu.me.fdsz.model.Util.HasImage;
 import hu.me.fdsz.model.enums.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -17,7 +19,7 @@ import java.util.List;
 @Table(name = "user")
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class User extends Person implements UserDetails {
+public class User extends Person implements UserDetails, HasImage {
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -68,4 +70,15 @@ public class User extends Person implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public Optional<Image> getImage() {
+        return Optional.ofNullable(image);
+    }
+
+    @Override
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
 }

@@ -1,6 +1,7 @@
 package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.model.Image;
+import hu.me.fdsz.model.Util.HasImage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,4 +22,5 @@ public interface ImageService {
     @Transactional
     boolean deleteImage(long id);
 
+    <T extends HasImage> T updateImage(T entityWithImage, MultipartFile multipartFile);
 }

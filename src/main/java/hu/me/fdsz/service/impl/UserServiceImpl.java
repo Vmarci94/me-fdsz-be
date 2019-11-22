@@ -5,15 +5,15 @@ import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.UserRepositroy;
+import hu.me.fdsz.service.api.ImageService;
 import hu.me.fdsz.service.api.JwtTokenProvider;
 import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.security.auth.login.LoginException;
@@ -35,11 +35,14 @@ public class UserServiceImpl implements UserService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final ImageService imageService;
+
     @Autowired
-    public UserServiceImpl(UserRepositroy userRepositroy, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider) {
+    public UserServiceImpl(UserRepositroy userRepositroy, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageService imageService) {
         this.userRepositroy = userRepositroy;
         this.modelMapper = modelMapper;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.imageService = imageService;
     }
 
     @Override
@@ -76,37 +79,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getCurrentUserWithoutPassword() {
-        UserDTO userDTO = modelMapper.map(jwtTokenProvider.getAuthenticatedUser(), UserDTO.class);
+        UserDTO userDTO = modelMapper.map(getCurrentUser(), UserDTO.class);
         userDTO.setPassword(null);
         return userDTO;
     }
 
     @Override
-    public ResponseEntity<HttpStatus> updateUserData(UserDTO userDTO) {
-        if (jwtTokenProvider.getAuthenticatedUser().getRole().equals(Role.ADMIN)) {
-            return userRepositroy.findByUsername(userDTO.getUsername())
-                    .map(user -> {
-                        User mUser = modelMapper.map(userDTO, User.class);
+    public Optional<User> getCurrentUser() {
+        return Optional.ofNullable(jwtTokenProvider.getAuthenticatedUser());
+    }
 
-                        user.setTitle(Optional.ofNullable(mUser.getTitle()).orElse(user.getTitle()));
-                        user.setFirstName(Optional.ofNullable(mUser.getFirstName()).orElse(user.getFirstName()));
-                        user.setSecoundName(Optional.ofNullable(mUser.getSecoundName()).orElse(user.getSecoundName()));
+    public User updateCurrentUserData(UserDTO userDTO, MultipartFile multipartFile) {
+        User newUserDatas = modelMapper.map(userDTO, User.class);
+        imageService.updateImage(newUserDatas, multipartFile);
+        return userRepositroy.save(newUserDatas);
+    }
 
-                        user.setEmail(Optional.ofNullable(mUser.getEmail()).orElse(user.getEmail()));
-                        user.setPhoneNumber(Optional.ofNullable(mUser.getPhoneNumber()).orElse(user.getPhoneNumber()));
-                        user.setLocation(Optional.ofNullable(mUser.getLocation()).orElse(user.getLocation()));
-
-                        user.setRole(Optional.ofNullable(mUser.getRole()).orElse(user.getRole()));
-
-                        return userRepositroy.save(user) != null ?
-                                new ResponseEntity<HttpStatus>(HttpStatus.OK)
-                                :
-                                new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    })
-                    .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
-        } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    @Override
+    public boolean updateUserData(UserDTO userDTO, MultipartFile multipartFile) {
+        Optional<User> currentUser = getCurrentUser().filter(user -> user.getRole() == Role.ADMIN);
+        if (currentUser.isPresent()) {
+            //van jogosultság a frissítéshez
+            //megkeressük a frissítendő user-t
+            Optional<User> oldUser = userRepositroy.findByEmail(userDTO.getEmail());
+            if (oldUser.isPresent()) {
+                //ha létezik a módosítandó user akkor örülünk, és módosítjuk
+                User inputUser = modelMapper.map(userDTO, User.class);
+                imageService.updateImage(inputUser, multipartFile);
+                userRepositroy.save(inputUser);
+                return true;
+            }
         }
+        return false;
     }
 
     @Override

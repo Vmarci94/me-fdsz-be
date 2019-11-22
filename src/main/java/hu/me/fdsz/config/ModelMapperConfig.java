@@ -81,7 +81,7 @@ public class ModelMapperConfig {
                     @Override
                     protected FeedPostDTO convert(FeedPost source) {
                         FeedPostDTO result = tmpMapper.map(source, FeedPostDTO.class);
-                        result.setImageId(source.getImage().getId());
+                        source.getImage().ifPresent(image -> result.setImageId(image.getId()));
                         return result;
                     }
                 }
@@ -91,9 +91,21 @@ public class ModelMapperConfig {
                 new AbstractConverter<User, UserDTO>() {
                     @Override
                     protected UserDTO convert(User source) {
-                        UserDTO result = new ModelMapper().map(source, UserDTO.class);
-                        if (source.getImage() != null) {
-                            result.setImageId(source.getImage().getId());
+                        UserDTO result = tmpMapper.map(source, UserDTO.class);
+                        source.getImage().ifPresent(image -> result.setImageId(image.getId()));
+                        return result;
+                    }
+                }
+        );
+
+        singletonModelMapper.addConverter(
+                new AbstractConverter<UserDTO, User>() {
+                    @Override
+                    protected User convert(UserDTO source) {
+                        User result = tmpMapper.map(source, User.class);
+                        if (source.getImageId() != null) {
+                            Image image = imageRepository.findById(source.getImageId()).orElse(null);
+                            result.setImage(image);
                         }
                         return result;
                     }

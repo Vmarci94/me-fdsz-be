@@ -1,6 +1,7 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.model.Image;
+import hu.me.fdsz.model.Util.HasImage;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;
@@ -86,6 +87,36 @@ public class ImageServiceImpl implements ImageService {
             return false;
         }
 
+    }
+
+    /**
+     * <b>Fontos</b>, hogy a képet már menti, de az Entitást még nem!
+     *
+     * @param entityWithImage az entitás aminek a képét frissíteni szeretnénk
+     * @param multipartFile   az új fénykép raw-ba amire frissíteni akarunk, ha null akkor törli a képet az entitásból
+     * @return az új képpel rendelkező entitás.
+     */
+    @Override
+    public <T extends HasImage> T updateImage(T entityWithImage, MultipartFile multipartFile) {
+        entityWithImage.getImage().ifPresent(oldImage -> {
+            //ha volt régi kép akkor először minden féle képpen töröljük
+            imageContentStore.unsetContent(oldImage); //fájl törlése
+            imageRepository.delete(oldImage); //rekord törlése
+        });
+
+        if (multipartFile != null) {
+            //ha jött kép az FE-ről akkor elmentjük.
+
+            //csinálunk az input-ból Image objektumot, ez menti is a fájlt
+            Image newImage = modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile);
+            newImage = imageRepository.save(newImage); //mentjük a rekordot
+            entityWithImage.setImage(newImage);
+        } else {
+            //ha nem jött kép, akkor nem akarunk újatt beállítani
+            //biztonság kedvéért azért nullozunk egyet.
+            entityWithImage.setImage(null);
+        }
+        return entityWithImage;
     }
 
     private InputStream resizeImage(final MultipartFile multipartFile, int width, int height) throws IOException, IllegalStateException {
