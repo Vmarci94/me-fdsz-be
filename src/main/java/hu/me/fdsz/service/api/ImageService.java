@@ -3,9 +3,9 @@ package hu.me.fdsz.service.api;
 import hu.me.fdsz.model.Image;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -18,6 +18,7 @@ public interface ImageService {
 
     ResponseEntity<?> getImage(long id);
 
-    boolean deleteImage(long id) throws EntityNotFoundException;
+    @Transactional
+    boolean deleteImage(long id);
 
 }

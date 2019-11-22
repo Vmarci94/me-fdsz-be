@@ -5,7 +5,7 @@ import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
 import hu.me.fdsz.model.User;
-import hu.me.fdsz.repository.UserRepositroy;
+import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,12 +28,12 @@ public class ModelMapperConfig {
 
     private final ImageService imageService;
 
-    private final UserRepositroy userRepositroy;
+    private final ImageRepository imageRepository;
 
     @Autowired
-    public ModelMapperConfig(ImageService imageService, UserRepositroy userRepositroy) {
+    public ModelMapperConfig(ImageService imageService, ImageRepository imageRepository) {
         this.imageService = imageService;
-        this.userRepositroy = userRepositroy;
+        this.imageRepository = imageRepository;
     }
 
 
@@ -49,6 +49,8 @@ public class ModelMapperConfig {
      * @param singletonModelMapper referenciaként hivatkozva, beállítja a szükséges convertereket.
      */
     private void setCustomConverters(final ModelMapper singletonModelMapper) {
+        final ModelMapper tmpMapper = new ModelMapper();
+
         singletonModelMapper.addConverter(
                 new AbstractConverter<MultipartFile, Image>() {
                     @Override
@@ -64,14 +66,21 @@ public class ModelMapperConfig {
         );
 
         singletonModelMapper.addConverter(
+                new AbstractConverter<FeedPostDTO, FeedPost>() {
+                    @Override
+                    protected FeedPost convert(FeedPostDTO source) {
+                        FeedPost result = tmpMapper.map(source, FeedPost.class);
+                        result.setImage(imageRepository.findById(source.getImageId()).orElse(null));
+                        return result;
+                    }
+                }
+        );
+
+        singletonModelMapper.addConverter(
                 new AbstractConverter<FeedPost, FeedPostDTO>() {
                     @Override
                     protected FeedPostDTO convert(FeedPost source) {
-                        FeedPostDTO result = new FeedPostDTO();
-                        result.setId(source.getId());
-                        result.setTitle(source.getTitle());
-                        result.setContentText(source.getContentText());
-                        result.setIntroductionText(source.getIntroduction());
+                        FeedPostDTO result = tmpMapper.map(source, FeedPostDTO.class);
                         result.setImageId(source.getImage().getId());
                         return result;
                     }
@@ -83,7 +92,9 @@ public class ModelMapperConfig {
                     @Override
                     protected UserDTO convert(User source) {
                         UserDTO result = new ModelMapper().map(source, UserDTO.class);
-                        result.setImageId(source.getImage().getId());
+                        if (source.getImage() != null) {
+                            result.setImageId(source.getImage().getId());
+                        }
                         return result;
                     }
                 }

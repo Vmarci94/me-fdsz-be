@@ -3,7 +3,9 @@ package hu.me.fdsz.controller;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.service.api.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,10 +40,15 @@ public class FeedPageEndpoint {
         feedService.add(feedPostDTO, image);
     }
 
-    @PostMapping(value = "/edit/{postId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public FeedPostDTO edit(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
-                            @RequestPart(name = "image") MultipartFile image) throws IOException {
-        return null;
+    @PostMapping(value = "/update", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public FeedPostDTO update(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
+                              @RequestPart(name = "image", required = false) MultipartFile image) throws RuntimeException, IOException {
+        return feedService.update(feedPostDTO, image);
+    }
+
+    @DeleteMapping(value = "delete/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable("postId") long postId) {
+        return new ResponseEntity<>(feedService.delete(postId) ? HttpStatus.OK : HttpStatus.NOT_EXTENDED);
     }
 
     @GetMapping(value = "/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)

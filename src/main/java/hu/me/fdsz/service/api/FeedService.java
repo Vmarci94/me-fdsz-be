@@ -15,7 +15,7 @@ public interface FeedService {
 
     List<FeedPostDTO> getAll();
 
-    void add(FeedPostDTO feedPostDTO, MultipartFile image) throws IOException;
+    FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile image) throws IOException;
 
     ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file);
 
@@ -26,4 +26,8 @@ public interface FeedService {
 
     FeedPostDTO findById(long postId);
 
+    FeedPostDTO update(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws RuntimeException, IOException;
+
+    @Transactional
+    boolean delete(long postId);
 }

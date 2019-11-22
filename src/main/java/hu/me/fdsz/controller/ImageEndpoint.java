@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
-
 @RestController
 @RequestMapping(value = "/image")
 public class ImageEndpoint {
@@ -32,17 +30,8 @@ public class ImageEndpoint {
     }
     
     @DeleteMapping(value = "/delete/{imageId}", headers="accept!=application/hal+json")
-    public ResponseEntity<?> deleteImage(@PathVariable("imageId") long id){
-        HttpStatus result;
-        try{
-            imageService.deleteImage(id);
-            result = HttpStatus.OK;
-        }catch (EntityNotFoundException e){
-            result = HttpStatus.NO_CONTENT;
-        } catch (Exception e){
-            result = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<>(result);
+    public ResponseEntity<HttpStatus> deleteImage(@PathVariable("imageId") long imageId) {
+        return new ResponseEntity<>(imageService.deleteImage(imageId) ? HttpStatus.OK : HttpStatus.NOT_EXTENDED);
     }
 
 }

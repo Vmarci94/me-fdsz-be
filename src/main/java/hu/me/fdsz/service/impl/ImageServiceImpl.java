@@ -14,10 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import javax.persistence.EntityNotFoundException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -74,11 +74,18 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public boolean deleteImage(long id) throws EntityNotFoundException {
-        Image image = imageRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        imageContentStore.unsetContent(image);
-        imageRepository.deleteById(id);
-        return false;
+    @Transactional
+    public boolean deleteImage(long id) {
+        try {
+            imageRepository.findById(id).ifPresent(image -> {
+                imageContentStore.unsetContent(image);
+                imageRepository.delete(image);
+            });
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
     private InputStream resizeImage(final MultipartFile multipartFile, int width, int height) throws IOException, IllegalStateException {
@@ -87,7 +94,7 @@ public class ImageServiceImpl implements ImageService {
         String imageType = Optional.ofNullable(multipartFile.getContentType())
                 .map(contentType -> {
                     String[] types = contentType.split("/");
-                    if(types.length >= 2) {
+                    if (types.length >= 2) {
                         return types[1];
                     } else {
                         throw e;

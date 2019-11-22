@@ -3,7 +3,6 @@ package hu.me.fdsz.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -24,7 +23,7 @@ public class FeedPost extends BaseEntity {
     @Column(name = "content_text")
     private String contentText;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image", referencedColumnName = "id")
     public Image image;
 

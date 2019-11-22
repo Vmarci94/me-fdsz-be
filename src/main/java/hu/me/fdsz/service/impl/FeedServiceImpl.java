@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
@@ -56,7 +57,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public void add(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws IOException {
+    public FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws IOException {
         FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
         // Azért kell így haszánlni a modelMappert-t, hogy biztosan a megfelelő convertert használja.
         // A MultipartFile Interfacet realizáló osztályok nem találnak rá autómatikusan a megfelelő TypeMap-re.
@@ -67,7 +68,8 @@ public class FeedServiceImpl implements FeedService {
         newFeedPost.setImage(image);
         User currentUser = jwtTokenProvider.getAuthenticatedUser();
         newFeedPost.setAuthor(currentUser);
-        feedPostRepository.save(newFeedPost);
+        newFeedPost = feedPostRepository.save(newFeedPost);
+        return modelMapper.map(newFeedPost, FeedPostDTO.class);
     }
 
     @Override
@@ -95,6 +97,64 @@ public class FeedServiceImpl implements FeedService {
         return feedPostRepository.findById(postId)
                 .map(feedPost -> modelMapper.getTypeMap(FeedPost.class, FeedPostDTO.class).map(feedPost))
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public FeedPostDTO update(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws RuntimeException, IOException {
+        if (feedPostDTO == null || feedPostDTO.getId() == null) {
+            throw new NullPointerException("A frissítendő post nem lehet null");
+        }
+
+        if (feedPostRepository.findById(feedPostDTO.getId()).isPresent()) {
+            //létezik a frissítendő post
+            FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
+
+            //Azért, hogy módosítás esetén törölni is lehessen a képet, mindig frissítjük a képt is.
+
+            if (newFeedPost.getImage() != null) {
+                //ha volt régi kép akkor először minden féle képpen töröljük
+                Image oldImage = newFeedPost.getImage();
+                //TODO: nem elég csak a rekordot törlni, és akkor törlődik a fájl is?
+                imageContentStore.unsetContent(oldImage); //fájl törlése
+                imageRepository.delete(oldImage); //rekord törlése
+            }
+
+            if (multipartFile != null) {
+                //ha jött kép az FE-ről akkor elmentjük.
+
+                //csinálunk az input-ból Image objektumot, ez menti is a fájlt
+                Image newImage = modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile);
+                newImage = imageRepository.save(newImage); //mentjük a rekordot
+                newFeedPost.setImage(newImage);
+            } else {
+                //ha nem jött kép, akkor nem akarunk újatt beállítani
+                //biztonság kedvéért azért nullozunk egyet.
+                newFeedPost.setImage(null);
+            }
+
+            //majd mentjük a változásokat, ez elvileg ráment a régire mert az ID-ja megegyezik a feedPost objektuméval.
+            newFeedPost = feedPostRepository.save(newFeedPost);
+            return modelMapper.map(newFeedPost, FeedPostDTO.class);
+        } else {
+            // nem létezik a frissítendő post, nem baj ezt loggoljuk és csinálunk egyett
+            return this.add(feedPostDTO, multipartFile);
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean delete(long postId) {
+        try {
+            feedPostRepository.findById(postId).ifPresent(feedPost -> {
+                if (feedPost.getImage() != null) {
+                    imageContentStore.unsetContent(feedPost.getImage());
+                }
+                feedPostRepository.delete(feedPost);
+            });
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
