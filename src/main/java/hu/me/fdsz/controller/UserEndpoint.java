@@ -58,8 +58,10 @@ public class UserEndpoint {
     }
 
     @GetMapping(value = "/get-current-user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO getUsername() {
-        return userService.getCurrentUserWithoutPassword();
+    public ResponseEntity<?> getUsername() {
+        return userService.getCurrentUserWithoutPassword()
+                .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
     }
 
     @PostMapping(value = "/update-user-data", produces = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -78,10 +78,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getCurrentUserWithoutPassword() {
-        UserDTO userDTO = modelMapper.map(getCurrentUser(), UserDTO.class);
-        userDTO.setPassword(null);
-        return userDTO;
+    public Optional<UserDTO> getCurrentUserWithoutPassword() {
+        return getCurrentUser().map(user -> {
+            UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+            userDTO.setPassword(null);
+            return userDTO;
+        });
     }
 
     @Override

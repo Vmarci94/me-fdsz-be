@@ -24,7 +24,7 @@ public interface UserService {
 
     JWTTokenDTO signin(UserDTO userDTO) throws LoginException;
 
-    UserDTO getCurrentUserWithoutPassword();
+    Optional<UserDTO> getCurrentUserWithoutPassword();
 
     Optional<User> getCurrentUser();
 
