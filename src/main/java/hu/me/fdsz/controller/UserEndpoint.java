@@ -66,7 +66,7 @@ public class UserEndpoint {
 
     @PostMapping(value = "/update-user-data", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> updateUserData(@RequestPart(name = "user") UserDTO userDTO,
-                                                     @RequestPart(name = "image") MultipartFile multipartFile) {
+                                                     @RequestPart(name = "image", required = false) MultipartFile multipartFile) {
         return new ResponseEntity<>(userService.updateUserData(userDTO, multipartFile) ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     }
 
