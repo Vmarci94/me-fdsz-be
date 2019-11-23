@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDate;
+import javax.persistence.Temporal;
+import java.util.Date;
+
+import static javax.persistence.TemporalType.DATE;
 
 @Getter
 @Setter
@@ -32,7 +35,8 @@ public class UserDTO {
 
     private String location;
 
-    private LocalDate birthDay;
+    @Temporal(DATE)
+    private Date birthDay;
 
     private Role role;
 

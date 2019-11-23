@@ -3,7 +3,9 @@ package hu.me.fdsz.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
+
+import static javax.persistence.TemporalType.DATE;
 
 @Entity
 @Getter
@@ -27,7 +29,8 @@ public abstract class Person extends BaseEntity {
 
     private String fullName;
 
-    private LocalDate birthDay;
+    @Temporal(DATE)
+    private Date birthDay;
 
     private String phoneNumber;
 

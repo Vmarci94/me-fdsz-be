@@ -107,6 +107,7 @@ public class UserServiceImpl implements UserService {
             if (oldUser.isPresent()) {
                 //ha létezik a módosítandó user akkor örülünk, és módosítjuk
                 User inputUser = modelMapper.map(userDTO, User.class);
+                inputUser.setId(oldUser.get().getId());
                 imageService.updateImage(inputUser, multipartFile);
                 userRepositroy.save(inputUser);
                 return true;
