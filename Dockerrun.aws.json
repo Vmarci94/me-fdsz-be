@@ -1,0 +1,50 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "memory": 512,
+      "essential": true,
+      "image": "vmarci94/me-fdsz-be:latest",
+      "links": [
+        "db:database"
+      ],
+      "name": "backend",
+      "portMappings": [
+        {
+          "containerPort": 8081,
+          "hostPort": 8081
+        },
+        {
+          "containerPort": 3306,
+          "hostPort": 33061
+        }
+      ]
+    },
+    {
+      "memory": 512,
+      "environment": [
+        {
+          "name": "MYSQL_USER",
+          "value": "marci"
+        },
+        {
+          "name": "MYSQL_PASSWORD",
+          "value": "userpass"
+        },
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "value": "rootpass"
+        },
+        {
+          "name": "MYSQL_DATABASE",
+          "value": "ME_FDSZ"
+        }
+      ],
+      "essential": true,
+      "image": "mysql",
+      "name": "db"
+    }
+  ],
+  "family": "",
+  "volumes": []
+}
