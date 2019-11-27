@@ -70,7 +70,9 @@ public class ModelMapperConfig {
                     @Override
                     protected FeedPost convert(FeedPostDTO source) {
                         FeedPost result = tmpMapper.map(source, FeedPost.class);
-                        result.setImage(imageRepository.findById(source.getImageId()).orElse(null));
+                        if (source.getImageId() != null) {
+                            result.setImage(imageRepository.findById(source.getImageId()).orElse(null));
+                        }
                         return result;
                     }
                 }

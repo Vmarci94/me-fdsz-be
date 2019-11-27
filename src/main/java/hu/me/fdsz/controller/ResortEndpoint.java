@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 
 @RestController
@@ -62,7 +63,7 @@ public class ResortEndpoint {
     }
 
     @PostMapping(value = "/add-new-reservation")
-    public ResponseEntity<HttpStatus> addNewRoom(@RequestBody ReservationDTO reservationDTO) {
+    public ResponseEntity<HttpStatus> addNewRoom(@RequestBody ReservationDTO reservationDTO) throws AuthenticationException {
         return reservationService.addNewReservation(reservationDTO) ?
                 new ResponseEntity<>(HttpStatus.OK)
                 :

@@ -17,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.AuthenticationException;
 import javax.persistence.EntityNotFoundException;
 import javax.security.auth.login.LoginException;
+import java.nio.file.AccessDeniedException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -93,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> getCurrentUser() {
-        return Optional.ofNullable(jwtTokenProvider.getAuthenticatedUser());
+        return jwtTokenProvider.getAuthenticatedUser();
     }
 
     public User updateCurrentUserData(UserDTO userDTO, MultipartFile multipartFile) {
@@ -103,22 +105,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUserData(UserDTO userDTO, MultipartFile multipartFile) {
-        Optional<User> currentUser = getCurrentUser().filter(user -> user.getRole() == Role.ADMIN);
-        if (currentUser.isPresent()) {
-            //van jogosultság a frissítéshez
-            //megkeressük a frissítendő user-t
-            Optional<User> oldUser = userRepositroy.findByEmail(userDTO.getEmail());
-            if (oldUser.isPresent()) {
-                //ha létezik a módosítandó user akkor örülünk, és módosítjuk
+    public User updateUserData(UserDTO userDTO, MultipartFile multipartFile) throws AuthenticationException, AccessDeniedException {
+        User currentUser = getCurrentUser().orElseThrow(AuthenticationException::new);
+        if (currentUser.getRole() == Role.ADMIN) {
+            return userRepositroy.findByEmail(userDTO.getEmail()).map(oldUser -> {
                 User inputUser = modelMapper.map(userDTO, User.class);
-                inputUser.setId(oldUser.get().getId());
+                inputUser.setId(oldUser.getId());
                 imageService.updateImage(inputUser, multipartFile);
-                userRepositroy.save(inputUser);
-                return true;
-            }
+                return userRepositroy.save(inputUser);
+            }).orElseThrow(() -> new AccessDeniedException("Nincs jogosulstság a módosításra."));
+        } else {
+            throw new AccessDeniedException("Nincs jogosulstság a módosításra.");
         }
-        return false;
     }
 
     @Override
@@ -137,11 +135,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<MessageDTO> getMessageToCurrentUser() {
+    public List<MessageDTO> getMessageToCurrentUser() throws AuthenticationException {
         return getCurrentUser().map(currentUser ->
                 messageRepository.findAllMessagesToUser(currentUser).stream()
                         .map(message -> modelMapper.map(message, MessageDTO.class))
-                        .collect(Collectors.toList())).orElse(Collections.emptyList());
+                        .collect(Collectors.toList()))
+                .orElseThrow(AuthenticationException::new);
     }
 
 }

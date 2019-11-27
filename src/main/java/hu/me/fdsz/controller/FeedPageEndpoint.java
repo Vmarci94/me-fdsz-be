@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import javax.naming.AuthenticationException;
 import java.util.List;
 
 @RestController
@@ -36,13 +36,13 @@ public class FeedPageEndpoint {
 
     @PutMapping(value = "/add", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addNewFeedPost(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
-                               @RequestPart(name = "image") MultipartFile image) throws IOException {
+                               @RequestPart(name = "image") MultipartFile image) throws AuthenticationException {
         feedService.add(feedPostDTO, image);
     }
 
     @PostMapping(value = "/update", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FeedPostDTO update(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
-                              @RequestPart(name = "image", required = false) MultipartFile image) throws RuntimeException, IOException {
+                              @RequestPart(name = "image", required = false) MultipartFile image) throws RuntimeException, AuthenticationException {
         return feedService.update(feedPostDTO, image);
     }
 

@@ -7,7 +7,9 @@ import hu.me.fdsz.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.AuthenticationException;
 import javax.security.auth.login.LoginException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,11 +31,11 @@ public interface UserService {
 
     Optional<User> getCurrentUser();
 
-    boolean updateUserData(UserDTO userDTO, MultipartFile multipartFile);
+    User updateUserData(UserDTO userDTO, MultipartFile multipartFile) throws AuthenticationException, AccessDeniedException;
 
     List<UserDTO> findClientUsersByName(String fullName);
 
     List<UserDTO> searchUserByName(String searchTerm);
 
-    List<MessageDTO> getMessageToCurrentUser();
+    List<MessageDTO> getMessageToCurrentUser() throws AuthenticationException;
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import javax.naming.AuthenticationException;
 import java.util.List;
 
 @Service
@@ -15,7 +15,7 @@ public interface FeedService {
 
     List<FeedPostDTO> getAll();
 
-    FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile image) throws IOException;
+    FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile image) throws AuthenticationException;
 
     ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file);
 
@@ -26,7 +26,7 @@ public interface FeedService {
 
     FeedPostDTO findById(long postId);
 
-    FeedPostDTO update(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws RuntimeException, IOException;
+    FeedPostDTO update(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws AuthenticationException;
 
     @Transactional
     boolean delete(long postId);

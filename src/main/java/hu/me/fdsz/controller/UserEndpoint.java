@@ -11,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.AuthenticationException;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,16 +61,17 @@ public class UserEndpoint {
     }
 
     @GetMapping(value = "/get-current-user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUsername() {
+    public ResponseEntity<?> getUsername() throws AuthenticationException {
         return userService.getCurrentUserWithoutPassword()
                 .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+                .orElseThrow(AuthenticationException::new);
     }
 
     @PostMapping(value = "/update-user-data", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> updateUserData(@RequestPart(name = "user") UserDTO userDTO,
-                                                     @RequestPart(name = "image", required = false) MultipartFile multipartFile) {
-        return new ResponseEntity<>(userService.updateUserData(userDTO, multipartFile) ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+                                                     @RequestPart(name = "image", required = false) MultipartFile multipartFile)
+            throws AccessDeniedException, AuthenticationException {
+        return new ResponseEntity<>(userService.updateUserData(userDTO, multipartFile) != null ? HttpStatus.OK : HttpStatus.FORBIDDEN);
     }
 
     @GetMapping(value = "/search-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,7 +81,7 @@ public class UserEndpoint {
 
 
     @GetMapping(value = "/get-messages", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MessageDTO>> getMessages() {
+    public ResponseEntity<List<MessageDTO>> getMessages() throws AuthenticationException {
         List<MessageDTO> result = userService.getMessageToCurrentUser();
         return result.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(result, HttpStatus.OK);
     }

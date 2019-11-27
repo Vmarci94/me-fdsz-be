@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public interface JwtTokenProvider {
 
@@ -18,7 +20,7 @@ public interface JwtTokenProvider {
      */
     Authentication getAuthentication(String token);
 
-    User getAuthenticatedUser() throws UsernameNotFoundException;
+    Optional<User> getAuthenticatedUser() throws UsernameNotFoundException;
 
     boolean validateToken(String token);
 

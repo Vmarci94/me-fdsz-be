@@ -2,6 +2,8 @@ package hu.me.fdsz.model;
 
 import hu.me.fdsz.model.Util.HasImage;
 import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.*;
 import java.util.Optional;
@@ -29,9 +31,15 @@ public class FeedPost extends BaseEntity implements HasImage {
     @JoinColumn(name = "image", referencedColumnName = "id")
     public Image image;
 
-    @OneToOne
+    @CreatedBy
+    @ManyToOne
     @JoinColumn(name = "author", referencedColumnName = "id")
     private User author;
+
+    @LastModifiedBy
+    @ManyToOne
+    @JoinColumn(name = "last_modified_by", referencedColumnName = "id")
+    private User lastModifiedBy;
 
     @Override
     public Optional<Image> getImage() {

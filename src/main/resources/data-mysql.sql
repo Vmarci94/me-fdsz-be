@@ -23,20 +23,20 @@ insert into user (id, created_date, modified_date, birth_day, first_name, full_n
            'barack.akos@kamu.hu', null, 'asdasd', 'CLIENT', 'barack.akos');
 
 -- Alap posztok generálása
-insert into post (id, created_date, modified_date, content_text, introduction, title, author, image)
+insert into post (id, created_date, modified_date, content_text, introduction, title, author, image, last_modified_by)
 values (6, CURDATE(), CURDATE(), 'Ez az első poszt hosszú tartalma. Sok érdekes infóval.',
         'Ez az első poszt rövid leírása',
-        'Ez az első poszt címe.', 4, 0);
+        'Ez az első poszt címe.', 4, 0, 4);
 
-insert into post (id, created_date, modified_date, content_text, introduction, title, author, image)
+insert into post (id, created_date, modified_date, content_text, introduction, title, author, image, last_modified_by)
 values (7, CURDATE(), CURDATE(), 'Ez a második poszt hosszú tartalma. Sok érdekes infóval.',
         'Ez a második poszt rövid leírása',
-        'Ez a második poszt címe.', 4, 1);
+        'Ez a második poszt címe.', 4, 1, 4);
 
-insert into post (id, created_date, modified_date, content_text, introduction, title, author, image)
+insert into post (id, created_date, modified_date, content_text, introduction, title, author, image, last_modified_by)
 values (8, CURDATE(), CURDATE(), 'Ez a harmadik poszt hosszú tartalma. Sok érdekes infóval.',
         'Ez a harmadik poszt rövid leírása',
-        'Ez a harmadik poszt címe.', 4, 2);
+        'Ez a harmadik poszt címe.', 4, 2, 4);
 
 -- Alap felhasználói visszajelzések generálása
 insert into user_report (id, created_date, modified_date, report)

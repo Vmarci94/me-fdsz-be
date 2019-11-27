@@ -2,11 +2,15 @@ package hu.me.fdsz.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.naming.AuthenticationException;
+import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandlerController extends ResponseEntityExceptionHandler {
@@ -18,5 +22,11 @@ public class CustomGlobalExceptionHandlerController extends ResponseEntityExcept
         logger.error(ex.getErrorMessage());
         return ex.getResponse();
     }
+
+    @ExceptionHandler(value = {AccessDeniedException.class, AuthenticationException.class})
+    public ResponseEntity<HttpStatus> authenticationError(Exception e) {
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
 
 }

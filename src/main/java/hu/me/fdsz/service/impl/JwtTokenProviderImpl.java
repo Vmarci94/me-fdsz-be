@@ -83,13 +83,10 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public User getAuthenticatedUser() throws UsernameNotFoundException {
+    public Optional<User> getAuthenticatedUser() throws UsernameNotFoundException {
         return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .filter(authentication -> authentication.getPrincipal() instanceof User) //muszáj mert az API Object-et add vissza :/
-                .map(authentication -> ((User) authentication.getPrincipal()))
-//                .orElseThrow(() -> new InvalidTokenException("Nincs bejelentkezett felhasználó!", HttpStatus.UNAUTHORIZED));
-                .orElse(userRepositroy.findById(4L).get());
-
+                .map(authentication -> ((User) authentication.getPrincipal()));
     }
 
 }

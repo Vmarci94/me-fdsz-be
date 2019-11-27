@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import javax.persistence.EntityNotFoundException;
 
 @Service
@@ -32,11 +33,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public boolean addNewReservation(ReservationDTO reservationDTO) {
+    public boolean addNewReservation(ReservationDTO reservationDTO) throws AuthenticationException {
         Reservation newReservation = modelMapper.map(reservationDTO, Reservation.class);
         newReservation.setRoom(roomRepository.findById(reservationDTO.getRoomNumber())
                 .orElseThrow(EntityNotFoundException::new));
-        newReservation.setRoomOwner(userService.getCurrentUser().orElseThrow(() -> new RuntimeException("Nincs bejelentkezett felhasználó")));
+        newReservation.setRoomOwner(userService.getCurrentUser().orElseThrow(AuthenticationException::new));
         return reservationRepository.save(newReservation) != null;
     }
 }

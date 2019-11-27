@@ -3,7 +3,6 @@ package hu.me.fdsz.service.impl;
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
-import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.FeedPostRepository;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
@@ -21,8 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.naming.AuthenticationException;
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,7 +60,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws IOException {
+    public FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws AuthenticationException {
         FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
         // Azért kell így haszánlni a modelMappert-t, hogy biztosan a megfelelő convertert használja.
         // A MultipartFile Interfacet realizáló osztályok nem találnak rá autómatikusan a megfelelő TypeMap-re.
@@ -70,8 +69,8 @@ public class FeedServiceImpl implements FeedService {
         //majd mentjük, mert contentId-val együtt kell perzisztálni.
         image = imageRepository.save(image); //Visszaadja a már perzisztált Entitást
         newFeedPost.setImage(image);
-        User currentUser = userService.getCurrentUser().orElseThrow(() -> new RuntimeException("Nincs bejelentkezett user!"));
-        newFeedPost.setAuthor(currentUser);
+//        User currentUser = userService.getCurrentUser().orElseThrow(AuthenticationException::new);
+//        newFeedPost.setAuthor(currentUser);
         newFeedPost = feedPostRepository.save(newFeedPost);
         return modelMapper.map(newFeedPost, FeedPostDTO.class);
     }
@@ -103,7 +102,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public FeedPostDTO update(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws RuntimeException, IOException {
+    public FeedPostDTO update(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws AuthenticationException {
         if (feedPostDTO == null || feedPostDTO.getId() == null) {
             throw new NullPointerException("A frissítendő post nem lehet null");
         }
