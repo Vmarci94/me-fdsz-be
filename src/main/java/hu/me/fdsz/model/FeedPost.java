@@ -9,8 +9,8 @@ import java.util.Optional;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 @Table(name = "post")
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class FeedPost extends BaseEntity implements HasImage {

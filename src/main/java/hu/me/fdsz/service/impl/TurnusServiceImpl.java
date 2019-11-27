@@ -37,10 +37,10 @@ public class TurnusServiceImpl implements TurnusService {
 
     @Override
     public List<TurnusDTO> getAllAviableTurnus() {
+
+
         return turnusRepository.findAllByStartDateIsGreaterThanOrderByStartDate(LocalDate.now())
-                .map(turnusList -> turnusList.stream().map(turnus -> {
-                    return modelMapper.map(turnus, TurnusDTO.class);
-                }))
+                .map(turnusList -> turnusList.stream().map(turnus -> modelMapper.map(turnus, TurnusDTO.class)))
                 .orElseThrow(EntityNotFoundException::new)
                 .collect(Collectors.toList());
     }

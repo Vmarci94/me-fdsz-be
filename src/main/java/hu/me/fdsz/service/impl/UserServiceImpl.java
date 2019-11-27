@@ -1,9 +1,11 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.dto.JWTTokenDTO;
+import hu.me.fdsz.dto.MessageDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.model.enums.Role;
+import hu.me.fdsz.repository.MessageRepository;
 import hu.me.fdsz.repository.UserRepositroy;
 import hu.me.fdsz.service.api.ImageService;
 import hu.me.fdsz.service.api.JwtTokenProvider;
@@ -37,12 +39,15 @@ public class UserServiceImpl implements UserService {
 
     private final ImageService imageService;
 
+    private final MessageRepository messageRepository;
+
     @Autowired
-    public UserServiceImpl(UserRepositroy userRepositroy, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageService imageService) {
+    public UserServiceImpl(UserRepositroy userRepositroy, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageService imageService, MessageRepository messageRepository) {
         this.userRepositroy = userRepositroy;
         this.modelMapper = modelMapper;
         this.jwtTokenProvider = jwtTokenProvider;
         this.imageService = imageService;
+        this.messageRepository = messageRepository;
     }
 
     @Override
@@ -129,6 +134,14 @@ public class UserServiceImpl implements UserService {
         return userRepositroy.findAllByFullNameContaining(searchTerm)
                 .map(users -> users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList()))
                 .orElse(Collections.emptyList());
+    }
+
+    @Override
+    public List<MessageDTO> getMessageToCurrentUser() {
+        return getCurrentUser().map(currentUser ->
+                messageRepository.findAllMessagesToUser(currentUser).stream()
+                        .map(message -> modelMapper.map(message, MessageDTO.class))
+                        .collect(Collectors.toList())).orElse(Collections.emptyList());
     }
 
 }

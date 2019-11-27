@@ -19,7 +19,7 @@ public class Room extends BaseEntity {
     @EqualsAndHashCode.Include
     private long roomNumber;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "room_type", nullable = false)
     private RoomType roomType;
 

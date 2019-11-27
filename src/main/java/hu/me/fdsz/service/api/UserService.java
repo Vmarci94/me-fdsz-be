@@ -1,6 +1,7 @@
 package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.dto.JWTTokenDTO;
+import hu.me.fdsz.dto.MessageDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.User;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,6 @@ public interface UserService {
     List<UserDTO> findClientUsersByName(String fullName);
 
     List<UserDTO> searchUserByName(String searchTerm);
+
+    List<MessageDTO> getMessageToCurrentUser();
 }

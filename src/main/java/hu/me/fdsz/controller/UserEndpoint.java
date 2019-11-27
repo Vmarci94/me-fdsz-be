@@ -1,6 +1,7 @@
 package hu.me.fdsz.controller;
 
 import hu.me.fdsz.dto.JWTTokenDTO;
+import hu.me.fdsz.dto.MessageDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,11 @@ public class UserEndpoint {
         return userService.searchUserByName(searchTerm);
     }
 
+
+    @GetMapping(value = "/get-messages", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MessageDTO>> getMessages() {
+        List<MessageDTO> result = userService.getMessageToCurrentUser();
+        return result.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 }
