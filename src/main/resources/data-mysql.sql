@@ -22,6 +22,17 @@ insert into user (id, created_date, modified_date, birth_day, first_name, full_n
     value (5, CURDATE(), CURDATE(), '1956-04-26', 'Barack', 'Barack Ákos', 'Budapest', 06201598523, 'Ákos', null,
            'barack.akos@kamu.hu', null, 'asdasd', 'CLIENT', 'barack.akos');
 
+insert into user (id, created_date, modified_date, birth_day, first_name, full_name, location, phone_number,
+                  secound_name, title, email, image, password, role, username)
+    value (24, CURDATE(), CURDATE(), '1980-05-21', 'Demó', 'Demó Dénes', 'Siófok', 06302589632, 'Dénes', null,
+           'demo.denes@kamu.hu', null, 'asdasd', 'CLIENT', 'demo.denes');
+
+insert into user (id, created_date, modified_date, birth_day, first_name, full_name, location, phone_number,
+                  secound_name, title, email, image, password, role, username)
+    value (25, CURDATE(), CURDATE(), '1950-12-21', 'Minden', 'Minden Áron', 'Győr', 06805284682, 'Áron', null,
+           'minden.aron@kamu.hu', null, 'asdasd', 'ADMIN', 'minden.aron');
+
+
 -- Alap posztok generálása
 insert into post (id, created_date, modified_date, content_text, introduction, title, author, image, last_modified_by)
 values (6, CURDATE(), CURDATE(), 'Ez az első poszt hosszú tartalma. Sok érdekes infóval.',
@@ -80,22 +91,29 @@ insert into room (id, created_date, modified_date, price, room_number, room_type
 values (20, CURDATE(), CURDATE(), 5000, 0, 4);
 
 -- Teszt üzenetek feltöltése
-insert into message (id, created_date, modified_date, message_content, sender, reciever)
-    value (21, CURDATE(), CURDATE(), 'Ez az első üzenet amit a felhasználó írt az adminnak.', 5, 4);
+insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
+    value (21, CURDATE() - 5, CURDATE(), 'Ez az első üzenet amit a felhasználó írt az adminnak.', 5, 4, 'N');
 -- ez egy user -> admin üzenet
 
 -- ez egy admin --> user üzenet
-insert into message (id, created_date, modified_date, message_content, sender, reciever)
-    value (22, CURDATE(), CURDATE(), 'Ez egy válasz az admintól.', 4, 5);
+insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
+    value (22, CURDATE() - 3, CURDATE(), 'Ez egy válasz az admintól.', 4, 5, 'N');
 
 -- ez egy user -> admin üzenet
-insert into message (id, created_date, modified_date, message_content, sender, reciever)
-    value (23, CURDATE(), CURDATE(), 'Ez a második üzenet amit a felhasználó írt az adminnak', 5, 4);
+insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
+    value (23, CURDATE() - 2, CURDATE(), 'Ez a második üzenet amit a felhasználó írt az adminnak', 5, 4, 'N');
 
+-- ez egy user -> admin üzenet
+insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
+    value (26, CURDATE() - 8, CURDATE(), 'Demóka régi üzcsije', 24, 25, 'Y');
+
+-- ez egy user -> admin üzenet
+insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
+    value (27, CURDATE() - 1, CURDATE(), 'Demóka új üzcsije', 24, 25, 'N');
 
 -- Hibernate seq frissítése, hogy tudomást szerezzen a test adatok insertálásáról
 -- direkt az összes sort frissítem
 update hibernate_sequence
-set next_val= 24;
+set next_val= 28;
 
 commit;

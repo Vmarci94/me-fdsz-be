@@ -136,11 +136,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<MessageDTO> getMessageToCurrentUser() throws AuthenticationException {
-        return getCurrentUser().map(currentUser ->
-                messageRepository.findAllMessagesToUser(currentUser).stream()
-                        .map(message -> modelMapper.map(message, MessageDTO.class))
-                        .collect(Collectors.toList()))
-                .orElseThrow(AuthenticationException::new);
+        return getCurrentUser().map(this::getMessageToUser).orElseThrow(AuthenticationException::new);
+    }
+
+    @Override
+    public List<MessageDTO> getMessageToUser(User user) {
+        if ((user.getId() != null && user.getEmail() != null)
+                && (user.getId() != null ?
+                userRepositroy.existsById(user.getId()) : userRepositroy.existsByEmail(user.getEmail()))) {
+            return messageRepository.findAllMessagesToUser(user).stream()
+                    .map(message -> modelMapper.map(message, MessageDTO.class))
+                    .collect(Collectors.toList());
+        } else {
+            // Nem található a user, akihez le akarják kérni az üzeneteket
+            return Collections.emptyList();
+        }
     }
 
 }

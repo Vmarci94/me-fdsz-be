@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -25,5 +26,8 @@ public class Message extends BaseEntity {
 
     @Column(name = "message_content", nullable = false)
     private String messageContent;
+
+    @Type(type = "yes_no")
+    private boolean readed;
 
 }

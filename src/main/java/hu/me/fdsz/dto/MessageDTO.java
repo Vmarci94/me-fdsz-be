@@ -21,4 +21,6 @@ public class MessageDTO {
 
     private UserDTO reciever;
 
+    private String readed;
+
 }

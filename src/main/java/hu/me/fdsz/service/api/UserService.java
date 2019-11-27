@@ -38,4 +38,6 @@ public interface UserService {
     List<UserDTO> searchUserByName(String searchTerm);
 
     List<MessageDTO> getMessageToCurrentUser() throws AuthenticationException;
+
+    List<MessageDTO> getMessageToUser(User user);
 }

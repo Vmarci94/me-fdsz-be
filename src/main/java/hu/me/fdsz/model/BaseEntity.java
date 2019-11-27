@@ -24,7 +24,11 @@ public abstract class BaseEntity implements Serializable {
     @ToString.Include
     @EqualsAndHashCode.Include
     @GeneratedValue
-    private long id;
+    /**
+     * Egy entitás egyedi azonosítója, természetesen null értékkel nem lehet perzisztálni, a keretrendszer
+     * {@link NullPointerException}-t fog dobni. Mégis azért nem használok <b>long</b> primitívet mert a {@link ModelMapper}
+     */
+    private Long id;
 
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate

@@ -15,15 +15,16 @@ import java.util.Optional;
 @Entity
 @Getter
 @Setter
-@ToString(of = "username")
+@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "user")
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class User extends Person implements UserDetails, HasImage {
 
     @Column(nullable = false, unique = true)
     private String email;
 
+    @ToString.Include
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
