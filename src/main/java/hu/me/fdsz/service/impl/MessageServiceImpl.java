@@ -7,10 +7,12 @@ import hu.me.fdsz.model.User;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.MessageRepository;
 import hu.me.fdsz.service.api.MessageService;
+import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,15 +26,18 @@ public class MessageServiceImpl implements MessageService {
 
     private final ModelMapper modelMapper;
 
+    private final UserService userService;
+
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, ModelMapper modelMapper) {
+    public MessageServiceImpl(MessageRepository messageRepository, ModelMapper modelMapper, UserService userService) {
         this.messageRepository = messageRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
     }
 
     @Override
     public Map<User, LinkedList<Message>> getTopMessagesFromUsersGroupedBySender() {
-        return messageRepository.findAllByReciever_RoleIsOrderByCreatedDateAsc(Role.ADMIN).stream()
+        return messageRepository.findAllByReciever_RoleIsOrderByCreatedDate(Role.ADMIN).stream()
                 .collect(Collectors.groupingBy(Message::getSender, Collectors.collectingAndThen(Collectors.toList(),
                         messages -> messages.stream().sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
                                 .collect(Collectors.toCollection(LinkedList::new)))));
@@ -54,6 +59,19 @@ public class MessageServiceImpl implements MessageService {
         });
         return result.stream().sorted((mb1, mb2) -> mb2.getIncommindDate().compareTo(mb1.getIncommindDate()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean deleteAllMessageFromCurrentUser() throws AuthenticationException {
+        User currentUser = userService.getCurrentUser().orElseThrow(AuthenticationException::new);
+        if (currentUser.getRole() != Role.ADMIN) {
+            // egyenlőre csak a user tudja törölni az összes üzenetét, és ez most végig törli.
+            // ha lesz idő akkor jó lenne megoldani az inboxot is.
+            messageRepository.deleteALlBySender(currentUser);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

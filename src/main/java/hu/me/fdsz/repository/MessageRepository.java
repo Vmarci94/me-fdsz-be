@@ -13,6 +13,7 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
     @Query(value = "select m from Message m where m.sender = :user or m.reciever = :user order by m.createdDate")
     List<Message> findAllMessagesToUser(User user);
 
-    List<Message> findAllByReciever_RoleIsOrderByCreatedDateAsc(Role reciever_role);
+    List<Message> findAllByReciever_RoleIsOrderByCreatedDate(Role reciever_role);
 
+    void deleteALlBySender(User sender);
 }
