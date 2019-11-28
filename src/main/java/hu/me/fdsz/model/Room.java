@@ -4,7 +4,7 @@ import hu.me.fdsz.model.enums.RoomType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,8 +26,7 @@ public class Room extends BaseEntity {
     @Column(name = "price")
     private Long price;
 
-    @OneToMany
-    @JoinColumn(name = "room_number", referencedColumnName = "room_number")
-    private List<Reservation> reservations;
+    @ManyToMany(mappedBy = "rooms")
+    private Set<Turnus> turnusSet;
 
 }

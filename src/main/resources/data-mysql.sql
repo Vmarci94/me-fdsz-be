@@ -64,56 +64,81 @@ values (12, CURDATE(), CURDATE(), 'Ez most egy másik felhasználó véleménye'
 
 -- Szobák felvétele TODO: (ez egyébként nem árt ha majd mindig incializálódik)
 
--- Háromágyasok
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-values (13, CURDATE(), CURDATE(), 3000, 0, 3);
-
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-values (14, CURDATE(), CURDATE(), 3000, 0, 3);
-
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-values (15, CURDATE(), CURDATE(), 3000, 0, 3);
-
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-values (16, CURDATE(), CURDATE(), 3000, 0, 3);
-
--- Négyágyasok
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-values (17, CURDATE(), CURDATE(), 5000, 0, 4);
-
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-values (18, CURDATE(), CURDATE(), 5000, 0, 4);
-
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-values (19, CURDATE(), CURDATE(), 5000, 0, 4);
-
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-values (20, CURDATE(), CURDATE(), 5000, 0, 4);
-
 -- Teszt üzenetek feltöltése
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (21, CURDATE() - 5, CURDATE(), 'Ez az első üzenet amit a felhasználó írt az adminnak.', 5, 4, 'N');
+    value (17, CURDATE() - 5, CURDATE(), 'Ez az első üzenet amit a felhasználó írt az adminnak.', 5, 4, 'N');
 -- ez egy user -> admin üzenet
 
 -- ez egy admin --> user üzenet
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (22, CURDATE() - 3, CURDATE(), 'Ez egy válasz az admintól.', 4, 5, 'N');
+    value (18, CURDATE() - 3, CURDATE(), 'Ez egy válasz az admintól.', 4, 5, 'N');
 
 -- ez egy user -> admin üzenet
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (23, CURDATE() - 2, CURDATE(), 'Ez a második üzenet amit a felhasználó írt az adminnak', 5, 4, 'N');
+    value (19, CURDATE() - 2, CURDATE(), 'Ez a második üzenet amit a felhasználó írt az adminnak', 5, 4, 'N');
 
 -- ez egy user -> admin üzenet
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (26, CURDATE() - 8, CURDATE(), 'Demóka régi üzcsije', 24, 25, 'Y');
+    value (20, CURDATE() - 8, CURDATE(), 'Demóka régi üzcsije', 24, 25, 'Y');
 
 -- ez egy user -> admin üzenet
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (27, CURDATE() - 1, CURDATE(), 'Demóka új üzcsije', 24, 25, 'N');
+    value (21, CURDATE() - 1, CURDATE(), 'Demóka új üzcsije', 24, 25, 'N');
+
+-- Teszt szobák feltöltése
+insert into room (id, created_date, modified_date, price, room_number, room_type)
+    value (22, CURDATE(), CURDATE(), 10000, 1, 4);
+
+insert into room (id, created_date, modified_date, price, room_number, room_type)
+    value (23, CURDATE(), CURDATE(), 10000, 2, 4);
+
+insert into room (id, created_date, modified_date, price, room_number, room_type)
+    value (24, CURDATE(), CURDATE(), 10000, 3, 4);
+
+insert into room (id, created_date, modified_date, price, room_number, room_type)
+    value (25, CURDATE(), CURDATE(), 10000, 4, 4);
+
+insert into room (id, created_date, modified_date, price, room_number, room_type)
+    value (26, CURDATE(), CURDATE(), 5000, 5, 3);
+
+insert into room (id, created_date, modified_date, price, room_number, room_type)
+    value (27, CURDATE(), CURDATE(), 5000, 6, 3);
+
+insert into room (id, created_date, modified_date, price, room_number, room_type)
+    value (28, CURDATE(), CURDATE(), 5000, 7, 3);
+
+insert into room (id, created_date, modified_date, price, room_number, room_type)
+    value (29, CURDATE(), CURDATE(), 5000, 8, 3);
+
+-- Teszt turnus létrehozása
+insert into turnus (id, created_date, modified_date, enabled, end_date, start_date)
+    value (30, CURDATE(), CURDATE(), 'Y', '2020-2-10', '2019-2-14');
+
+insert into turnus_room (room_number, turnus_id) value (22, 30);
+insert into turnus_room (room_number, turnus_id) value (23, 30);
+insert into turnus_room (room_number, turnus_id) value (24, 30);
+insert into turnus_room (room_number, turnus_id) value (25, 30);
+insert into turnus_room (room_number, turnus_id) value (26, 30);
+insert into turnus_room (room_number, turnus_id) value (27, 30);
+insert into turnus_room (room_number, turnus_id) value (28, 30);
+insert into turnus_room (room_number, turnus_id) value (29, 30);
+
+insert into turnus (id, created_date, modified_date, enabled, end_date, start_date)
+    value (31, CURDATE(), CURDATE(), 'Y', '2020-03-16', '2019-03-20');
+
+insert into turnus_room (room_number, turnus_id) value (22, 31);
+insert into turnus_room (room_number, turnus_id) value (23, 31);
+insert into turnus_room (room_number, turnus_id) value (24, 31);
+insert into turnus_room (room_number, turnus_id) value (25, 31);
+insert into turnus_room (room_number, turnus_id) value (26, 31);
+insert into turnus_room (room_number, turnus_id) value (27, 31);
+insert into turnus_room (room_number, turnus_id) value (28, 31);
+insert into turnus_room (room_number, turnus_id) value (29, 31);
+
 
 -- Hibernate seq frissítése, hogy tudomást szerezzen a test adatok insertálásáról
 -- direkt az összes sort frissítem
 update hibernate_sequence
-set next_val= 28;
+set next_val= 32;
 
 commit;
