@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.Map;
 
 import static javax.persistence.TemporalType.DATE;
 
@@ -31,12 +33,23 @@ public class Turnus extends BaseEntity {
     @Column(nullable = false)
     private boolean enabled;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @CreatedBy
+    @ManyToOne
+    @JoinColumn(name = "author", referencedColumnName = "id")
+    private User author;
+
+    @LastModifiedBy
+    @ManyToOne
+    @JoinColumn(name = "last_modified_by", referencedColumnName = "id", nullable = false)
+    private User lastModifiedBy;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "turnus_room",
             joinColumns = {@JoinColumn(name = "turnusId")},
-            inverseJoinColumns = {@JoinColumn(name = "room_number")}
+            inverseJoinColumns = {@JoinColumn(name = "roomId")}
     )
-    private Set<Room> rooms;
+    @MapKey(name = "roomNumber")
+    private Map<Long, Room> rooms;
 
 }

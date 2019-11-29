@@ -1,9 +1,11 @@
 package hu.me.fdsz.config;
 
 import hu.me.fdsz.dto.FeedPostDTO;
+import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
+import hu.me.fdsz.model.Turnus;
 import hu.me.fdsz.model.User;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;
@@ -105,6 +107,12 @@ public class ModelMapperConfig {
                     @Override
                     protected User convert(UserDTO source) {
                         User result = tmpMapper.map(source, User.class);
+                        if (result.getFirstName().isBlank()) {
+                            result.setFirstName(
+                                    String.format("%s %s %s", result.getTitle(), result.getFirstName(), result.getSecoundName()).strip()
+                            );
+                        }
+
                         if (source.getImageId() != null) {
                             Image image = imageRepository.findById(source.getImageId()).orElse(null);
                             result.setImage(image);
@@ -113,6 +121,17 @@ public class ModelMapperConfig {
                     }
                 }
         );
+
+        singletonModelMapper.addConverter(new AbstractConverter<Turnus, TurnusDTO>() {
+            @Override
+            protected TurnusDTO convert(Turnus source) {
+                TurnusDTO result = tmpMapper.map(source, TurnusDTO.class);
+//                if(!tunusService.isEnabled(source)){
+//
+//                }
+                return result;
+            }
+        });
 
     }
 }

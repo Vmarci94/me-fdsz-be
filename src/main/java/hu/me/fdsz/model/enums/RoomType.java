@@ -4,9 +4,9 @@ public enum RoomType {
 
     THREE_BED(3), FOUR_BED(4);
 
-    private int value;
+    private Integer value;
 
-    RoomType(int value) {
+    RoomType(Integer value) {
         this.value = value;
     }
 

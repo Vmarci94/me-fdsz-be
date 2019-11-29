@@ -2,7 +2,10 @@ package hu.me.fdsz.model;
 
 import hu.me.fdsz.model.Util.HasImage;
 import hu.me.fdsz.model.enums.Role;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,10 +18,9 @@ import java.util.Optional;
 @Entity
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "user")
+@ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-@NoArgsConstructor
 public class User extends Person implements UserDetails, HasImage {
 
     @Column(nullable = false, unique = true)

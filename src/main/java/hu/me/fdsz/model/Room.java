@@ -4,7 +4,7 @@ import hu.me.fdsz.model.enums.RoomType;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,14 +19,14 @@ public class Room extends BaseEntity {
     @EqualsAndHashCode.Include
     private long roomNumber;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "room_type", nullable = false)
     private RoomType roomType;
 
-    @Column(name = "price")
-    private Long price;
+    @Column(name = "price", nullable = false)
+    private long price;
 
     @ManyToMany(mappedBy = "rooms")
-    private Set<Turnus> turnusSet;
+    private List<Turnus> turnusSet;
 
 }

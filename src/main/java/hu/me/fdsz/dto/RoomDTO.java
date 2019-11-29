@@ -1,6 +1,5 @@
 package hu.me.fdsz.dto;
 
-import hu.me.fdsz.model.User;
 import hu.me.fdsz.model.enums.RoomType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +14,8 @@ public class RoomDTO {
 
     private RoomType roomType;
 
-    private Long price;
+    private long price;
 
-    private User roomOwner;
+//    private long available;
 
 }

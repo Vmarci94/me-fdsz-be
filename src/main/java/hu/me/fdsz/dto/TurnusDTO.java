@@ -2,7 +2,11 @@ package hu.me.fdsz.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
+import javax.persistence.Temporal;
+import java.util.Date;
+import java.util.Map;
+
+import static javax.persistence.TemporalType.DATE;
 
 @Getter
 @Setter
@@ -11,14 +15,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class TurnusDTO {
 
-    private LocalDate startDate;
+    @Temporal(DATE)
+    private Date startDate;
 
-    private LocalDate endDate;
+    @Temporal(DATE)
+    private Date endDate;
 
-    private Integer numberOfDays;
+    private boolean enabled;
 
-    private Boolean full;
-
-    private Boolean enabled;
+    private Map<Long, RoomDTO> rooms;
 
 }

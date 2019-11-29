@@ -87,58 +87,72 @@ insert into message (id, created_date, modified_date, message_content, sender, r
 
 -- Teszt szobák feltöltése
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (22, CURDATE(), CURDATE(), 10000, 1, 4);
+    value (22, CURDATE(), CURDATE(), 10000, 1, 'FOUR_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (23, CURDATE(), CURDATE(), 10000, 2, 4);
+    value (23, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (24, CURDATE(), CURDATE(), 10000, 3, 4);
+    value (24, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (25, CURDATE(), CURDATE(), 10000, 4, 4);
+    value (25, CURDATE(), CURDATE(), 10000, 4, 'FOUR_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (26, CURDATE(), CURDATE(), 5000, 5, 3);
+    value (26, CURDATE(), CURDATE(), 5000, 5, 'THREE_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (27, CURDATE(), CURDATE(), 5000, 6, 3);
+    value (27, CURDATE(), CURDATE(), 5000, 6, 'THREE_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (28, CURDATE(), CURDATE(), 5000, 7, 3);
+    value (28, CURDATE(), CURDATE(), 5000, 7, 'THREE_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (29, CURDATE(), CURDATE(), 5000, 8, 3);
+    value (29, CURDATE(), CURDATE(), 5000, 8, 'THREE_BED');
 
 -- Teszt turnus létrehozása
-insert into turnus (id, created_date, modified_date, enabled, end_date, start_date)
-    value (30, CURDATE(), CURDATE(), 'Y', '2020-2-10', '2019-2-14');
+insert into turnus (id, created_date, modified_date, enabled, end_date, start_date, last_modified_by, author)
+    value (30, CURDATE(), CURDATE(), 'Y', '2020-2-10', '2020-2-14', 4, 4);
 
-insert into turnus_room (room_number, turnus_id) value (22, 30);
-insert into turnus_room (room_number, turnus_id) value (23, 30);
-insert into turnus_room (room_number, turnus_id) value (24, 30);
-insert into turnus_room (room_number, turnus_id) value (25, 30);
-insert into turnus_room (room_number, turnus_id) value (26, 30);
-insert into turnus_room (room_number, turnus_id) value (27, 30);
-insert into turnus_room (room_number, turnus_id) value (28, 30);
-insert into turnus_room (room_number, turnus_id) value (29, 30);
+insert into turnus_room (room_id, turnus_id) value (22, 30);
+insert into turnus_room (room_id, turnus_id) value (23, 30);
+insert into turnus_room (room_id, turnus_id) value (24, 30);
+insert into turnus_room (room_id, turnus_id) value (25, 30);
+insert into turnus_room (room_id, turnus_id) value (26, 30);
+insert into turnus_room (room_id, turnus_id) value (27, 30);
+insert into turnus_room (room_id, turnus_id) value (28, 30);
+insert into turnus_room (room_id, turnus_id) value (29, 30);
 
-insert into turnus (id, created_date, modified_date, enabled, end_date, start_date)
-    value (31, CURDATE(), CURDATE(), 'Y', '2020-03-16', '2019-03-20');
+insert into turnus (id, created_date, modified_date, enabled, end_date, start_date, last_modified_by, author)
+    value (31, CURDATE(), CURDATE(), 'N', '2020-03-16', '2020-03-20', 4, 4);
 
-insert into turnus_room (room_number, turnus_id) value (22, 31);
-insert into turnus_room (room_number, turnus_id) value (23, 31);
-insert into turnus_room (room_number, turnus_id) value (24, 31);
-insert into turnus_room (room_number, turnus_id) value (25, 31);
-insert into turnus_room (room_number, turnus_id) value (26, 31);
-insert into turnus_room (room_number, turnus_id) value (27, 31);
-insert into turnus_room (room_number, turnus_id) value (28, 31);
-insert into turnus_room (room_number, turnus_id) value (29, 31);
+insert into turnus_room (room_id, turnus_id) value (22, 31);
+insert into turnus_room (room_id, turnus_id) value (23, 31);
+insert into turnus_room (room_id, turnus_id) value (24, 31);
+insert into turnus_room (room_id, turnus_id) value (25, 31);
+insert into turnus_room (room_id, turnus_id) value (26, 31);
+insert into turnus_room (room_id, turnus_id) value (27, 31);
+insert into turnus_room (room_id, turnus_id) value (28, 31);
+insert into turnus_room (room_id, turnus_id) value (29, 31);
+
+-- Régi lejárt turnus létrehozása
+insert into turnus (id, created_date, modified_date, enabled, end_date, start_date, last_modified_by, author)
+    value (32, '2019-09-01', '2019-09-01', 'Y', '2019-09-09', '2019-09-13', 4, 4);
+
+insert into turnus_room (room_id, turnus_id) value (22, 32);
+insert into turnus_room (room_id, turnus_id) value (23, 32);
+insert into turnus_room (room_id, turnus_id) value (24, 32);
+insert into turnus_room (room_id, turnus_id) value (25, 32);
+insert into turnus_room (room_id, turnus_id) value (26, 32);
+insert into turnus_room (room_id, turnus_id) value (27, 32);
+insert into turnus_room (room_id, turnus_id) value (28, 32);
+insert into turnus_room (room_id, turnus_id) value (29, 32);
+
 
 
 -- Hibernate seq frissítése, hogy tudomást szerezzen a test adatok insertálásáról
 -- direkt az összes sort frissítem
 update hibernate_sequence
-set next_val= 32;
+set next_val= 33;
 
 commit;

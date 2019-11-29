@@ -3,16 +3,15 @@ package hu.me.fdsz.repository;
 import hu.me.fdsz.model.Turnus;
 import org.springframework.data.repository.CrudRepository;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-public interface TurnusRepository extends CrudRepository<Turnus, LocalDate> {
+public interface TurnusRepository extends CrudRepository<Turnus, Long> {
 
-    Optional<List<Turnus>> findAllByStartDateIsGreaterThanOrderByStartDate(LocalDate startDate);
+    List<Turnus> findAllByEnabledIs(boolean enabled);
 
-    Optional<List<Turnus>> findAllByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate);
+    List<Turnus> findAllByStartDateIsGreaterThanOrderByStartDateAsc(Date startDate);
 
-    @Override
-    List<Turnus> findAll();
+    List<Turnus> findAllByStartDateIsGreaterThanEqualAndEndDateIsLessThanEqualOrderByStartDateAsc(Date startDate, Date endDate);
+
 }

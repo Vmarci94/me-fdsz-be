@@ -17,7 +17,7 @@ import static javax.persistence.TemporalType.DATE;
 public abstract class Person extends BaseEntity {
 
     @ToString.Include
-    private String title;
+    private String title = "";
 
     @Column(nullable = false)
     @ToString.Include
@@ -27,7 +27,7 @@ public abstract class Person extends BaseEntity {
     @ToString.Include
     private String secoundName;
 
-    private String fullName;
+    private String fullName = "";
 
     @Temporal(DATE)
     private Date birthDay;
