@@ -57,7 +57,7 @@ public class TurnusServiceImpl implements TurnusService {
 
     @Override
     public List<Turnus> getAllTurnus() {
-        return null;
+        return turnusRepository.findAll();
     }
 
     @Override

@@ -6,11 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Temporal;
+import java.util.Date;
+
+import static javax.persistence.TemporalType.DATE;
+
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @ToString(onlyExplicitlyIncluded = true, callSuper = false)
-public class UserDTO extends GuestDTO {
+public class UserDTO {
 
     @ToString.Include
     @EqualsAndHashCode.Include
@@ -23,5 +28,20 @@ public class UserDTO extends GuestDTO {
     private Role role;
 
     private Long imageId;
+
+    private String title;
+
+    private String firstName;
+
+    private String secoundName;
+
+    private String fullName;
+
+    private String phoneNumber;
+
+    private String location;
+
+    @Temporal(DATE)
+    private Date birthDay;
 
 }

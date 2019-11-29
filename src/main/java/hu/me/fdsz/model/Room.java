@@ -29,4 +29,7 @@ public class Room extends BaseEntity {
     @ManyToMany(mappedBy = "rooms")
     private List<Turnus> turnusSet;
 
+    @ManyToMany(mappedBy = "rooms")
+    private List<Booking> bookingList;
+
 }

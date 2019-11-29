@@ -15,6 +15,8 @@ import static javax.persistence.TemporalType.DATE;
 @AllArgsConstructor
 public class TurnusDTO {
 
+    private long id;
+
     @Temporal(DATE)
     private Date startDate;
 

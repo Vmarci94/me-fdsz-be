@@ -5,11 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Temporal;
-import java.util.Date;
 import java.util.List;
-
-import static javax.persistence.TemporalType.DATE;
 
 @Getter
 @Setter
@@ -21,8 +17,9 @@ public class BookingDTO {
 
     private List<RoomDTO> roomList;
 
-    @Temporal(DATE)
-    private Date bookingDate;
+    private List<GuestDTO> guests;
+
+    private TurnusDTO turnusDTO;
 
     private int numberOfNights;
 

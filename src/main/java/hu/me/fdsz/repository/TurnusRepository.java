@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface TurnusRepository extends CrudRepository<Turnus, Long> {
 
+    List<Turnus> findAll();
+
     List<Turnus> findAllByEnabledIs(boolean enabled);
 
     List<Turnus> findAllByStartDateIsGreaterThanOrderByStartDateAsc(Date startDate);

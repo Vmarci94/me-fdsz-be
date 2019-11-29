@@ -8,7 +8,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.*;
 
 import static javax.persistence.TemporalType.DATE;
 
@@ -29,15 +29,33 @@ public class Booking extends BaseEntity {
     @JoinColumn(name = "last_modified_by", referencedColumnName = "id", nullable = false)
     private User lastModifiedBy;
 
-//    @OneToMany()
-//    @JoinColumn(name = "room_number", referencedColumnName = "room_number")
-//    private List<Room> roomList;
-
-    @Column(name = "booking_name", nullable = false)
+    @Column(name = "booking_date", nullable = false)
     @Temporal(DATE)
     private Date bookingDate;
 
     @Column(name = "number_of_nights", nullable = false)
     private int numberOfNights;
+
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "booking_room",
+            joinColumns = {@JoinColumn(name = "booking_id")},
+            inverseJoinColumns = {@JoinColumn(name = "room_id")}
+    )
+    @MapKey(name = "roomNumber")
+    private Map<Long, Room> rooms = new HashMap<>();
+
+//    @OneToMany
+//    @JoinColumn(name = "id", referencedColumnName = "id")
+//    private List<Room> rooms;
+
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "booking_guest",
+            joinColumns = {@JoinColumn(name = "booking_id")},
+            inverseJoinColumns = {@JoinColumn(name = "guest_id")}
+    )
+    private List<Guest> guests = new ArrayList<>();
 
 }
