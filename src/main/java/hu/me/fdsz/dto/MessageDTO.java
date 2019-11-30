@@ -23,4 +23,6 @@ public class MessageDTO {
 
     private String readed;
 
+    private boolean myMessage;
+
 }
