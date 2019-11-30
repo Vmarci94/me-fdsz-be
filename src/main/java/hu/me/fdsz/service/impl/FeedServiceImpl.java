@@ -111,7 +111,7 @@ public class FeedServiceImpl implements FeedService {
             //létezik a frissítendő post
             FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
 
-            if (!newFeedPost.getImage().isPresent()) {
+            if (newFeedPost.getImage().isEmpty()) {
                 //ha új kép jön, akkor annak még nincs ID-ja, így ez üres lesz, és a kép tartalma a multipart file-ban lesz.
                 imageService.updateImage(newFeedPost, multipartFile);
             } //ha  jött imageId és Image a DTO-ba akkor a régi képet tartja meg.
