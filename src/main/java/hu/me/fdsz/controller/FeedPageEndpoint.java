@@ -36,7 +36,7 @@ public class FeedPageEndpoint {
 
     @PutMapping(value = "/add", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addNewFeedPost(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
-                               @RequestPart(name = "image") MultipartFile image) throws AuthenticationException {
+                               @RequestPart(name = "image", required = false) MultipartFile image) throws AuthenticationException {
         feedService.add(feedPostDTO, image);
     }
 
