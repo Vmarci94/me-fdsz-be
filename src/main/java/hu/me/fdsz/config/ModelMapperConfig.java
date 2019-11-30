@@ -134,7 +134,7 @@ public class ModelMapperConfig {
                         MessageDTO result = tmpMapper.map(source, MessageDTO.class);
                         userService.getCurrentUser().ifPresent(currentUser -> {
                             if (currentUser.getRole() == Role.CLIENT) {
-                                result.setMyMessage(currentUser.equals(source.getSender()));
+                                result.setMyMessage(source.getSender().getRole() == Role.CLIENT);
                             } else if (currentUser.getRole() == Role.ADMIN) {
                                 result.setMyMessage(source.getSender().getRole() == Role.ADMIN);
                             }

@@ -111,9 +111,12 @@ insert into message (id, created_date, modified_date, message_content, sender, r
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
     value (27, CURDATE() - 1, CURDATE(), 'Demóka új üzcsije', 24, 25, 'N');
 
+INSERT INTO ME_FDSZ.message (id, created_date, modified_date, message_content, readed, reciever, sender)
+VALUES (28, '2019-11-30', '2019-11-30', 'Egy másik admin válasza', 'N', 5, 25);
+
 -- Hibernate seq frissítése, hogy tudomást szerezzen a test adatok insertálásáról
 -- direkt az összes sort frissítem
 update hibernate_sequence
-set next_val= 28;
+set next_val= 29;
 
 commit;
