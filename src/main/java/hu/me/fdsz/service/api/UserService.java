@@ -42,4 +42,7 @@ public interface UserService {
     List<MessageDTO> getMessageToUser(User user);
 
     List<MessageDTO> getMessageToUser(long userId);
+
+    UserDTO getUserById(long userId);
+
 }

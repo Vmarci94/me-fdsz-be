@@ -151,4 +151,10 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList())).orElse(Collections.emptyList());
     }
 
+    @Override
+    public UserDTO getUserById(long userId) {
+        return userRepositroy.findById(userId).map(user -> modelMapper.map(user, UserDTO.class))
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
 }

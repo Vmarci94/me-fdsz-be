@@ -102,6 +102,7 @@ public class ModelMapperConfig {
                     protected UserDTO convert(User source) {
                         UserDTO result = tmpMapper.map(source, UserDTO.class);
                         source.getImage().ifPresent(image -> result.setImageId(image.getId()));
+                        result.setAdmin(source.getRole() == Role.ADMIN);
                         return result;
                     }
                 }

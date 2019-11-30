@@ -17,6 +17,8 @@ import static javax.persistence.TemporalType.DATE;
 @ToString(onlyExplicitlyIncluded = true)
 public class UserDTO {
 
+    private Long id;
+
     @ToString.Include
     @EqualsAndHashCode.Include
     private String email;
@@ -43,5 +45,7 @@ public class UserDTO {
     private Role role;
 
     private Long imageId;
+
+    private boolean admin;
 
 }

@@ -59,6 +59,11 @@ public class UserEndpoint {
         return userService.findClientUsersByName(fullName);
     }
 
+    @GetMapping(value = "/get-by-id")
+    public UserDTO getUserById(long userId) {
+        return userService.getUserById(userId);
+    }
+
     @GetMapping(value = "/get-current-user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUsername() throws AuthenticationException {
         return userService.getCurrentUserWithoutPassword()

@@ -28,6 +28,6 @@ public class Message extends BaseEntity {
     private String messageContent;
 
     @Type(type = "yes_no")
-    private boolean readed;
+    private boolean readed = false;
 
 }
