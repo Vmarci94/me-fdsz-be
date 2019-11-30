@@ -45,4 +45,6 @@ public interface UserService {
 
     UserDTO getUserById(long userId);
 
+    User getDefaultAdmin();
+
 }

@@ -157,4 +157,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    @Override
+    public User getDefaultAdmin() {
+        //Ez most Alap Elek
+        return userRepositroy.findById(4L).orElseThrow(EntityNotFoundException::new);
+    }
+
 }

@@ -80,7 +80,10 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Optional<Message> add(MessageDTO messageDTO) throws AuthenticationException {
         User sender = userService.getCurrentUser().orElseThrow(AuthenticationException::new);
-        User reciever = userRepositroy.findById(messageDTO.getReciever().getId()).orElseThrow(EntityNotFoundException::new);
+        User reciever = messageDTO.getReciever() != null && messageDTO.getReciever().getId() != null ?
+                userRepositroy.findById(messageDTO.getReciever().getId()).orElseThrow(EntityNotFoundException::new)
+                :
+                userService.getDefaultAdmin();
         Message newMessage = new Message();
         newMessage.setMessageContent(messageDTO.getMessage());
         newMessage.setSender(sender);
