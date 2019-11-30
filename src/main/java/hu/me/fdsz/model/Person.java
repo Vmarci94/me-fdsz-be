@@ -27,7 +27,7 @@ public abstract class Person extends BaseEntity {
     @ToString.Include
     private String secoundName;
 
-    private String fullName;
+    private String fullName = "";
 
     @Temporal(DATE)
     private Date birthDay;

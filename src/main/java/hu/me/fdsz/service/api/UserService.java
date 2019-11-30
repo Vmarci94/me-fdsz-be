@@ -40,4 +40,6 @@ public interface UserService {
     List<MessageDTO> getMessageToCurrentUser() throws AuthenticationException;
 
     List<MessageDTO> getMessageToUser(User user);
+
+    List<MessageDTO> getMessageToUser(long userId);
 }

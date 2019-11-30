@@ -105,6 +105,12 @@ public class ModelMapperConfig {
                     @Override
                     protected User convert(UserDTO source) {
                         User result = tmpMapper.map(source, User.class);
+                        if (result.getFirstName().isBlank()) {
+                            result.setFirstName(
+                                    String.format("%s %s %s", result.getTitle(), result.getFirstName(), result.getSecoundName()).strip()
+                            );
+                        }
+
                         if (source.getImageId() != null) {
                             Image image = imageRepository.findById(source.getImageId()).orElse(null);
                             result.setImage(image);

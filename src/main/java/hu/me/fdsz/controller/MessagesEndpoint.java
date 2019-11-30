@@ -2,8 +2,6 @@ package hu.me.fdsz.controller;
 
 import hu.me.fdsz.dto.MailBoxDTO;
 import hu.me.fdsz.dto.MessageDTO;
-import hu.me.fdsz.dto.UserDTO;
-import hu.me.fdsz.model.User;
 import hu.me.fdsz.service.api.MessageService;
 import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
@@ -42,8 +40,8 @@ public class MessagesEndpoint {
     }
 
     @GetMapping(value = "/to-user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<MessageDTO> getMessagesToUser(UserDTO userDTO) {
-        return userService.getMessageToUser(modelMapper.map(userDTO, User.class));
+    public List<MessageDTO> getMessagesToUser(long userId) {
+        return userService.getMessageToUser(userId);
     }
 
     @DeleteMapping(value = "/delete-all-user-message")
