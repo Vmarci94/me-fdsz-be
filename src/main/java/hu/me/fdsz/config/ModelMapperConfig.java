@@ -2,13 +2,17 @@ package hu.me.fdsz.config;
 
 import hu.me.fdsz.dto.FeedPostDTO;
 import hu.me.fdsz.dto.TurnusDTO;
+import hu.me.fdsz.dto.MessageDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
 import hu.me.fdsz.model.Turnus;
+import hu.me.fdsz.model.Message;
 import hu.me.fdsz.model.User;
+import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;
+import hu.me.fdsz.service.api.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.AbstractConverter;
@@ -32,10 +36,13 @@ public class ModelMapperConfig {
 
     private final ImageRepository imageRepository;
 
+    private final UserService userService;
+
     @Autowired
-    public ModelMapperConfig(ImageService imageService, ImageRepository imageRepository) {
+    public ModelMapperConfig(ImageService imageService, ImageRepository imageRepository, UserService userService) {
         this.imageService = imageService;
         this.imageRepository = imageRepository;
+        this.userService = userService;
     }
 
 
@@ -97,6 +104,7 @@ public class ModelMapperConfig {
                     protected UserDTO convert(User source) {
                         UserDTO result = tmpMapper.map(source, UserDTO.class);
                         source.getImage().ifPresent(image -> result.setImageId(image.getId()));
+                        result.setAdmin(source.getRole() == Role.ADMIN);
                         return result;
                     }
                 }
@@ -132,6 +140,23 @@ public class ModelMapperConfig {
                 return result;
             }
         });
+
+        singletonModelMapper.addConverter(
+                new AbstractConverter<Message, MessageDTO>() {
+                    @Override
+                    protected MessageDTO convert(Message source) {
+                        MessageDTO result = tmpMapper.map(source, MessageDTO.class);
+                        userService.getCurrentUser().ifPresent(currentUser -> {
+                            if (currentUser.getRole() == Role.CLIENT) {
+                                result.setMyMessage(source.getSender().getRole() == Role.CLIENT);
+                            } else if (currentUser.getRole() == Role.ADMIN) {
+                                result.setMyMessage(source.getSender().getRole() == Role.ADMIN);
+                            }
+                        });
+                        return result;
+                    }
+                }
+        );
 
     }
 }

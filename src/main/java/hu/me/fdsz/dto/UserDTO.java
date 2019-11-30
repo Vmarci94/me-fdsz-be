@@ -13,9 +13,11 @@ import static javax.persistence.TemporalType.DATE;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-@ToString(onlyExplicitlyIncluded = true, callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class UserDTO {
+
+    private Long id;
 
     @ToString.Include
     @EqualsAndHashCode.Include
@@ -43,5 +45,7 @@ public class UserDTO {
 
     @Temporal(DATE)
     private Date birthDay;
+
+    private boolean admin;
 
 }

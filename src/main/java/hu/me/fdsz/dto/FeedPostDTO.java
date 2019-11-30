@@ -13,7 +13,7 @@ public class FeedPostDTO {
 
     private String title;
 
-    private String introductionText;
+    private String introduction;
 
     private String contentText;
 

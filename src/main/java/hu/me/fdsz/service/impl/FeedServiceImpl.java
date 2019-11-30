@@ -62,15 +62,15 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws AuthenticationException {
         FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
-        // Azért kell így haszánlni a modelMappert-t, hogy biztosan a megfelelő convertert használja.
-        // A MultipartFile Interfacet realizáló osztályok nem találnak rá autómatikusan a megfelelő TypeMap-re.
-        Image image = modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile);
-        //add neki contentId-t
-        //majd mentjük, mert contentId-val együtt kell perzisztálni.
-        image = imageRepository.save(image); //Visszaadja a már perzisztált Entitást
-        newFeedPost.setImage(image);
-//        User currentUser = userService.getCurrentUser().orElseThrow(AuthenticationException::new);
-//        newFeedPost.setAuthor(currentUser);
+        if (multipartFile != null) {
+            // Azért kell így haszánlni a modelMappert-t, hogy biztosan a megfelelő convertert használja.
+            // A MultipartFile Interfacet realizáló osztályok nem találnak rá autómatikusan a megfelelő TypeMap-re.
+            Image image = modelMapper.getTypeMap(MultipartFile.class, Image.class).map(multipartFile);
+            //add neki contentId-t
+            //majd mentjük, mert contentId-val együtt kell perzisztálni.
+            image = imageRepository.save(image); //Visszaadja a már perzisztált Entitást
+            newFeedPost.setImage(image);
+        }
         newFeedPost = feedPostRepository.save(newFeedPost);
         return modelMapper.map(newFeedPost, FeedPostDTO.class);
     }
@@ -111,9 +111,12 @@ public class FeedServiceImpl implements FeedService {
             //létezik a frissítendő post
             FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
 
-            //Azért, hogy módosítás esetén törölni is lehessen a képet, mindig frissítjük a képt is.
-            imageService.updateImage(newFeedPost, multipartFile);
-            //majd mentjük a változásokat, ez elvileg ráment a régire mert az ID-ja megegyezik a feedPost objektuméval.
+            if (newFeedPost.getImage().isEmpty()) {
+                //ha új kép jön, akkor annak még nincs ID-ja, így ez üres lesz, és a kép tartalma a multipart file-ban lesz.
+                imageService.updateImage(newFeedPost, multipartFile);
+            } //ha  jött imageId és Image a DTO-ba akkor a régi képet tartja meg.
+
+            //majd mentjük a változásokat
             newFeedPost = feedPostRepository.save(newFeedPost);
             return modelMapper.map(newFeedPost, FeedPostDTO.class);
         } else {

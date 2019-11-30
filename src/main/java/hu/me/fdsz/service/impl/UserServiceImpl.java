@@ -141,16 +141,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<MessageDTO> getMessageToUser(User user) {
-        if ((user.getId() != null && user.getEmail() != null)
-                && (user.getId() != null ?
-                userRepositroy.existsById(user.getId()) : userRepositroy.existsByEmail(user.getEmail()))) {
-            return messageRepository.findAllMessagesToUser(user).stream()
-                    .map(message -> modelMapper.map(message, MessageDTO.class))
-                    .collect(Collectors.toList());
-        } else {
-            // Nem található a user, akihez le akarják kérni az üzeneteket
-            return Collections.emptyList();
-        }
+        return getMessageToUser(user.getId());
+    }
+
+    @Override
+    public List<MessageDTO> getMessageToUser(long userId) {
+        return userRepositroy.findById(userId).map(user -> messageRepository.findAllMessagesToUser(user)
+                .stream().map(message -> modelMapper.map(message, MessageDTO.class))
+                .collect(Collectors.toList())).orElse(Collections.emptyList());
+    }
+
+    @Override
+    public UserDTO getUserById(long userId) {
+        return userRepositroy.findById(userId).map(user -> modelMapper.map(user, UserDTO.class))
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public User getDefaultAdmin() {
+        //Ez most Alap Elek
+        return userRepositroy.findById(4L).orElseThrow(EntityNotFoundException::new);
     }
 
 }
