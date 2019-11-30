@@ -1,14 +1,10 @@
 package hu.me.fdsz.config;
 
 import hu.me.fdsz.dto.FeedPostDTO;
-import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.dto.MessageDTO;
+import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.dto.UserDTO;
-import hu.me.fdsz.model.FeedPost;
-import hu.me.fdsz.model.Image;
-import hu.me.fdsz.model.Turnus;
-import hu.me.fdsz.model.Message;
-import hu.me.fdsz.model.User;
+import hu.me.fdsz.model.*;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;
