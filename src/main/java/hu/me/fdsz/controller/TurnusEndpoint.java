@@ -1,5 +1,6 @@
 package hu.me.fdsz.controller;
 
+import hu.me.fdsz.dto.RoomDTO;
 import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.service.api.TurnusService;
 import org.modelmapper.ModelMapper;
@@ -39,6 +40,12 @@ public class TurnusEndpoint {
     @GetMapping(value = "/all-actual-turnus", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TurnusDTO> getAllTurnusInYear() {
         return turnusService.getAllActualTurnus();
+    }
+
+    @GetMapping(value = "/aviable-rooms")
+    public List<RoomDTO> getAviableRoomsToTurnus(long turnusId) {
+        return turnusService.getAviableRoomsToTurnus(turnusId).stream()
+                .map(room -> modelMapper.map(room, RoomDTO.class)).collect(Collectors.toList());
     }
 
     @PostMapping(value = "/add-new-turnus", produces = MediaType.APPLICATION_JSON_VALUE)

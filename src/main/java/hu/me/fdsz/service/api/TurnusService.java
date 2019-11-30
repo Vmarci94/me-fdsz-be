@@ -1,6 +1,7 @@
 package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.dto.TurnusDTO;
+import hu.me.fdsz.model.Room;
 import hu.me.fdsz.model.Turnus;
 import org.springframework.stereotype.Service;
 
@@ -20,4 +21,5 @@ public interface TurnusService {
 
     boolean isEnabled(Turnus turnus);
 
+    List<Room> getAviableRoomsToTurnus(long turnusId);
 }

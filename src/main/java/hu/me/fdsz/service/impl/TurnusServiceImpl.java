@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
@@ -63,6 +65,12 @@ public class TurnusServiceImpl implements TurnusService {
     @Override
     public boolean isEnabled(Turnus turnus) {
         return turnus.isEnabled() && turnus.getStartDate().compareTo(new Date()) > 0;
+    }
+
+    @Override
+    public List<Room> getAviableRoomsToTurnus(long turnusId) {
+        return turnusRepository.findById(turnusId).map(turnus -> new ArrayList<>(turnus.getRooms().values()))
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public List<Room> getAvailableRooms(Turnus turnus) {
