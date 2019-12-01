@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface BookingRepository extends CrudRepository<Booking, Long> {
 
+    List<Booking> findAll();
+
     List<Booking> findAllByAuthor(User author);
 
 }

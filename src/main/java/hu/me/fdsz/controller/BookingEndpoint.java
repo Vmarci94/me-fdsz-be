@@ -42,4 +42,8 @@ public class BookingEndpoint {
         return bookingService.getAllBookingToCurrentUser();
     }
 
+    public List<BookingDTO> getAllBooking() {
+        return bookingService.getAllBooking();
+    }
+
 }

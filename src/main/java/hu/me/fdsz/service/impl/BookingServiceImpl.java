@@ -61,7 +61,7 @@ public class BookingServiceImpl implements BookingService {
                     .map(roomDTO -> turnus.getRooms().get(roomDTO.getRoomNumber()))
                     .peek(room -> room.setBooking(newBooking))
                     .collect(Collectors.toList());
-            newBooking.setRooms(newBookedRooms);
+            newBooking.setRoomList(newBookedRooms);
 //            bookingDTO.getRoomList().forEach(roomDTO -> {
 //                newBooking.setRooms( new ArrayList<>(turnus.getRooms().values()) );
 //            });
@@ -85,11 +85,11 @@ public class BookingServiceImpl implements BookingService {
         try {
 
             bookingRepository.findById(bookingId).ifPresent(booking -> {
-                List<Room> roomList = booking.getRooms().stream()
+                List<Room> roomList = booking.getRoomList().stream()
                         .peek(room -> room.setBooking(null)) //Töröljük a foglalásokat a szobáknál
                         .collect(Collectors.toList());
                 roomRepository.saveAll(roomList); //perisztáljuk a változásokat a szobákhoz
-                booking.setRooms(null); //a foglalástól is töröljük, hogy melyik szobákra vonatkoztak
+                booking.setRoomList(null); //a foglalástól is töröljük, hogy melyik szobákra vonatkoztak
                 bookingRepository.save(booking); //frissítjük a foglalást, így már a szobák fel vannak szabadítva
                 bookingRepository.delete(booking); //most pedig töröljük az egész foglalást
             });
@@ -104,6 +104,13 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDTO> getAllBookingToCurrentUser() throws AuthenticationException {
         return bookingRepository.findAllByAuthor(userService.getCurrentUser().orElseThrow(AuthenticationException::new))
                 .stream().map(booking -> modelMapper.map(booking, BookingDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingDTO> getAllBooking() {
+        return bookingRepository.findAll().stream()
+                .map(booking -> modelMapper.map(booking, BookingDTO.class))
+                .collect(Collectors.toList());
     }
 
 }

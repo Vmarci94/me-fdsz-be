@@ -16,4 +16,6 @@ public interface BookingService {
 
     List<BookingDTO> getAllBookingToCurrentUser() throws AuthenticationException;
 
+    List<BookingDTO> getAllBooking();
+
 }

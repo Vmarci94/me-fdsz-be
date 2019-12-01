@@ -38,6 +38,6 @@ public class Booking extends BaseEntity {
     private int numberOfNights;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Room.class, mappedBy = "booking")
-    private List<Room> rooms;
+    private List<Room> roomList;
 
 }

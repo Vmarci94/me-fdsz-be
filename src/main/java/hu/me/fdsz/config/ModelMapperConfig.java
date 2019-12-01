@@ -172,5 +172,21 @@ public class ModelMapperConfig {
             }
         });
 
+        singletonModelMapper.addConverter(new AbstractConverter<Booking, BookingDTO>() {
+            @Override
+            protected BookingDTO convert(Booking source) {
+                BookingDTO result = tmpMapper.map(source, BookingDTO.class);
+                result.setRoomList(source.getRoomList().stream().map(room -> {
+                    RoomDTO r = tmpMapper.map(room, RoomDTO.class);
+                    r.setAvailable(room.getBooking() == null);
+                    return r;
+                }).collect(Collectors.toList()));
+                source.getRoomList().stream().findAny()
+                        .flatMap(room -> room.getTurnus().stream().distinct().findAny())
+                        .ifPresent(turnus -> result.setTurnusDTO(singletonModelMapper.map(turnus, TurnusDTO.class)));
+                return result;
+            }
+        });
+
     }
 }
