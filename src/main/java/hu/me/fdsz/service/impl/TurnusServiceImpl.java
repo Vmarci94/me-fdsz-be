@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -80,12 +81,24 @@ public class TurnusServiceImpl implements TurnusService {
     private Turnus createNewTurnus(TurnusDTO turnusDTO) throws IllegalArgumentException, AuthenticationException {
         if (turnusDTO.getStartDate() != null && turnusDTO.getEndDate() != null) {
             Turnus newTurnus = modelMapper.map(turnusDTO, Turnus.class);
-            newTurnus.setRooms(roomRepository.findAll().stream().collect(Collectors.toMap(Room::getRoomNumber, Function.identity())));
+            Map<Long, Room> newRoomMap = turnusDTO.getRooms().stream().map(roomDTO -> modelMapper.map(roomDTO, Room.class))
+                    .collect(Collectors.toMap(Room::getRoomNumber, Function.identity()));
+            newTurnus.setRooms(newRoomMap);
             return newTurnus;
         } else {
             throw new IllegalArgumentException("Kezdő és vég időpont minden képpen kell!");
         }
     }
 
+    @Override
+    public boolean delete(long turnusId) {
+        try {
+            turnusRepository.findById(turnusId).ifPresent(turnusRepository::delete);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

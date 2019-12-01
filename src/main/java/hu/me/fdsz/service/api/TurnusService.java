@@ -22,4 +22,6 @@ public interface TurnusService {
     boolean isEnabled(Turnus turnus);
 
     List<Room> getAviableRoomsToTurnus(long turnusId);
+
+    boolean delete(long turnusId);
 }

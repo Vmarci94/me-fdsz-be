@@ -1,9 +1,6 @@
 package hu.me.fdsz.config;
 
-import hu.me.fdsz.dto.FeedPostDTO;
-import hu.me.fdsz.dto.MessageDTO;
-import hu.me.fdsz.dto.TurnusDTO;
-import hu.me.fdsz.dto.UserDTO;
+import hu.me.fdsz.dto.*;
 import hu.me.fdsz.model.*;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.ImageRepository;
@@ -22,6 +19,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Configuration
 public class ModelMapperConfig {
@@ -130,9 +128,9 @@ public class ModelMapperConfig {
             @Override
             protected TurnusDTO convert(Turnus source) {
                 TurnusDTO result = tmpMapper.map(source, TurnusDTO.class);
-//                if(!tunusService.isEnabled(source)){
-//
-//                }
+                result.setRooms(source.getRooms().values().stream()
+                        .map(room -> tmpMapper.map(room, RoomDTO.class)).collect(Collectors.toList())
+                );
                 return result;
             }
         });

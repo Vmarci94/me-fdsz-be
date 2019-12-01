@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Room extends BaseEntity {
 
-    @Column(name = "room_number", unique = true, nullable = false)
+    @Column(name = "room_number", nullable = false)
     @ToString.Include
     @EqualsAndHashCode.Include
     private long roomNumber;

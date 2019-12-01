@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.Temporal;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 import static javax.persistence.TemporalType.DATE;
 
@@ -15,7 +15,7 @@ import static javax.persistence.TemporalType.DATE;
 @AllArgsConstructor
 public class TurnusDTO {
 
-    private long id;
+    private Long id;
 
     @Temporal(DATE)
     private Date startDate;
@@ -23,8 +23,8 @@ public class TurnusDTO {
     @Temporal(DATE)
     private Date endDate;
 
-    private boolean enabled;
+    private Boolean enabled;
 
-    private Map<Long, RoomDTO> rooms;
+    private List<RoomDTO> rooms;
 
 }

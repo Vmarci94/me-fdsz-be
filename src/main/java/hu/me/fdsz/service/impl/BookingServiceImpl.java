@@ -3,7 +3,6 @@ package hu.me.fdsz.service.impl;
 import hu.me.fdsz.dto.BookingDTO;
 import hu.me.fdsz.model.Booking;
 import hu.me.fdsz.model.Guest;
-import hu.me.fdsz.model.Room;
 import hu.me.fdsz.repository.BookingRepository;
 import hu.me.fdsz.repository.RoomRepository;
 import hu.me.fdsz.repository.TurnusRepository;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,14 +45,19 @@ public class BookingServiceImpl implements BookingService {
                 bookingDTO.getTurnusDTO().getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
         ).getDays();
         newBooking.setNumberOfNights(numberOfNights);
-//        Turnus turnus = turnusRepository.findById(bookingDTO.getTurnusDTO().getId()).orElseThrow(EntityNotFoundException::new);
 
-        List<Room> bookedRoomList = bookingDTO.getRoomList().stream()
-                .map(roomDTO -> modelMapper.map(roomDTO, Room.class))
-                .peek(room -> {
-                    newBooking.getRooms().put(room.getRoomNumber(), room);
-                })
-                .collect(Collectors.toList());
+        turnusRepository.findById(bookingDTO.getTurnusDTO().getId()).ifPresent(turnus -> {
+            bookingDTO.getRoomList().forEach(roomDTO -> {
+                newBooking.getRooms().put(roomDTO.getRoomNumber(), turnus.getRooms().get(roomDTO.getRoomNumber()));
+            });
+        });
+
+//        List<Room> bookedRoomList = bookingDTO.getRoomList().stream()
+//                .map(roomDTO -> modelMapper.map(roomDTO, Room.class))
+//                .peek(room -> {
+//                    newBooking.getRooms().put(room.getRoomNumber(), room);
+//                })
+//                .collect(Collectors.toList());
 
 //        newBooking.setRooms(bookingDTO.getRoomList().stream()
 //                .map(roomDTO -> modelMapper.map(roomDTO, Room.class)).collect(Collectors.toList()));
