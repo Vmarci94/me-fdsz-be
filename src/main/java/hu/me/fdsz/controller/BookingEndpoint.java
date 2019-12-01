@@ -37,11 +37,12 @@ public class BookingEndpoint {
         return new ResponseEntity<>(bookingService.deleteBooking(bookingId) ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping(value = "/all-to-current-user")
+    @GetMapping(value = "/all-to-current-user", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookingDTO> getAllBookingToCurrentUser() throws AuthenticationException {
         return bookingService.getAllBookingToCurrentUser();
     }
 
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<BookingDTO> getAllBooking() {
         return bookingService.getAllBooking();
     }
