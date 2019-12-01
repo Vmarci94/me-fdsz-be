@@ -48,7 +48,7 @@ public class Turnus extends BaseEntity {
     @JoinTable(
             name = "turnus_room",
             joinColumns = {@JoinColumn(name = "turnusId")},
-            inverseJoinColumns = {@JoinColumn(name = "roomId")}
+            inverseJoinColumns = {@JoinColumn(name = "roomId", unique = true)}
     )
     @MapKey(name = "roomNumber")
     private Map<Long, Room> rooms = new HashMap<>();

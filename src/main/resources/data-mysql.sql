@@ -144,39 +144,91 @@ insert into turnus (id, created_date, modified_date, enabled, end_date, start_da
     value (32, '2019-09-01', '2019-09-01', 'Y', '2019-09-09', '2019-09-13', 4, 4);
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (35, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED');
+    value (36, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (36, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED');
+    value (37, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (37, CURDATE(), CURDATE(), 10000, 4, 'FOUR_BED');
+    value (38, CURDATE(), CURDATE(), 10000, 4, 'FOUR_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (38, CURDATE(), CURDATE(), 5000, 5, 'THREE_BED');
+    value (39, CURDATE(), CURDATE(), 5000, 5, 'THREE_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (39, CURDATE(), CURDATE(), 5000, 6, 'THREE_BED');
+    value (40, CURDATE(), CURDATE(), 5000, 6, 'THREE_BED');
 
 insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (40, CURDATE(), CURDATE(), 5000, 7, 'THREE_BED');
+    value (41, CURDATE(), CURDATE(), 5000, 7, 'THREE_BED');
 
-insert into turnus_room (room_id, turnus_id) value (35, 32);
 insert into turnus_room (room_id, turnus_id) value (36, 32);
 insert into turnus_room (room_id, turnus_id) value (37, 32);
 insert into turnus_room (room_id, turnus_id) value (38, 32);
 insert into turnus_room (room_id, turnus_id) value (39, 32);
 insert into turnus_room (room_id, turnus_id) value (40, 32);
+insert into turnus_room (room_id, turnus_id) value (41, 32);
 
 INSERT INTO ME_FDSZ.message (id, created_date, modified_date, message_content, readed, reciever, sender)
 VALUES (28, '2019-11-30', '2019-11-30', 'Egy másik admin válasza', 'N', 5, 25);
 
 -- Teszt Foglalások készítése
+INSERT INTO ME_FDSZ.booking (id, created_date, modified_date, booking_date, number_of_nights, author, last_modified_by)
+VALUES (42, '2019-12-01', '2019-12-01', '2020-02-14', 4, 4, 4);
+INSERT INTO ME_FDSZ.booking (id, created_date, modified_date, booking_date, number_of_nights, author, last_modified_by)
+VALUES (43, '2019-12-01', '2019-12-01', '2019-09-13', 4, 4, 4);
 
+UPDATE ME_FDSZ.room
+SET created_date  = '2019-12-01',
+    modified_date = '2019-12-01',
+    price         = 5000,
+    room_number   = 6,
+    room_type     = 'THREE_BED',
+    booking_id    = 43
+WHERE id = 40;
+UPDATE ME_FDSZ.room
+SET created_date  = '2019-12-01',
+    modified_date = '2019-12-01',
+    price         = 5000,
+    room_number   = 5,
+    room_type     = 'THREE_BED',
+    booking_id    = 43
+WHERE id = 39;
+UPDATE ME_FDSZ.room
+SET created_date  = '2019-12-01',
+    modified_date = '2019-12-01',
+    price         = 10000,
+    room_number   = 3,
+    room_type     = 'FOUR_BED',
+    booking_id    = 43
+WHERE id = 37;
+UPDATE ME_FDSZ.room
+SET created_date  = '2019-12-01',
+    modified_date = '2019-12-01',
+    price         = 10000,
+    room_number   = 2,
+    room_type     = 'FOUR_BED',
+    booking_id    = 42
+WHERE id = 23;
+UPDATE ME_FDSZ.room
+SET created_date  = '2019-12-01',
+    modified_date = '2019-12-01',
+    price         = 10000,
+    room_number   = 3,
+    room_type     = 'FOUR_BED',
+    booking_id    = 42
+WHERE id = 24;
+UPDATE ME_FDSZ.room
+SET created_date  = '2019-12-01',
+    modified_date = '2019-12-01',
+    price         = 5000,
+    room_number   = 5,
+    room_type     = 'THREE_BED',
+    booking_id    = 42
+WHERE id = 26;
 
 -- Hibernate seq frissítése, hogy tudomást szerezzen a test adatok insertálásáról
 -- direkt az összes sort frissítem
 update hibernate_sequence
-set next_val= 41;
+set next_val= 44;
 
 commit;
