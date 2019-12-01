@@ -8,7 +8,8 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.TemporalType.DATE;
 
@@ -36,26 +37,7 @@ public class Booking extends BaseEntity {
     @Column(name = "number_of_nights", nullable = false)
     private int numberOfNights;
 
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "booking_room",
-            joinColumns = {@JoinColumn(name = "booking_id")},
-            inverseJoinColumns = {@JoinColumn(name = "room_id")}
-    )
-    @MapKey(name = "roomNumber")
-    private Map<Long, Room> rooms = new HashMap<>();
-
-//    @OneToMany
-//    @JoinColumn(name = "id", referencedColumnName = "id")
-//    private List<Room> rooms;
-
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "booking_guest",
-            joinColumns = {@JoinColumn(name = "booking_id")},
-            inverseJoinColumns = {@JoinColumn(name = "guest_id")}
-    )
-    private List<Guest> guests = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Room.class, mappedBy = "booking")
+    private List<Room> rooms;
 
 }

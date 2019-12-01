@@ -9,7 +9,6 @@ import org.springframework.data.annotation.CreatedBy;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 @Entity
 @Getter
@@ -23,8 +22,8 @@ public class Payment extends BaseEntity {
     @JoinColumn(name = "author", referencedColumnName = "id", nullable = false)
     private User payerUser;
 
-    @OneToOne
-    @JoinColumn(name = "booing_id", referencedColumnName = "id", nullable = false)
-    private Booking booking;
+//    @OneToOne
+//    @JoinColumn(name = "booing_id", referencedColumnName = "id", nullable = false)
+//    private Booking booking;
 
 }

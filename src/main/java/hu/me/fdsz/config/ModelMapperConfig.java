@@ -129,7 +129,7 @@ public class ModelMapperConfig {
             protected TurnusDTO convert(Turnus source) {
                 TurnusDTO result = tmpMapper.map(source, TurnusDTO.class);
                 result.setRooms(source.getRooms().values().stream()
-                        .map(room -> tmpMapper.map(room, RoomDTO.class)).collect(Collectors.toList())
+                        .map(room -> singletonModelMapper.map(room, RoomDTO.class)).collect(Collectors.toList())
                 );
                 return result;
             }
@@ -151,6 +151,16 @@ public class ModelMapperConfig {
                     }
                 }
         );
+
+        singletonModelMapper.addConverter(new AbstractConverter<Room, RoomDTO>() {
+            @Override
+            protected RoomDTO convert(Room source) {
+                RoomDTO result = tmpMapper.map(source, RoomDTO.class);
+                logger.info("room mapping!");
+                result.setAvailable(source.getBooking() == null);
+                return result;
+            }
+        });
 
     }
 }

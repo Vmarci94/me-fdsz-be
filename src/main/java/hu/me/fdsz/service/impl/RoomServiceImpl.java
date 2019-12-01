@@ -1,14 +1,15 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.dto.RoomDTO;
-import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Room;
+import hu.me.fdsz.model.Turnus;
 import hu.me.fdsz.repository.RoomRepository;
 import hu.me.fdsz.service.api.RoomService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -36,8 +37,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomDTO> getAvaiableRooms(TurnusDTO turnusDTO) {
+    public List<Room> getAvaiableRooms(Turnus turnus) {
+        Collection<Room> allRoomToTurnus = turnus.getRooms().values();
         return null;
+
     }
 
 

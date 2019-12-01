@@ -1,8 +1,8 @@
 package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.dto.RoomDTO;
-import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Room;
+import hu.me.fdsz.model.Turnus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,5 +13,5 @@ public interface RoomService {
 
     Room addNewRoom(RoomDTO roomDTO);
 
-    List<RoomDTO> getAvaiableRooms(TurnusDTO turnusDTO);
+    List<Room> getAvaiableRooms(Turnus turnus);
 }

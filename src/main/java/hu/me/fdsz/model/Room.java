@@ -27,9 +27,13 @@ public class Room extends BaseEntity {
     private long price;
 
     @ManyToMany(mappedBy = "rooms", cascade = CascadeType.ALL)
-    private List<Turnus> turnusSet;
+    private List<Turnus> turnus;
 
 //    @ManyToMany(mappedBy = "rooms", cascade = CascadeType.ALL)
 //    private List<Booking> bookingList;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    private Booking booking;
 
 }
