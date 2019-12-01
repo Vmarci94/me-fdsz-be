@@ -71,7 +71,7 @@ public class TurnusServiceImpl implements TurnusService {
         try {
             Optional<Turnus> turnusO = turnusRepository.findById(turnusId);
             turnusO.ifPresent(turnus -> {
-                if (!getAviableRoomsToTurnus(turnus).isEmpty()) {
+                if (getAviableRoomsToTurnus(turnus).isEmpty()) {
                     turnusRepository.delete(turnus);
                 } else {
                     throw new IllegalArgumentException("Nem lehet olyan turnust törölni, ahol vannak foglalások");
