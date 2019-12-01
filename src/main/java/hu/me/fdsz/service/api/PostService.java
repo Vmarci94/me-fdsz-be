@@ -11,7 +11,7 @@ import javax.naming.AuthenticationException;
 import java.util.List;
 
 @Service
-public interface FeedService {
+public interface PostService {
 
     List<FeedPostDTO> getAll();
 

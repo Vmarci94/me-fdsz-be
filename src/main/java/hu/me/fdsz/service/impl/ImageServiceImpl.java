@@ -100,8 +100,8 @@ public class ImageServiceImpl implements ImageService {
     public <T extends HasImage> T updateImage(T entityWithImage, MultipartFile multipartFile) {
         entityWithImage.getImage().ifPresent(oldImage -> {
             //ha volt régi kép akkor először minden féle képpen töröljük
-            imageContentStore.unsetContent(oldImage); //fájl törlése
             imageRepository.delete(oldImage); //rekord törlése
+            imageContentStore.unsetContent(oldImage); //fájl törlése
         });
 
         if (multipartFile != null) {

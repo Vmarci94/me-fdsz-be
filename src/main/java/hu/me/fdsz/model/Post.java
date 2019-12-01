@@ -11,11 +11,11 @@ import java.util.Optional;
 @Entity
 @Getter
 @Setter
-@Table(name = "post")
+//@Table(name = "post")
 @ToString(callSuper = true, onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class FeedPost extends BaseEntity implements HasImage {
+public class Post extends BaseEntity implements HasImage {
 
     @Column(name = "title", nullable = false)
     @ToString.Include

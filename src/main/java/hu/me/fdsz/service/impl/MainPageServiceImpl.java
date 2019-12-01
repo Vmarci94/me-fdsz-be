@@ -1,8 +1,8 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.dto.MainDTO;
-import hu.me.fdsz.service.api.FeedService;
 import hu.me.fdsz.service.api.MainPageService;
+import hu.me.fdsz.service.api.PostService;
 import hu.me.fdsz.service.api.UserReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ public class MainPageServiceImpl implements MainPageService {
 
     private final UserReportService userReportService;
 
-    private final FeedService feedService;
+    private final PostService postService;
 
     private static final String mainIntroduction = "<p>\n" +
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum facilisis tortor pretium dui cursus imperdiet. Sed nec est vitae orci aliquam faucibus. Aliquam erat volutpat. Nullam facilisis, felis eu commodo semper, mi leo sollicitudin est, vitae tempor turpis ante at lorem. Suspendisse eget lectus ac nisi placerat tempor sit amet et lorem. Donec efficitur, dolor ut ultricies pellentesque, mi orci pulvinar felis, eu finibus lectus mauris a ex. Quisque dapibus lacus a sapien bibendum, lacinia placerat ante convallis. Pellentesque tempor mauris porttitor sollicitudin ornare. Maecenas sit amet elit pharetra, luctus nisl sit amet, congue dui. Nam eros neque, sagittis non neque eget, faucibus vestibulum erat.\n" +
@@ -31,15 +31,15 @@ public class MainPageServiceImpl implements MainPageService {
             "</p>";
 
     @Autowired
-    public MainPageServiceImpl(UserReportService userReportService, FeedService feedService) {
+    public MainPageServiceImpl(UserReportService userReportService, PostService postService) {
         this.userReportService = userReportService;
-        this.feedService = feedService;
+        this.postService = postService;
     }
 
     @Override
     public MainDTO getMainPageInfo() {
         MainDTO.MainDTOBuilder resultBuilder = MainDTO.builder();
-        resultBuilder.highlightList(feedService.getAll())
+        resultBuilder.highlightList(postService.getAll())
                 .introductionInHTML(mainIntroduction)
                 .userReports(userReportService.getTopUserReport(5));
         return resultBuilder.build();

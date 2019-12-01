@@ -36,13 +36,13 @@ public class User extends Person implements UserDetails, HasImage {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image", referencedColumnName = "id")
     private Image image;
 
     @OneToMany
     @JoinColumn(name = "author", referencedColumnName = "id")
-    private List<FeedPost> feedPostList;
+    private List<Post> postList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

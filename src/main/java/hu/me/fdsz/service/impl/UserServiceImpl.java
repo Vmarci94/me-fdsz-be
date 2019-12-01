@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
@@ -105,15 +106,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserData(UserDTO userDTO, MultipartFile multipartFile) throws AuthenticationException, AccessDeniedException {
+    public Optional<User> updateUserData(UserDTO userDTO, MultipartFile multipartFile) throws AuthenticationException, AccessDeniedException {
         User currentUser = getCurrentUser().orElseThrow(AuthenticationException::new);
         if (currentUser.getRole() == Role.ADMIN) {
             return userRepositroy.findByEmail(userDTO.getEmail()).map(oldUser -> {
                 User inputUser = modelMapper.map(userDTO, User.class);
+                if (multipartFile != null) {
+                    imageService.updateImage(inputUser, multipartFile);
+                }
+                if (StringUtils.isEmpty(inputUser.getPassword())) {
+                    inputUser.setPassword(oldUser.getPassword());
+                }
                 inputUser.setId(oldUser.getId());
-                imageService.updateImage(inputUser, multipartFile);
                 return userRepositroy.save(inputUser);
-            }).orElseThrow(() -> new AccessDeniedException("Nincs jogosulstság a módosításra."));
+            });
         } else {
             throw new AccessDeniedException("Nincs jogosulstság a módosításra.");
         }

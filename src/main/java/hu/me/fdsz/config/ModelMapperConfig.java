@@ -69,10 +69,10 @@ public class ModelMapperConfig {
         );
 
         singletonModelMapper.addConverter(
-                new AbstractConverter<FeedPostDTO, FeedPost>() {
+                new AbstractConverter<FeedPostDTO, Post>() {
                     @Override
-                    protected FeedPost convert(FeedPostDTO source) {
-                        FeedPost result = tmpMapper.map(source, FeedPost.class);
+                    protected Post convert(FeedPostDTO source) {
+                        Post result = tmpMapper.map(source, Post.class);
                         if (source.getImageId() != null) {
                             result.setImage(imageRepository.findById(source.getImageId()).orElse(null));
                         }
@@ -82,9 +82,9 @@ public class ModelMapperConfig {
         );
 
         singletonModelMapper.addConverter(
-                new AbstractConverter<FeedPost, FeedPostDTO>() {
+                new AbstractConverter<Post, FeedPostDTO>() {
                     @Override
-                    protected FeedPostDTO convert(FeedPost source) {
+                    protected FeedPostDTO convert(Post source) {
                         FeedPostDTO result = tmpMapper.map(source, FeedPostDTO.class);
                         source.getImage().ifPresent(image -> result.setImageId(image.getId()));
                         return result;
@@ -99,10 +99,13 @@ public class ModelMapperConfig {
                         UserDTO result = tmpMapper.map(source, UserDTO.class);
                         source.getImage().ifPresent(image -> result.setImageId(image.getId()));
                         result.setAdmin(source.getRole() == Role.ADMIN);
+                        result.setPassword(null); //jelszó sose jusson ki.
                         return result;
                     }
                 }
         );
+
+        singletonModelMapper.getTypeMap(User.class, UserDTO.class).addMappings(mapper -> mapper.skip(UserDTO::setPassword));
 
         singletonModelMapper.addConverter(
                 new AbstractConverter<UserDTO, User>() {

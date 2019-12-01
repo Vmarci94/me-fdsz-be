@@ -3,7 +3,9 @@ package hu.me.fdsz.controller;
 import hu.me.fdsz.dto.JWTTokenDTO;
 import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.service.api.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +24,12 @@ import java.util.Optional;
 public class UserEndpoint {
 
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserEndpoint(UserService userService) {
+    public UserEndpoint(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     //    Regisztráció
@@ -72,10 +76,13 @@ public class UserEndpoint {
     }
 
     @PostMapping(value = "/update-user-data", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HttpStatus> updateUserData(@RequestPart(name = "user") UserDTO userDTO,
-                                                     @RequestPart(name = "image", required = false) MultipartFile multipartFile)
+    public ResponseEntity<UserDTO> updateUserData(@RequestPart(name = "user") UserDTO userDTO,
+                                                  @RequestPart(name = "image", required = false) MultipartFile multipartFile)
             throws AccessDeniedException, AuthenticationException {
-        return new ResponseEntity<>(userService.updateUserData(userDTO, multipartFile) != null ? HttpStatus.OK : HttpStatus.FORBIDDEN);
+        HttpHeaders responseHeader = new HttpHeaders();
+        responseHeader.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(userService.updateUserData(userDTO, multipartFile).map(user -> modelMapper.map(user, UserDTO.class))
+                .orElseThrow(() -> new AccessDeniedException("Nincs jogosulstság a módosításra.")), responseHeader, HttpStatus.OK);
     }
 
     @GetMapping(value = "/search-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)

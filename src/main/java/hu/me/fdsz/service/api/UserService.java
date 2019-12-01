@@ -31,7 +31,7 @@ public interface UserService {
 
     Optional<User> getCurrentUser();
 
-    User updateUserData(UserDTO userDTO, MultipartFile multipartFile) throws AuthenticationException, AccessDeniedException;
+    Optional<User> updateUserData(UserDTO userDTO, MultipartFile multipartFile) throws AuthenticationException, AccessDeniedException;
 
     List<UserDTO> findClientUsersByName(String fullName);
 

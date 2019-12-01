@@ -1,7 +1,7 @@
 package hu.me.fdsz.controller;
 
 import hu.me.fdsz.dto.FeedPostDTO;
-import hu.me.fdsz.service.api.FeedService;
+import hu.me.fdsz.service.api.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,46 +14,46 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/feeds")
-public class FeedPageEndpoint {
+public class PostEndpoint {
 
-    private final FeedService feedService;
+    private final PostService postService;
 
     @Autowired
-    public FeedPageEndpoint(FeedService feedService) {
-        this.feedService = feedService;
+    public PostEndpoint(PostService postService) {
+        this.postService = postService;
     }
 
     @GetMapping(value = "/get-top-posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FeedPostDTO> getTopFeedPost(@RequestParam(value = "limit") int limit) {
-        return feedService.getPostsWithLimit(limit);
+        return postService.getPostsWithLimit(limit);
     }
 
     @GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<FeedPostDTO> getAllPosts() {
-        return feedService.getAll();
+        return postService.getAll();
 
     }
 
     @PutMapping(value = "/add", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addNewFeedPost(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
                                @RequestPart(name = "image", required = false) MultipartFile image) throws AuthenticationException {
-        feedService.add(feedPostDTO, image);
+        postService.add(feedPostDTO, image);
     }
 
     @PostMapping(value = "/update", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FeedPostDTO update(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
                               @RequestPart(name = "image", required = false) MultipartFile image) throws RuntimeException, AuthenticationException {
-        return feedService.update(feedPostDTO, image);
+        return postService.update(feedPostDTO, image);
     }
 
     @DeleteMapping(value = "delete/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("postId") long postId) {
-        return new ResponseEntity<>(feedService.delete(postId) ? HttpStatus.OK : HttpStatus.NOT_EXTENDED);
+        return new ResponseEntity<>(postService.delete(postId) ? HttpStatus.OK : HttpStatus.NOT_EXTENDED);
     }
 
     @GetMapping(value = "/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FeedPostDTO getPost(@PathVariable("postId") long postId) {
-        return feedService.findById(postId);
+        return postService.findById(postId);
     }
 
 }

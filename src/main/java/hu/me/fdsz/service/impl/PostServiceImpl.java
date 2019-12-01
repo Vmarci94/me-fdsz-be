@@ -1,13 +1,13 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.dto.FeedPostDTO;
-import hu.me.fdsz.model.FeedPost;
 import hu.me.fdsz.model.Image;
-import hu.me.fdsz.repository.FeedPostRepository;
+import hu.me.fdsz.model.Post;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
-import hu.me.fdsz.service.api.FeedService;
+import hu.me.fdsz.repository.PostRepository;
 import hu.me.fdsz.service.api.ImageService;
+import hu.me.fdsz.service.api.PostService;
 import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class FeedServiceImpl implements FeedService {
+public class PostServiceImpl implements PostService {
 
-    private static final Logger logger = LoggerFactory.getLogger(FeedService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PostService.class.getName());
 
-    private final FeedPostRepository feedPostRepository;
+    private final PostRepository postRepository;
 
     private final ModelMapper modelMapper;
 
@@ -43,8 +43,8 @@ public class FeedServiceImpl implements FeedService {
     private final ImageService imageService;
 
     @Autowired
-    public FeedServiceImpl(FeedPostRepository feedPostRepository, ModelMapper modelMapper, ImageRepository imageRepository, ImageContentStore imageContentStore, UserService userService, ImageService imageService) {
-        this.feedPostRepository = feedPostRepository;
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper, ImageRepository imageRepository, ImageContentStore imageContentStore, UserService userService, ImageService imageService) {
+        this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.imageRepository = imageRepository;
         this.imageContentStore = imageContentStore;
@@ -54,14 +54,14 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public List<FeedPostDTO> getAll() {
-        return feedPostRepository.findAll().stream()
-                .map(feedPost -> modelMapper.getTypeMap(FeedPost.class, FeedPostDTO.class).map(feedPost))
+        return postRepository.findAll().stream()
+                .map(post -> modelMapper.getTypeMap(Post.class, FeedPostDTO.class).map(post))
                 .collect(Collectors.toList());
     }
 
     @Override
     public FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile multipartFile) throws AuthenticationException {
-        FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
+        Post newPost = modelMapper.map(feedPostDTO, Post.class);
         if (multipartFile != null) {
             // Azért kell így haszánlni a modelMappert-t, hogy biztosan a megfelelő convertert használja.
             // A MultipartFile Interfacet realizáló osztályok nem találnak rá autómatikusan a megfelelő TypeMap-re.
@@ -69,10 +69,10 @@ public class FeedServiceImpl implements FeedService {
             //add neki contentId-t
             //majd mentjük, mert contentId-val együtt kell perzisztálni.
             image = imageRepository.save(image); //Visszaadja a már perzisztált Entitást
-            newFeedPost.setImage(image);
+            newPost.setImage(image);
         }
-        newFeedPost = feedPostRepository.save(newFeedPost);
-        return modelMapper.map(newFeedPost, FeedPostDTO.class);
+        newPost = postRepository.save(newPost);
+        return modelMapper.map(newPost, FeedPostDTO.class);
     }
 
     @Override
@@ -82,22 +82,22 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public FeedPostDTO getContent(Long feedPostId) {
-        return feedPostRepository.findById(feedPostId)
-                .map(feedPost -> modelMapper.map(feedPost, FeedPostDTO.class))
+        return postRepository.findById(feedPostId)
+                .map(post -> modelMapper.map(post, FeedPostDTO.class))
                 .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public List<FeedPostDTO> getPostsWithLimit(int limit) {
-        return feedPostRepository.findByOrderByLastModifiedDate(PageRequest.of(0, 5))
-                .stream().map(feedPost -> modelMapper.map(feedPost, FeedPostDTO.class))
+        return postRepository.findByOrderByLastModifiedDate(PageRequest.of(0, 5))
+                .stream().map(post -> modelMapper.map(post, FeedPostDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public FeedPostDTO findById(long postId) {
-        return feedPostRepository.findById(postId)
-                .map(feedPost -> modelMapper.getTypeMap(FeedPost.class, FeedPostDTO.class).map(feedPost))
+        return postRepository.findById(postId)
+                .map(post -> modelMapper.getTypeMap(Post.class, FeedPostDTO.class).map(post))
                 .orElseThrow(EntityNotFoundException::new);
     }
 
@@ -107,18 +107,18 @@ public class FeedServiceImpl implements FeedService {
             throw new NullPointerException("A frissítendő post nem lehet null");
         }
 
-        if (feedPostRepository.findById(feedPostDTO.getId()).isPresent()) {
+        if (postRepository.findById(feedPostDTO.getId()).isPresent()) {
             //létezik a frissítendő post
-            FeedPost newFeedPost = modelMapper.map(feedPostDTO, FeedPost.class);
+            Post newPost = modelMapper.map(feedPostDTO, Post.class);
 
-            if (newFeedPost.getImage().isEmpty()) {
+            if (newPost.getImage().isEmpty()) {
                 //ha új kép jön, akkor annak még nincs ID-ja, így ez üres lesz, és a kép tartalma a multipart file-ban lesz.
-                imageService.updateImage(newFeedPost, multipartFile);
+                imageService.updateImage(newPost, multipartFile);
             } //ha  jött imageId és Image a DTO-ba akkor a régi képet tartja meg.
 
             //majd mentjük a változásokat
-            newFeedPost = feedPostRepository.save(newFeedPost);
-            return modelMapper.map(newFeedPost, FeedPostDTO.class);
+            newPost = postRepository.save(newPost);
+            return modelMapper.map(newPost, FeedPostDTO.class);
         } else {
             // nem létezik a frissítendő post, nem baj ezt loggoljuk és csinálunk egyett
             return this.add(feedPostDTO, multipartFile);
@@ -129,9 +129,9 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public boolean delete(long postId) {
         try {
-            feedPostRepository.findById(postId).ifPresent(feedPost -> {
-                feedPost.getImage().ifPresent(imageContentStore::unsetContent);
-                feedPostRepository.delete(feedPost);
+            postRepository.findById(postId).ifPresent(post -> {
+                post.getImage().ifPresent(imageContentStore::unsetContent);
+                postRepository.delete(post);
             });
             return true;
         } catch (Exception e) {
