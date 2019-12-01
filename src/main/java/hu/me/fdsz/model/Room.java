@@ -26,10 +26,10 @@ public class Room extends BaseEntity {
     @Column(name = "price", nullable = false)
     private long price;
 
-    @ManyToMany(mappedBy = "rooms")
+    @ManyToMany(mappedBy = "rooms", cascade = CascadeType.ALL)
     private List<Turnus> turnusSet;
 
-    @ManyToMany(mappedBy = "rooms")
-    private List<Booking> bookingList;
+//    @ManyToMany(mappedBy = "rooms", cascade = CascadeType.ALL)
+//    private List<Booking> bookingList;
 
 }
