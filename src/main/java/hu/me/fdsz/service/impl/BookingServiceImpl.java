@@ -7,10 +7,14 @@ import hu.me.fdsz.repository.BookingRepository;
 import hu.me.fdsz.repository.RoomRepository;
 import hu.me.fdsz.repository.TurnusRepository;
 import hu.me.fdsz.service.api.BookingService;
+import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.List;
@@ -18,6 +22,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookingServiceImpl.class.getName());
 
     private final TurnusRepository turnusRepository;
 
@@ -27,12 +33,15 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
 
+    private final UserService userService;
+
     @Autowired
-    public BookingServiceImpl(TurnusRepository turnusRepository, RoomRepository roomRepository, ModelMapper modelMapper, BookingRepository bookingRepository) {
+    public BookingServiceImpl(TurnusRepository turnusRepository, RoomRepository roomRepository, ModelMapper modelMapper, BookingRepository bookingRepository, UserService userService) {
         this.turnusRepository = turnusRepository;
         this.roomRepository = roomRepository;
         this.modelMapper = modelMapper;
         this.bookingRepository = bookingRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -70,4 +79,31 @@ public class BookingServiceImpl implements BookingService {
 
         return bookingRepository.save(newBooking);
     }
+
+    @Override
+    public boolean deleteBooking(long bookingId) {
+        try {
+
+            bookingRepository.findById(bookingId).ifPresent(booking -> {
+                List<Room> roomList = booking.getRooms().stream()
+                        .peek(room -> room.setBooking(null)) //Töröljük a foglalásokat a szobáknál
+                        .collect(Collectors.toList());
+                roomRepository.saveAll(roomList); //perisztáljuk a változásokat a szobákhoz
+                booking.setRooms(null); //a foglalástól is töröljük, hogy melyik szobákra vonatkoztak
+                bookingRepository.save(booking); //frissítjük a foglalást, így már a szobák fel vannak szabadítva
+                bookingRepository.delete(booking); //most pedig töröljük az egész foglalást
+            });
+            return !bookingRepository.existsById(bookingId);
+        } catch (Exception e) {
+            logger.error("hiba, a foglalás törlésénél", e);
+            return false;
+        }
+    }
+
+    @Override
+    public List<BookingDTO> getAllBookingToCurrentUser() throws AuthenticationException {
+        return bookingRepository.findAllByAuthor(userService.getCurrentUser().orElseThrow(AuthenticationException::new))
+                .stream().map(booking -> modelMapper.map(booking, BookingDTO.class)).collect(Collectors.toList());
+    }
+
 }

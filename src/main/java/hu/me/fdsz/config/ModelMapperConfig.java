@@ -135,6 +135,17 @@ public class ModelMapperConfig {
             }
         });
 
+        singletonModelMapper.addConverter(new AbstractConverter<TurnusDTO, Turnus>() {
+            @Override
+            protected Turnus convert(TurnusDTO source) {
+                Turnus result = tmpMapper.map(source, Turnus.class);
+                result.setRooms(source.getRooms().stream()
+                        .collect(Collectors.toMap(RoomDTO::getRoomNumber, roomDTO -> tmpMapper.map(roomDTO, Room.class)))
+                );
+                return result;
+            }
+        });
+
         singletonModelMapper.addConverter(
                 new AbstractConverter<Message, MessageDTO>() {
                     @Override
@@ -156,7 +167,6 @@ public class ModelMapperConfig {
             @Override
             protected RoomDTO convert(Room source) {
                 RoomDTO result = tmpMapper.map(source, RoomDTO.class);
-                logger.info("room mapping!");
                 result.setAvailable(source.getBooking() == null);
                 return result;
             }

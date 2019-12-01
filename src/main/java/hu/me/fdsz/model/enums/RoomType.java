@@ -10,9 +10,8 @@ public enum RoomType {
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return value + " type of room";
+    public Integer getValue() {
+        return value;
     }
 
 }

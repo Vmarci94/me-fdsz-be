@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import static javax.persistence.TemporalType.DATE;
@@ -50,6 +51,6 @@ public class Turnus extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "roomId")}
     )
     @MapKey(name = "roomNumber")
-    private Map<Long, Room> rooms;
+    private Map<Long, Room> rooms = new HashMap<>();
 
 }

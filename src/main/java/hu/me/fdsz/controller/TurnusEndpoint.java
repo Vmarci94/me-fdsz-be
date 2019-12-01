@@ -25,22 +25,11 @@ public class TurnusEndpoint {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(value = "/all-aviable-turnus", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TurnusDTO> getAllAviableTurnus() {
-        return turnusService.getAllAviableTurnus();
-    }
-
     @GetMapping(value = "/all-turnus", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TurnusDTO> getAllTurnus() {
         return turnusService.getAllTurnus().stream().map(turnus -> modelMapper.map(turnus, TurnusDTO.class))
                 .collect(Collectors.toList());
     }
-
-    @GetMapping(value = "/all-actual-turnus", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TurnusDTO> getAllTurnusInYear() {
-        return turnusService.getAllActualTurnus();
-    }
-
 
     @DeleteMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean deleteTurnus(long turnusId) {
@@ -51,5 +40,6 @@ public class TurnusEndpoint {
     public TurnusDTO addNewTurnus(@RequestBody TurnusDTO turnusDTO) throws AuthenticationException {
         return modelMapper.map(turnusService.addNewTurnus(turnusDTO), TurnusDTO.class);
     }
+
 
 }

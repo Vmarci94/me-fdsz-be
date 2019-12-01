@@ -11,10 +11,6 @@ import java.util.List;
 @Service
 public interface TurnusService {
 
-    List<TurnusDTO> getAllAviableTurnus();
-
-    List<TurnusDTO> getAllActualTurnus();
-
     Turnus addNewTurnus(TurnusDTO turnusDTO) throws AuthenticationException;
 
     List<Turnus> getAllTurnus();
@@ -23,5 +19,9 @@ public interface TurnusService {
 
     List<Room> getAviableRoomsToTurnus(long turnusId);
 
+    List<Room> getAviableRoomsToTurnus(Turnus turnus);
+
     boolean delete(long turnusId);
+
+    boolean existsByTimeInterval(Turnus turnus);
 }

@@ -171,6 +171,9 @@ insert into turnus_room (room_id, turnus_id) value (40, 32);
 INSERT INTO ME_FDSZ.message (id, created_date, modified_date, message_content, readed, reciever, sender)
 VALUES (28, '2019-11-30', '2019-11-30', 'Egy másik admin válasza', 'N', 5, 25);
 
+-- Teszt Foglalások készítése
+
+
 -- Hibernate seq frissítése, hogy tudomást szerezzen a test adatok insertálásáról
 -- direkt az összes sort frissítem
 update hibernate_sequence

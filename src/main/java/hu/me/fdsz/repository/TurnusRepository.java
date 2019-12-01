@@ -10,10 +10,11 @@ public interface TurnusRepository extends CrudRepository<Turnus, Long> {
 
     List<Turnus> findAll();
 
-    List<Turnus> findAllByEnabledIs(boolean enabled);
-
     List<Turnus> findAllByStartDateIsGreaterThanOrderByStartDateAsc(Date startDate);
 
     List<Turnus> findAllByStartDateIsGreaterThanEqualAndEndDateIsLessThanEqualOrderByStartDateAsc(Date startDate, Date endDate);
+
+    boolean existsByStartDateIsGreaterThanEqualAndEndDateIsLessThanEqualOrderByStartDate(Date startDate, Date endDate);
+
 
 }
