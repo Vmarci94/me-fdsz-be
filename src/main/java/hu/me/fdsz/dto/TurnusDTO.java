@@ -27,4 +27,6 @@ public class TurnusDTO {
 
     private List<RoomDTO> rooms;
 
+    private Boolean deletable;
+
 }

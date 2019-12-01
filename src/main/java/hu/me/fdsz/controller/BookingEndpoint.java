@@ -16,7 +16,6 @@ import java.util.List;
 @RequestMapping(value = "/booking")
 public class BookingEndpoint {
 
-
     private final ModelMapper modelMapper;
 
     private final BookingService bookingService;

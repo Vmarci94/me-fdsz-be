@@ -128,8 +128,15 @@ public class ModelMapperConfig {
             @Override
             protected TurnusDTO convert(Turnus source) {
                 TurnusDTO result = tmpMapper.map(source, TurnusDTO.class);
+                result.setDeletable(true);
                 result.setRooms(source.getRooms().values().stream()
-                        .map(room -> singletonModelMapper.map(room, RoomDTO.class)).collect(Collectors.toList())
+                        .map(room -> {
+                            RoomDTO roomDTO = singletonModelMapper.map(room, RoomDTO.class);
+                            if (!roomDTO.getAvailable()) {
+                                result.setDeletable(false);
+                            }
+                            return roomDTO;
+                        }).collect(Collectors.toList())
                 );
                 return result;
             }
