@@ -13,6 +13,8 @@ import java.util.List;
 @EqualsAndHashCode
 public class BookingDTO {
 
+    private Long id;
+
     private UserDTO author;
 
     private List<RoomDTO> roomList;

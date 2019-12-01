@@ -66,24 +66,26 @@ values (12, CURDATE(), CURDATE(), 'Ez most egy másik felhasználó véleménye'
 
 -- Teszt üzenetek feltöltése
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (17, CURDATE() - 5, CURDATE(), 'Ez az első üzenet amit a felhasználó írt az adminnak.', 5, 4, 'N');
+    value (17, CURDATE() - INTERVAL 5 DAY, CURDATE(), 'Ez az első üzenet amit a felhasználó írt az adminnak.', 5, 4,
+           'N');
 -- ez egy user -> admin üzenet
 
 -- ez egy admin --> user üzenet
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (18, CURDATE() - 3, CURDATE(), 'Ez egy válasz az admintól.', 4, 5, 'N');
+    value (18, CURDATE() - INTERVAL 3 DAY, CURDATE(), 'Ez egy válasz az admintól.', 4, 5, 'N');
 
 -- ez egy user -> admin üzenet
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (19, CURDATE() - 2, CURDATE(), 'Ez a második üzenet amit a felhasználó írt az adminnak', 5, 4, 'N');
+    value (19, CURDATE() - INTERVAL 2 DAY, CURDATE(), 'Ez a második üzenet amit a felhasználó írt az adminnak', 5, 4,
+           'N');
 
 -- ez egy user -> admin üzenet
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (20, CURDATE() - 8, CURDATE(), 'Demóka régi üzcsije', 24, 25, 'Y');
+    value (20, CURDATE() - INTERVAL 8 DAY, CURDATE(), 'Demóka régi üzcsije', 24, 25, 'Y');
 
 -- ez egy user -> admin üzenet
 insert into message (id, created_date, modified_date, message_content, sender, reciever, readed)
-    value (21, CURDATE() - 1, CURDATE(), 'Demóka új üzcsije', 24, 25, 'N');
+    value (21, CURDATE() - INTERVAL 1 DAY, CURDATE(), 'Demóka új üzcsije', 24, 25, 'N');
 
 -- Teszt szobák feltöltése
 insert into room (id, created_date, modified_date, price, room_number, room_type)
