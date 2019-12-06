@@ -46,6 +46,6 @@ public class UserDTO {
     @Temporal(DATE)
     private Date birthDay;
 
-    private boolean admin;
+    private Boolean admin;
 
 }
