@@ -3,6 +3,7 @@ package hu.me.fdsz.service.impl;
 import hu.me.fdsz.dto.RoomDTO;
 import hu.me.fdsz.model.Room;
 import hu.me.fdsz.model.Turnus;
+import hu.me.fdsz.model.enums.RoomType;
 import hu.me.fdsz.repository.RoomRepository;
 import hu.me.fdsz.service.api.RoomService;
 import org.modelmapper.ModelMapper;
@@ -41,6 +42,31 @@ public class RoomServiceImpl implements RoomService {
         Collection<Room> allRoomToTurnus = turnus.getRooms().values();
         return null;
 
+    }
+
+    @Override
+    public Room createRoom(long roomNumber, RoomType roomType) {
+        return Room.builder()
+                .roomNumber(roomNumber)
+                .roomType(roomType)
+                .price(getPriceToRoomType(roomType))
+                .build();
+    }
+
+    @Override
+    public long getPriceToRoomType(RoomType roomType) {
+        Long result = null;
+        switch (roomType) {
+            case THREE_BED:
+                result = 5000L;
+                break;
+            case FOUR_BED:
+                result = 10000L;
+                break;
+            default:
+                throw new IllegalArgumentException("nincs felkészítve a rendszer a(z) " + roomType.toString() + " árára.");
+        }
+        return result;
     }
 
 

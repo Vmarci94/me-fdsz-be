@@ -1,5 +1,6 @@
 package hu.me.fdsz.service.impl;
 
+import hu.me.fdsz.dto.RoomDTO;
 import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Room;
 import hu.me.fdsz.model.Turnus;
@@ -33,6 +34,10 @@ public class TurnusServiceImpl implements TurnusService {
     public Turnus addNewTurnus(TurnusDTO turnusDTO) throws AuthenticationException, IllegalArgumentException {
         if (turnusDTO.getStartDate() != null && turnusDTO.getEndDate() != null) {
             Turnus newTurnus = modelMapper.map(turnusDTO, Turnus.class);
+            turnusDTO.getRooms().stream().filter(roomDTO -> !roomDTO.getSelected())
+                    .map(RoomDTO::getRoomNumber)
+                    .collect(Collectors.toList())
+                    .forEach(roomNumber -> newTurnus.getRooms().remove(roomNumber));
             if (!existsByTimeInterval(newTurnus)) {
                 return turnusRepository.save(newTurnus);
             } else {

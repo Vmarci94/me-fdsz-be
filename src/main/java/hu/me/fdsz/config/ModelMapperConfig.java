@@ -135,7 +135,7 @@ public class ModelMapperConfig {
                 result.setRooms(source.getRooms().values().stream()
                         .map(room -> {
                             RoomDTO roomDTO = singletonModelMapper.map(room, RoomDTO.class);
-                            if (!roomDTO.getAvailable()) {
+                            if (!roomDTO.isAvailable()) {
                                 result.setDeletable(false);
                             }
                             return roomDTO;

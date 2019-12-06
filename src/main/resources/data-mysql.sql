@@ -88,29 +88,29 @@ insert into message (id, created_date, modified_date, message_content, sender, r
     value (21, CURDATE() - INTERVAL 1 DAY, CURDATE(), 'Demóka új üzcsije', 24, 25, 'N');
 
 -- Teszt szobák feltöltése
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (22, CURDATE(), CURDATE(), 10000, 1, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (22, CURDATE(), CURDATE(), 10000, 1, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (23, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (23, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (24, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (24, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (25, CURDATE(), CURDATE(), 10000, 4, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (25, CURDATE(), CURDATE(), 10000, 4, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (26, CURDATE(), CURDATE(), 5000, 5, 'THREE_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (26, CURDATE(), CURDATE(), 5000, 5, 'THREE_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (27, CURDATE(), CURDATE(), 5000, 6, 'THREE_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (27, CURDATE(), CURDATE(), 5000, 6, 'THREE_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (28, CURDATE(), CURDATE(), 5000, 7, 'THREE_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (28, CURDATE(), CURDATE(), 5000, 7, 'THREE_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (29, CURDATE(), CURDATE(), 5000, 8, 'THREE_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (29, CURDATE(), CURDATE(), 5000, 8, 'THREE_BED', 'Y');
 
 -- Teszt turnus létrehozása
 insert into turnus (id, created_date, modified_date, enabled, end_date, start_date, last_modified_by, author)
@@ -128,14 +128,14 @@ insert into turnus_room (room_id, turnus_id) value (29, 30);
 insert into turnus (id, created_date, modified_date, enabled, end_date, start_date, last_modified_by, author)
     value (31, CURDATE(), CURDATE(), 'N', '2020-03-16', '2020-03-20', 4, 4);
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (33, CURDATE(), CURDATE(), 10000, 1, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (33, CURDATE(), CURDATE(), 10000, 1, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (34, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (34, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (35, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (35, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED', 'Y');
 
 insert into turnus_room (room_id, turnus_id) value (33, 31);
 insert into turnus_room (room_id, turnus_id) value (34, 31);
@@ -145,23 +145,23 @@ insert into turnus_room (room_id, turnus_id) value (35, 31);
 insert into turnus (id, created_date, modified_date, enabled, end_date, start_date, last_modified_by, author)
     value (32, '2019-09-01', '2019-09-01', 'Y', '2019-09-09', '2019-09-13', 4, 4);
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (36, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (36, CURDATE(), CURDATE(), 10000, 2, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (37, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (37, CURDATE(), CURDATE(), 10000, 3, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (38, CURDATE(), CURDATE(), 10000, 4, 'FOUR_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (38, CURDATE(), CURDATE(), 10000, 4, 'FOUR_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (39, CURDATE(), CURDATE(), 5000, 5, 'THREE_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (39, CURDATE(), CURDATE(), 5000, 5, 'THREE_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (40, CURDATE(), CURDATE(), 5000, 6, 'THREE_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (40, CURDATE(), CURDATE(), 5000, 6, 'THREE_BED', 'Y');
 
-insert into room (id, created_date, modified_date, price, room_number, room_type)
-    value (41, CURDATE(), CURDATE(), 5000, 7, 'THREE_BED');
+insert into room (id, created_date, modified_date, price, room_number, room_type, available)
+    value (41, CURDATE(), CURDATE(), 5000, 7, 'THREE_BED', 'Y');
 
 insert into turnus_room (room_id, turnus_id) value (36, 32);
 insert into turnus_room (room_id, turnus_id) value (37, 32);

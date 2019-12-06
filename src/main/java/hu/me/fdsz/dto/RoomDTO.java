@@ -16,6 +16,8 @@ public class RoomDTO {
 
     private Long price;
 
-    private Boolean available;
+    private boolean available;
+
+    private Boolean selected;
 
 }

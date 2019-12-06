@@ -2,6 +2,7 @@ package hu.me.fdsz.model;
 
 import hu.me.fdsz.model.enums.RoomType;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,7 +12,9 @@ import java.util.List;
 @Setter
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Room extends BaseEntity {
 
     @Column(name = "room_number", nullable = false)
@@ -29,8 +32,9 @@ public class Room extends BaseEntity {
     @ManyToMany(mappedBy = "rooms", cascade = CascadeType.ALL)
     private List<Turnus> turnus;
 
-//    @ManyToMany(mappedBy = "rooms", cascade = CascadeType.ALL)
-//    private List<Booking> bookingList;
+    @Type(type = "yes_no")
+    @Column(name = "available", nullable = false)
+    private boolean available;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "booking_id", referencedColumnName = "id")

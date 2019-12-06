@@ -24,4 +24,5 @@ public interface TurnusService {
     boolean delete(long turnusId);
 
     boolean existsByTimeInterval(Turnus turnus);
+
 }
