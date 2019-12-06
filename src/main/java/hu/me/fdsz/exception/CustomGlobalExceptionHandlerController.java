@@ -25,6 +25,7 @@ public class CustomGlobalExceptionHandlerController extends ResponseEntityExcept
 
     @ExceptionHandler(value = {AccessDeniedException.class, AuthenticationException.class})
     public ResponseEntity<HttpStatus> authenticationError(Exception e) {
+        logger.error("Nincs megfelelő jogosultság a funkció eléréséhez", e);
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 

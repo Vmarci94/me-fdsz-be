@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,11 +33,14 @@ public class ModelMapperConfig {
 
     private final UserService userService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public ModelMapperConfig(ImageService imageService, ImageRepository imageRepository, UserService userService) {
+    public ModelMapperConfig(ImageService imageService, ImageRepository imageRepository, UserService userService, PasswordEncoder passwordEncoder) {
         this.imageService = imageService;
         this.imageRepository = imageRepository;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -112,16 +116,19 @@ public class ModelMapperConfig {
                     @Override
                     protected User convert(UserDTO source) {
                         User result = tmpMapper.map(source, User.class);
-                        if (result.getFirstName().isBlank()) {
-                            result.setFirstName(
+                        result.setFullName(
                                     String.format("%s %s %s", result.getTitle(), result.getFirstName(), result.getSecoundName()).strip()
                             );
-                        }
 
                         if (source.getImageId() != null) {
                             Image image = imageRepository.findById(source.getImageId()).orElse(null);
                             result.setImage(image);
                         }
+
+                        if (source.getPassword() != null && !source.getPassword().isBlank()) {
+                            result.setPassword(passwordEncoder.encode(source.getPassword()));
+                        }
+
                         return result;
                     }
                 }

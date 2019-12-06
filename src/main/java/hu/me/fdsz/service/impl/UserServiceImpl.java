@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,13 +45,16 @@ public class UserServiceImpl implements UserService {
 
     private final MessageRepository messageRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserServiceImpl(UserRepositroy userRepositroy, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageService imageService, MessageRepository messageRepository) {
+    public UserServiceImpl(UserRepositroy userRepositroy, ModelMapper modelMapper, JwtTokenProvider jwtTokenProvider, ImageService imageService, MessageRepository messageRepository, PasswordEncoder passwordEncoder) {
         this.userRepositroy = userRepositroy;
         this.modelMapper = modelMapper;
         this.jwtTokenProvider = jwtTokenProvider;
         this.imageService = imageService;
         this.messageRepository = messageRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -80,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public JWTTokenDTO signin(UserDTO userDTO) throws LoginException {
         return userRepositroy.findByEmail(userDTO.getEmail())
-                .filter(currentUser -> currentUser.getPassword().equals(userDTO.getPassword()))
+                .filter(currentUser -> passwordEncoder.matches(userDTO.getPassword(), currentUser.getPassword()))
                 .map(user -> new JWTTokenDTO(jwtTokenProvider.signin(user.getEmail())))
                 .orElseThrow(() -> new LoginException("hibás adatok"));
     }
@@ -108,7 +112,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> updateUserData(UserDTO userDTO, MultipartFile multipartFile) throws AuthenticationException, AccessDeniedException {
         User currentUser = getCurrentUser().orElseThrow(AuthenticationException::new);
-        if (currentUser.getRole() == Role.ADMIN) {
+        if (currentUser.getRole() == Role.ADMIN || currentUser.getEmail().equals(userDTO.getEmail())) {
             return userRepositroy.findByEmail(userDTO.getEmail()).map(oldUser -> {
                 User inputUser = modelMapper.map(userDTO, User.class);
                 if (multipartFile != null) {

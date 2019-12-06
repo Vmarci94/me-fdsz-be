@@ -15,22 +15,26 @@ VALUES (3, CURDATE(), CURDATE(), 'test_profile_img0', 15742, 'Profilkep-1-1-180x
 insert into user (id, created_date, modified_date, birth_day, first_name, full_name, location, phone_number,
                   secound_name, title, email, image, password, role, username)
     value (4, CURDATE(), CURDATE(), '1994-11-22', 'Alap', 'Dr. Alap Elek', 'Miskolc', 06305257026, 'Elek', 'Dr.',
-           'alap.elek@kamu.hu', 3, 'asdasd', 'ADMIN', 'alap.elek');
+           'alap.elek@kamu.hu', 3, '$2a$12$i4V9UYua/OrcqBX8o/jI0.QWDkAn96cfz2aWcXw93GcuT973f.Bx6', 'ADMIN',
+           'alap.elek');
 
 insert into user (id, created_date, modified_date, birth_day, first_name, full_name, location, phone_number,
                   secound_name, title, email, image, password, role, username)
     value (5, CURDATE(), CURDATE(), '1956-04-26', 'Barack', 'Barack Ákos', 'Budapest', 06201598523, 'Ákos', null,
-           'barack.akos@kamu.hu', null, 'asdasd', 'CLIENT', 'barack.akos');
+           'barack.akos@kamu.hu', null, '$2a$12$i4V9UYua/OrcqBX8o/jI0.QWDkAn96cfz2aWcXw93GcuT973f.Bx6', 'CLIENT',
+           'barack.akos');
 
 insert into user (id, created_date, modified_date, birth_day, first_name, full_name, location, phone_number,
                   secound_name, title, email, image, password, role, username)
     value (24, CURDATE(), CURDATE(), '1980-05-21', 'Demó', 'Demó Dénes', 'Siófok', 06302589632, 'Dénes', null,
-           'demo.denes@kamu.hu', null, 'asdasd', 'CLIENT', 'demo.denes');
+           'demo.denes@kamu.hu', null, '$2a$12$i4V9UYua/OrcqBX8o/jI0.QWDkAn96cfz2aWcXw93GcuT973f.Bx6', 'CLIENT',
+           'demo.denes');
 
 insert into user (id, created_date, modified_date, birth_day, first_name, full_name, location, phone_number,
                   secound_name, title, email, image, password, role, username)
     value (25, CURDATE(), CURDATE(), '1950-12-21', 'Minden', 'Minden Áron', 'Győr', 06805284682, 'Áron', null,
-           'minden.aron@kamu.hu', null, 'asdasd', 'ADMIN', 'minden.aron');
+           'minden.aron@kamu.hu', null, '$2a$12$i4V9UYua/OrcqBX8o/jI0.QWDkAn96cfz2aWcXw93GcuT973f.Bx6', 'ADMIN',
+           'minden.aron');
 
 
 -- Alap posztok generálása
