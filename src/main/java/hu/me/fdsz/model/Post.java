@@ -1,6 +1,6 @@
 package hu.me.fdsz.model;
 
-import hu.me.fdsz.model.Util.HasImage;
+import hu.me.fdsz.model.util.HasImage;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;

@@ -1,7 +1,7 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.model.Image;
-import hu.me.fdsz.model.Util.HasImage;
+import hu.me.fdsz.model.util.HasImage;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;

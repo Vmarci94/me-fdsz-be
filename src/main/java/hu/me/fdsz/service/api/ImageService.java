@@ -1,7 +1,7 @@
 package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.model.Image;
-import hu.me.fdsz.model.Util.HasImage;
+import hu.me.fdsz.model.util.HasImage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

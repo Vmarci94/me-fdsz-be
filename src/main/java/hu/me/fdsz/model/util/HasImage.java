@@ -1,4 +1,4 @@
-package hu.me.fdsz.model.Util;
+package hu.me.fdsz.model.util;
 
 import hu.me.fdsz.model.Image;
 

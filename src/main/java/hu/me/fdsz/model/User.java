@@ -1,7 +1,7 @@
 package hu.me.fdsz.model;
 
-import hu.me.fdsz.model.Util.HasImage;
 import hu.me.fdsz.model.enums.Role;
+import hu.me.fdsz.model.util.HasImage;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
