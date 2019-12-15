@@ -1,7 +1,7 @@
 package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.dto.UserDTO;
-import hu.me.fdsz.dto.UserReportDTO;
+import hu.me.fdsz.model.dto.UserDTO;
+import hu.me.fdsz.model.dto.UserReportDTO;
 import hu.me.fdsz.repository.UserReportRepository;
 import hu.me.fdsz.repository.UserRepositroy;
 import hu.me.fdsz.service.api.UserReportService;

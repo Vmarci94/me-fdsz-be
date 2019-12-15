@@ -1,6 +1,6 @@
 package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.dto.MainDTO;
+import hu.me.fdsz.model.dto.MainDTO;
 import hu.me.fdsz.service.api.MainPageService;
 import hu.me.fdsz.service.api.PostService;
 import hu.me.fdsz.service.api.UserReportService;

@@ -1,6 +1,6 @@
 package hu.me.fdsz.controller;
 
-import hu.me.fdsz.dto.BookingDTO;
+import hu.me.fdsz.model.dto.BookingDTO;
 import hu.me.fdsz.service.api.BookingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

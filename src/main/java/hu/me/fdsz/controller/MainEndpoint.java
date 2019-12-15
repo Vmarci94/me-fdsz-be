@@ -1,6 +1,6 @@
 package hu.me.fdsz.controller;
 
-import hu.me.fdsz.dto.MainDTO;
+import hu.me.fdsz.model.dto.MainDTO;
 import hu.me.fdsz.service.api.MainPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

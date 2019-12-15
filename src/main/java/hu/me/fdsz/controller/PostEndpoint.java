@@ -1,6 +1,6 @@
 package hu.me.fdsz.controller;
 
-import hu.me.fdsz.dto.FeedPostDTO;
+import hu.me.fdsz.model.dto.FeedPostDTO;
 import hu.me.fdsz.service.api.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

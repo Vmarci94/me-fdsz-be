@@ -1,8 +1,8 @@
 package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.dto.RoomDTO;
 import hu.me.fdsz.model.Room;
 import hu.me.fdsz.model.Turnus;
+import hu.me.fdsz.model.dto.RoomDTO;
 import hu.me.fdsz.model.enums.RoomType;
 import hu.me.fdsz.repository.RoomRepository;
 import hu.me.fdsz.service.api.RoomService;

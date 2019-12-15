@@ -1,7 +1,9 @@
-package hu.me.fdsz.dto;
+package hu.me.fdsz.model.dto;
 
-import hu.me.fdsz.model.enums.Role;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Temporal;
 import java.util.Date;
@@ -12,22 +14,7 @@ import static javax.persistence.TemporalType.DATE;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
-@NoArgsConstructor
-public class UserDTO {
-
-    private Long id;
-
-    @ToString.Include
-    @EqualsAndHashCode.Include
-    private String email;
-
-    private String username;
-
-    private String password;
-
-    private Role role;
-
-    private Long imageId;
+public class GuestDTO {
 
     private String title;
 
@@ -43,7 +30,5 @@ public class UserDTO {
 
     @Temporal(DATE)
     private Date birthDay;
-
-    private Boolean admin;
 
 }

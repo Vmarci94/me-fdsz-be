@@ -1,8 +1,8 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.dto.RoomDTO;
 import hu.me.fdsz.model.Room;
 import hu.me.fdsz.model.Turnus;
+import hu.me.fdsz.model.dto.RoomDTO;
 import hu.me.fdsz.model.enums.RoomType;
 import org.springframework.stereotype.Service;
 

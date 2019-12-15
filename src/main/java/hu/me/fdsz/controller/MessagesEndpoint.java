@@ -1,7 +1,7 @@
 package hu.me.fdsz.controller;
 
-import hu.me.fdsz.dto.MailBoxDTO;
-import hu.me.fdsz.dto.MessageDTO;
+import hu.me.fdsz.model.dto.MailBoxDTO;
+import hu.me.fdsz.model.dto.MessageDTO;
 import hu.me.fdsz.service.api.MessageService;
 import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;

@@ -1,4 +1,4 @@
-package hu.me.fdsz.dto;
+package hu.me.fdsz.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;

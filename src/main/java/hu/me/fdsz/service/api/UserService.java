@@ -1,9 +1,9 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.dto.JWTTokenDTO;
-import hu.me.fdsz.dto.MessageDTO;
-import hu.me.fdsz.dto.UserDTO;
 import hu.me.fdsz.model.User;
+import hu.me.fdsz.model.dto.JWTTokenDTO;
+import hu.me.fdsz.model.dto.MessageDTO;
+import hu.me.fdsz.model.dto.UserDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

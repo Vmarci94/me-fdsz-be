@@ -1,7 +1,7 @@
 package hu.me.fdsz.config;
 
-import hu.me.fdsz.dto.*;
 import hu.me.fdsz.model.*;
+import hu.me.fdsz.model.dto.*;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;

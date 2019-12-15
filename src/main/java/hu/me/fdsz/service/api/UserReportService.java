@@ -1,6 +1,6 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.dto.UserReportDTO;
+import hu.me.fdsz.model.dto.UserReportDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

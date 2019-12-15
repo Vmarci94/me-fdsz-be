@@ -1,9 +1,9 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.dto.MailBoxDTO;
-import hu.me.fdsz.dto.MessageDTO;
 import hu.me.fdsz.model.Message;
 import hu.me.fdsz.model.User;
+import hu.me.fdsz.model.dto.MailBoxDTO;
+import hu.me.fdsz.model.dto.MessageDTO;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;

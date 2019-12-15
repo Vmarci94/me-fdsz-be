@@ -1,6 +1,6 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.dto.MainDTO;
+import hu.me.fdsz.model.dto.MainDTO;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,6 +1,6 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.dto.FeedPostDTO;
+import hu.me.fdsz.model.dto.FeedPostDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

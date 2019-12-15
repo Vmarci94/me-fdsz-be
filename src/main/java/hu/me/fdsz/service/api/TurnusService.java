@@ -1,8 +1,8 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.dto.TurnusDTO;
 import hu.me.fdsz.model.Room;
 import hu.me.fdsz.model.Turnus;
+import hu.me.fdsz.model.dto.TurnusDTO;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;

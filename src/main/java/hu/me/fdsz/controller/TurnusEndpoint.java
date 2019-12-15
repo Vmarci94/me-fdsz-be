@@ -1,6 +1,6 @@
 package hu.me.fdsz.controller;
 
-import hu.me.fdsz.dto.TurnusDTO;
+import hu.me.fdsz.model.dto.TurnusDTO;
 import hu.me.fdsz.service.api.TurnusService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

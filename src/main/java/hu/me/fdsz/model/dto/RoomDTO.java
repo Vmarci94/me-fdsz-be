@@ -1,4 +1,4 @@
-package hu.me.fdsz.dto;
+package hu.me.fdsz.model.dto;
 
 import hu.me.fdsz.model.enums.RoomType;
 import lombok.Getter;
