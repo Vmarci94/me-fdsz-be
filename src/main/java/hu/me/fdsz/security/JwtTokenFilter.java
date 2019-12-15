@@ -1,6 +1,6 @@
 package hu.me.fdsz.security;
 
-import hu.me.fdsz.Utils.Util;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.me.fdsz.exception.CustomExceptionDTO;
 import hu.me.fdsz.exception.InvalidTokenException;
 import hu.me.fdsz.service.api.JwtTokenProvider;
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-// We should use OncePerRequestFilter since we are doing a database call, there is no point in doing this more than once
 @WebFilter("/*")
 public class JwtTokenFilter extends OncePerRequestFilter {
 
@@ -49,9 +48,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     });
         } catch (InvalidTokenException ite) {
             SecurityContextHolder.clearContext();
-            httpServletResponse.sendError(ite.getStatusCode(), Util.convertObjectToJson(new CustomExceptionDTO(ite)));
+            httpServletResponse.sendError(ite.getStatusCode(), new ObjectMapper().writeValueAsString(new CustomExceptionDTO(ite)));
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);  //itt teszi bele a header-be sezerintem
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     private Optional<String> resolveToken(HttpServletRequest req) {
@@ -60,8 +59,4 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 .map(bearerToken -> bearerToken.substring(7));
     }
 
-    @Override
-    public void destroy() {
-        //Do nothing on destroy
-    }
 }

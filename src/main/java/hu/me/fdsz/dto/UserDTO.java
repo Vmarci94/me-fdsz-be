@@ -1,10 +1,7 @@
 package hu.me.fdsz.dto;
 
 import hu.me.fdsz.model.enums.Role;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Temporal;
 import java.util.Date;
@@ -15,6 +12,7 @@ import static javax.persistence.TemporalType.DATE;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 public class UserDTO {
 
     private Long id;

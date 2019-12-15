@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<MessageDTO> getMessageToUser(long userId) {
-        return userRepositroy.findById(userId).map(user -> messageRepository.findAllMessagesToUser(user)
+        return userRepositroy.findById(userId).map(user -> messageRepository.findAllBySenderOrRecieverOrderByCreatedDate(user, user)
                 .stream().map(message -> modelMapper.map(message, MessageDTO.class))
                 .collect(Collectors.toList())).orElse(Collections.emptyList());
     }
