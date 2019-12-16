@@ -1,6 +1,6 @@
 package hu.me.fdsz.repository;
 
-import hu.me.fdsz.model.Room;
+import hu.me.fdsz.model.entities.Room;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;

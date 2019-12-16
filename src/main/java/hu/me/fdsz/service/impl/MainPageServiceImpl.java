@@ -3,14 +3,11 @@ package hu.me.fdsz.service.impl;
 import hu.me.fdsz.model.dto.MainDTO;
 import hu.me.fdsz.service.api.MainPageService;
 import hu.me.fdsz.service.api.PostService;
-import hu.me.fdsz.service.api.UserReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MainPageServiceImpl implements MainPageService {
-
-    private final UserReportService userReportService;
 
     private final PostService postService;
 
@@ -31,8 +28,7 @@ public class MainPageServiceImpl implements MainPageService {
             "</p>";
 
     @Autowired
-    public MainPageServiceImpl(UserReportService userReportService, PostService postService) {
-        this.userReportService = userReportService;
+    public MainPageServiceImpl(PostService postService) {
         this.postService = postService;
     }
 
@@ -40,8 +36,7 @@ public class MainPageServiceImpl implements MainPageService {
     public MainDTO getMainPageInfo() {
         MainDTO.MainDTOBuilder resultBuilder = MainDTO.builder();
         resultBuilder.highlightList(postService.getAll())
-                .introductionInHTML(mainIntroduction)
-                .userReports(userReportService.getTopUserReport(5));
+                .introductionInHTML(mainIntroduction);
         return resultBuilder.build();
     }
 

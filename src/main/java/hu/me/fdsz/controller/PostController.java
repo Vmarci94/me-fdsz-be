@@ -13,13 +13,13 @@ import javax.naming.AuthenticationException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/feeds")
-public class PostEndpoint {
+@RequestMapping(value = "/post")
+public class PostController {
 
     private final PostService postService;
 
     @Autowired
-    public PostEndpoint(PostService postService) {
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 

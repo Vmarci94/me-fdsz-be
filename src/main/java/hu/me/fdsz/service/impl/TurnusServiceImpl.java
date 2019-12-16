@@ -1,9 +1,9 @@
 package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.model.Room;
-import hu.me.fdsz.model.Turnus;
 import hu.me.fdsz.model.dto.RoomDTO;
 import hu.me.fdsz.model.dto.TurnusDTO;
+import hu.me.fdsz.model.entities.Room;
+import hu.me.fdsz.model.entities.Turnus;
 import hu.me.fdsz.repository.TurnusRepository;
 import hu.me.fdsz.service.api.TurnusService;
 import org.modelmapper.ModelMapper;
@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
-import javax.persistence.EntityNotFoundException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,18 +49,6 @@ public class TurnusServiceImpl implements TurnusService {
     @Override
     public List<Turnus> getAllTurnus() {
         return turnusRepository.findAll();
-    }
-
-    @Override
-    public boolean isEnabled(Turnus turnus) {
-        return turnus.isEnabled() && turnus.getStartDate().compareTo(new Date()) > 0;
-    }
-
-    @Override
-    public List<Room> getAviableRoomsToTurnus(long turnusId) {
-        return turnusRepository.findById(turnusId)
-                .map(this::getAviableRoomsToTurnus)
-                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

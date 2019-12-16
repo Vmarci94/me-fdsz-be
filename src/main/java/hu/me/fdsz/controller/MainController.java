@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/main")
-public class MainEndpoint {
+public class MainController {
 
     private final MainPageService mainPageService;
 
     @Autowired
-    public MainEndpoint(MainPageService mainPageService) {
+    public MainController(MainPageService mainPageService) {
         this.mainPageService = mainPageService;
     }
 

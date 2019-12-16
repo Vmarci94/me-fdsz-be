@@ -1,6 +1,6 @@
 package hu.me.fdsz.model.util;
 
-import hu.me.fdsz.model.Image;
+import hu.me.fdsz.model.entities.Image;
 
 import java.util.Optional;
 

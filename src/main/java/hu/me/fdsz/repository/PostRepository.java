@@ -1,6 +1,6 @@
 package hu.me.fdsz.repository;
 
-import hu.me.fdsz.model.Post;
+import hu.me.fdsz.model.entities.Post;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 

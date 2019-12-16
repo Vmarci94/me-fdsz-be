@@ -1,9 +1,8 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.model.User;
-import hu.me.fdsz.model.dto.JWTTokenDTO;
 import hu.me.fdsz.model.dto.MessageDTO;
 import hu.me.fdsz.model.dto.UserDTO;
+import hu.me.fdsz.model.entities.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,16 +15,16 @@ import java.util.Optional;
 @Service
 public interface UserService {
 
-    List<UserDTO> getAllUsers();
+    List<User> getAllUsers();
 
     /**
      * Regisztráció, és token generálás
      * @param userForm az új felhasználó adatai
      * @return a már perzisztált felhasználó adatai
      */
-    UserDTO signup(UserDTO userForm) throws Exception;
+    User signup(User userForm) throws Exception;
 
-    JWTTokenDTO signin(UserDTO userDTO) throws LoginException;
+    String signin(String userEmail, String userPassword) throws IllegalArgumentException, LoginException;
 
     Optional<UserDTO> getCurrentUserWithoutPassword();
 
@@ -33,9 +32,7 @@ public interface UserService {
 
     Optional<User> updateUserData(UserDTO userDTO, MultipartFile multipartFile) throws AuthenticationException, AccessDeniedException;
 
-    List<UserDTO> findClientUsersByName(String fullName);
-
-    List<UserDTO> searchUserByName(String searchTerm);
+    List<User> searchUserByName(String searchTerm);
 
     List<MessageDTO> getMessageToCurrentUser() throws AuthenticationException;
 
@@ -43,7 +40,7 @@ public interface UserService {
 
     List<MessageDTO> getMessageToUser(long userId);
 
-    UserDTO getUserById(long userId);
+    Optional<User> getUserById(long userId);
 
     User getDefaultAdmin();
 

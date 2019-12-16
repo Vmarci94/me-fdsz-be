@@ -1,13 +1,12 @@
 package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.model.Message;
-import hu.me.fdsz.model.User;
 import hu.me.fdsz.model.dto.MailBoxDTO;
-import hu.me.fdsz.model.dto.MessageDTO;
 import hu.me.fdsz.model.dto.UserDTO;
+import hu.me.fdsz.model.entities.Message;
+import hu.me.fdsz.model.entities.User;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.MessageRepository;
-import hu.me.fdsz.repository.UserRepositroy;
+import hu.me.fdsz.repository.UserRepository;
 import hu.me.fdsz.service.api.MessageService;
 import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
@@ -28,18 +27,18 @@ public class MessageServiceImpl implements MessageService {
 
     private final UserService userService;
 
-    private final UserRepositroy userRepositroy;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, ModelMapper modelMapper, UserService userService, UserRepositroy userRepositroy) {
+    public MessageServiceImpl(MessageRepository messageRepository, ModelMapper modelMapper, UserService userService,
+                              UserRepository userRepository) {
         this.messageRepository = messageRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
-        this.userRepositroy = userRepositroy;
+        this.userRepository = userRepository;
     }
 
-    @Override
-    public Map<User, LinkedList<Message>> getTopMessagesFromUsersGroupedBySender() {
+    private Map<User, LinkedList<Message>> getTopMessagesFromUsersGroupedBySender() {
         return messageRepository.findAllByReciever_RoleIsOrderByCreatedDate(Role.ADMIN).stream()
                 .collect(Collectors.groupingBy(Message::getSender, Collectors.collectingAndThen(Collectors.toList(),
                         messages -> messages.stream().sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
@@ -65,27 +64,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public boolean deleteAllMessageFromCurrentUser() throws AuthenticationException {
-        User currentUser = userService.getCurrentUser().orElseThrow(AuthenticationException::new);
-        if (currentUser.getRole() != Role.ADMIN) {
-            // egyenlőre csak a user tudja törölni az összes üzenetét, és ez most végig törli.
-            // ha lesz idő akkor jó lenne megoldani az inboxot is.
-            messageRepository.deleteALlBySender(currentUser);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public Optional<Message> add(MessageDTO messageDTO) throws AuthenticationException {
+    public Optional<Message> add(Long userId, String messageContent) throws AuthenticationException {
         User sender = userService.getCurrentUser().orElseThrow(AuthenticationException::new);
-        User reciever = messageDTO.getReciever() != null && messageDTO.getReciever().getId() != null ?
-                userRepositroy.findById(messageDTO.getReciever().getId()).orElseThrow(EntityNotFoundException::new)
+        User reciever = userId != null ?
+                userRepository.findById(userId).orElseThrow(EntityNotFoundException::new)
                 :
                 userService.getDefaultAdmin();
         Message newMessage = new Message();
-        newMessage.setMessageContent(messageDTO.getMessage());
+        newMessage.setMessageContent(messageContent);
         newMessage.setSender(sender);
         newMessage.setReciever(reciever);
         return Optional.ofNullable(messageRepository.save(newMessage));

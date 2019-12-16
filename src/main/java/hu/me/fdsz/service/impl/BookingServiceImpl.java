@@ -1,8 +1,8 @@
 package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.model.Booking;
-import hu.me.fdsz.model.Room;
 import hu.me.fdsz.model.dto.BookingDTO;
+import hu.me.fdsz.model.entities.Booking;
+import hu.me.fdsz.model.entities.Room;
 import hu.me.fdsz.repository.BookingRepository;
 import hu.me.fdsz.repository.RoomRepository;
 import hu.me.fdsz.repository.TurnusRepository;

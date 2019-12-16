@@ -1,6 +1,6 @@
 package hu.me.fdsz.security;
 
-import hu.me.fdsz.model.User;
+import hu.me.fdsz.model.entities.User;
 import hu.me.fdsz.service.api.UserService;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;

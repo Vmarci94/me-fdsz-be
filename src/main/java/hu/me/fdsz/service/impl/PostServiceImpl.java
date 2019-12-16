@@ -1,21 +1,18 @@
 package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.model.Image;
-import hu.me.fdsz.model.Post;
 import hu.me.fdsz.model.dto.FeedPostDTO;
+import hu.me.fdsz.model.entities.Image;
+import hu.me.fdsz.model.entities.Post;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.repository.PostRepository;
 import hu.me.fdsz.service.api.ImageService;
 import hu.me.fdsz.service.api.PostService;
-import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,17 +35,15 @@ public class PostServiceImpl implements PostService {
 
     private final ImageContentStore imageContentStore;
 
-    private final UserService userService;
-
     private final ImageService imageService;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper, ImageRepository imageRepository, ImageContentStore imageContentStore, UserService userService, ImageService imageService) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper, ImageRepository imageRepository,
+                           ImageContentStore imageContentStore, ImageService imageService) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.imageRepository = imageRepository;
         this.imageContentStore = imageContentStore;
-        this.userService = userService;
         this.imageService = imageService;
     }
 
@@ -73,18 +68,6 @@ public class PostServiceImpl implements PostService {
         }
         newPost = postRepository.save(newPost);
         return modelMapper.map(newPost, FeedPostDTO.class);
-    }
-
-    @Override
-    public ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file) {
-        return null;
-    }
-
-    @Override
-    public FeedPostDTO getContent(Long feedPostId) {
-        return postRepository.findById(feedPostId)
-                .map(post -> modelMapper.map(post, FeedPostDTO.class))
-                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

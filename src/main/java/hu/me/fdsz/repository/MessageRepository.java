@@ -1,7 +1,7 @@
 package hu.me.fdsz.repository;
 
-import hu.me.fdsz.model.Message;
-import hu.me.fdsz.model.User;
+import hu.me.fdsz.model.entities.Message;
+import hu.me.fdsz.model.entities.User;
 import hu.me.fdsz.model.enums.Role;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,6 +16,4 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
     List<Message> findAllBySenderOrRecieverOrderByCreatedDate(User sender, User reciever);
 
     List<Message> findAllByReciever_RoleIsOrderByCreatedDate(Role reciever_role);
-
-    void deleteALlBySender(User sender);
 }

@@ -1,6 +1,6 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.model.User;
+import hu.me.fdsz.model.entities.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

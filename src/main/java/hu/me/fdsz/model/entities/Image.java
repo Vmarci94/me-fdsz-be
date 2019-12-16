@@ -1,4 +1,4 @@
-package hu.me.fdsz.model;
+package hu.me.fdsz.model.entities;
 
 import lombok.*;
 import org.springframework.content.commons.annotations.ContentId;
@@ -20,8 +20,11 @@ public class Image extends BaseEntity {
 
     @ContentId
     private String contentId;
+
     @ContentLength
     private long contentLength;
+
     @MimeType
     private String mimeType;
+
 }

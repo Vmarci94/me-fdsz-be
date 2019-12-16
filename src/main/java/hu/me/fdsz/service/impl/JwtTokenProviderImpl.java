@@ -1,8 +1,8 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.exception.InvalidTokenException;
-import hu.me.fdsz.model.User;
-import hu.me.fdsz.repository.UserRepositroy;
+import hu.me.fdsz.model.entities.User;
+import hu.me.fdsz.repository.UserRepository;
 import hu.me.fdsz.service.api.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -33,11 +33,11 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
     private long validityInMilliseconds;
 
-    private final UserRepositroy userRepositroy;
+    private final UserRepository userRepository;
 
     @Autowired
-    public JwtTokenProviderImpl(UserRepositroy userRepositroy) {
-        this.userRepositroy = userRepositroy;
+    public JwtTokenProviderImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @PostConstruct
@@ -67,7 +67,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         //userEmail from token
         String userEmail = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-        return userRepositroy.findByEmail(userEmail).map(currentUser ->
+        return userRepository.findByEmail(userEmail).map(currentUser ->
                 new UsernamePasswordAuthenticationToken(currentUser, "", currentUser.getAuthorities())
         ).orElseThrow(() -> new UsernameNotFoundException("User '" + userEmail + "' not found"));
     }

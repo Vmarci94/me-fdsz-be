@@ -1,8 +1,6 @@
 package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.model.dto.FeedPostDTO;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,10 +14,6 @@ public interface PostService {
     List<FeedPostDTO> getAll();
 
     FeedPostDTO add(FeedPostDTO feedPostDTO, MultipartFile image) throws AuthenticationException;
-
-    ResponseEntity<HttpStatus> setContent(Long feedPostId, MultipartFile file);
-
-    FeedPostDTO getContent(Long feedPostId);
 
     @Transactional(readOnly = true)
     List<FeedPostDTO> getPostsWithLimit(int limit);

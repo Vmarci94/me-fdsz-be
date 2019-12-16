@@ -1,4 +1,4 @@
-package hu.me.fdsz.model;
+package hu.me.fdsz.model.entities;
 
 import lombok.*;
 

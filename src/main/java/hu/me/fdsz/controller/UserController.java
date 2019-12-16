@@ -2,6 +2,7 @@ package hu.me.fdsz.controller;
 
 import hu.me.fdsz.model.dto.JWTTokenDTO;
 import hu.me.fdsz.model.dto.UserDTO;
+import hu.me.fdsz.model.entities.User;
 import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,63 +14,62 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
+import javax.persistence.EntityNotFoundException;
 import javax.security.auth.login.LoginException;
-import javax.servlet.http.HttpServletResponse;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserEndpoint {
+@RequestMapping(value = "/user")
+public class UserController {
 
     private final UserService userService;
+
     private final ModelMapper modelMapper;
 
+
     @Autowired
-    public UserEndpoint(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
-    //    Regisztráció
+    // Bejelentkezés
+    @PostMapping(value = "/signin", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<JWTTokenDTO> signin(@RequestBody UserDTO userDTO) throws LoginException {
+        return new ResponseEntity<>(
+                new JWTTokenDTO(userService.signin(userDTO.getEmail(), userDTO.getPassword())),
+                HttpStatus.OK);
+    }
+
+    // Regisztráció
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDTO> signup(@RequestBody UserDTO userForm) throws Exception {
-        return Optional.of(userService.signup(userForm))
-                .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
+        return Optional.of(userService.signup(modelMapper.map(userForm, User.class)))
+                .map(user -> new ResponseEntity<>(modelMapper.map(user, UserDTO.class), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @GetMapping(value = "/get-all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> getAllUser() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUser() {
+        List<UserDTO> result = userService.getAllUsers().stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
     }
 
-    //Bejelentkezés
-    @PostMapping(value = "/signin", produces = MediaType.APPLICATION_JSON_VALUE)
-    public JWTTokenDTO signin(@RequestBody UserDTO userDTO, HttpServletResponse response) {
-        JWTTokenDTO result = null;
-        try {
-            result = userService.signin(userDTO);
-            response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        } catch (LoginException le) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        }
-        return result;
-    }
-
-    @GetMapping(value = "/get-client-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> getClientUsersByName(String fullName) {
-        return userService.findClientUsersByName(fullName);
-    }
-
-    @GetMapping(value = "/get-by-id")
-    public UserDTO getUserById(long userId) {
-        return userService.getUserById(userId);
+    @GetMapping(value = "/get-by-id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDTO> getUserById(long userId) throws EntityNotFoundException {
+        return userService.getUserById(userId)
+                .map(user -> new ResponseEntity<>(modelMapper.map(user, UserDTO.class), HttpStatus.OK))
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @GetMapping(value = "/get-current-user", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUsername() throws AuthenticationException {
+    public ResponseEntity<UserDTO> getUsername() throws AuthenticationException {
         return userService.getCurrentUserWithoutPassword()
                 .map(userDTO -> new ResponseEntity<>(userDTO, HttpStatus.OK))
                 .orElseThrow(AuthenticationException::new);
@@ -86,8 +86,10 @@ public class UserEndpoint {
     }
 
     @GetMapping(value = "/search-users-by-name", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> searchUserByName(String searchTerm) {
-        return userService.searchUserByName(searchTerm);
+    public ResponseEntity<List<UserDTO>> searchUserByName(String searchTerm) {
+        return new ResponseEntity<>(userService.searchUserByName(searchTerm)
+                .stream().map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
 }

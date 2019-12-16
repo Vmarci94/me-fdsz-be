@@ -1,4 +1,4 @@
-package hu.me.fdsz.model;
+package hu.me.fdsz.model.entities;
 
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.model.util.HasImage;

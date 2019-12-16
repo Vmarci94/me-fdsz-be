@@ -1,7 +1,7 @@
 package hu.me.fdsz.config;
 
-import hu.me.fdsz.model.*;
 import hu.me.fdsz.model.dto.*;
+import hu.me.fdsz.model.entities.*;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Configuration
 public class ModelMapperConfig {
 
-    private static final Logger logger = LogManager.getLogger("Model mapping");
+    private static final Logger logger = LogManager.getLogger(ModelMapperConfig.class);
 
     private final ImageService imageService;
 
@@ -36,7 +36,8 @@ public class ModelMapperConfig {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ModelMapperConfig(ImageService imageService, ImageRepository imageRepository, UserService userService, PasswordEncoder passwordEncoder) {
+    public ModelMapperConfig(ImageService imageService, ImageRepository imageRepository,
+                             UserService userService, PasswordEncoder passwordEncoder) {
         this.imageService = imageService;
         this.imageRepository = imageRepository;
         this.userService = userService;
@@ -57,20 +58,6 @@ public class ModelMapperConfig {
      */
     private void setCustomConverters(final ModelMapper singletonModelMapper) {
         final ModelMapper tmpMapper = new ModelMapper();
-
-        singletonModelMapper.addConverter(
-                new AbstractConverter<MultipartFile, Image>() {
-                    @Override
-                    protected Image convert(MultipartFile source) {
-                        try {
-                            return imageService.createImageFromMultipartFile(source);
-                        } catch (IOException e) {
-                            logger.error("Nem sikerült létrehozni a image fájlt.");
-                        }
-                        return null;
-                    }
-                }
-        );
 
         singletonModelMapper.addConverter(
                 new AbstractConverter<FeedPostDTO, Post>() {
@@ -105,6 +92,22 @@ public class ModelMapperConfig {
                         result.setAdmin(source.getRole() == Role.ADMIN);
                         result.setPassword(null); //jelszó sose jusson ki.
                         return result;
+                    }
+                }
+        );
+
+        singletonModelMapper.addConverter(
+                new AbstractConverter<MultipartFile, Image>() {
+                    @Override
+                    protected Image convert(MultipartFile source) {
+                        try {
+                            int imageWidth = 730;
+                            int imageHeight = 410;
+                            return imageService.createImageFromMultipartFile(source, imageWidth, imageHeight);
+                        } catch (IOException e) {
+                            logger.error("Nem sikerült létrehozni a image fájlt.");
+                        }
+                        return null;
                     }
                 }
         );

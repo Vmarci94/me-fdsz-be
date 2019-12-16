@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/turnus")
-public class TurnusEndpoint {
+public class TurnusController {
 
     private final TurnusService turnusService;
 
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TurnusEndpoint(TurnusService turnusService, ModelMapper modelMapper) {
+    public TurnusController(TurnusService turnusService, ModelMapper modelMapper) {
         this.turnusService = turnusService;
         this.modelMapper = modelMapper;
     }
