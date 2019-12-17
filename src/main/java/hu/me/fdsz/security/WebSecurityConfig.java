@@ -25,7 +25,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+//        registry.addMapping("/**");
+        registry.addMapping("/**")
+                .allowedHeaders("*")
+                .allowedOrigins("*")
+                .allowedMethods("*")
+                .allowCredentials(true);
     }
 
     @Override
@@ -45,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .antMatchers("/users/signin").permitAll()//
                 .antMatchers("/users/get-currnet-user").permitAll()//
                 .antMatchers("/users/get-all").permitAll()
-                .antMatchers("/feeds/get-all").permitAll()//
+                .antMatchers("/post/get-all").permitAll()//
                 // Disallow everything else..
 //                .anyRequest().authenticated();/
         ; //FIXME
@@ -55,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
         http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         // Optional, if you want to test the API from a browser
-        // http.httpBasic();
+        http.httpBasic();
     }
 
     @Override

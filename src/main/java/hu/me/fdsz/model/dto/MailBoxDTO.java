@@ -15,6 +15,7 @@ import static javax.persistence.TemporalType.DATE;
 public class MailBoxDTO {
 
     private UserDTO sender;
+
     @Temporal(DATE)
     private Date incommindDate;
 

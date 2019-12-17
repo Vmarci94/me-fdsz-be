@@ -41,9 +41,9 @@ public class PostController {
     }
 
     @PostMapping(value = "/update", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public FeedPostDTO update(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
-                              @RequestPart(name = "image", required = false) MultipartFile image) throws RuntimeException, AuthenticationException {
-        return postService.update(feedPostDTO, image);
+    public ResponseEntity<FeedPostDTO> update(@RequestPart(name = "newFeedPost") FeedPostDTO feedPostDTO,
+                                              @RequestPart(name = "image", required = false) MultipartFile image) throws RuntimeException, AuthenticationException {
+        return new ResponseEntity<>(postService.update(feedPostDTO, image), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "delete/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
