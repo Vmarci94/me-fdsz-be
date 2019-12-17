@@ -1,7 +1,7 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.exception.InvalidTokenException;
-import hu.me.fdsz.model.entities.User;
+import hu.me.fdsz.model.entity.User;
 import hu.me.fdsz.repository.UserRepository;
 import hu.me.fdsz.service.api.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
@@ -48,7 +48,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
     }
 
     @Override
-    public String signin(String userEmail) {
+    public String createTokenWithEmail(String userEmail) {
 
         Claims claims = Jwts.claims().setSubject(userEmail);
         Date now = new Date();

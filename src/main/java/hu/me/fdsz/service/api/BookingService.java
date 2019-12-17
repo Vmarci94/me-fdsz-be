@@ -1,7 +1,7 @@
 package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.model.dto.BookingDTO;
-import hu.me.fdsz.model.entities.Booking;
+import hu.me.fdsz.model.entity.Booking;
 import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;

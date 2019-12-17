@@ -1,4 +1,4 @@
-package hu.me.fdsz.model.entities;
+package hu.me.fdsz.model.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -21,7 +21,7 @@ import static javax.persistence.TemporalType.DATE;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public class AuditableBaseEntity implements Serializable {
+public abstract class AuditableBaseEntity implements Serializable {
 
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate

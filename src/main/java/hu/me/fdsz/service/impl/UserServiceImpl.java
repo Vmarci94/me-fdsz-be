@@ -2,7 +2,7 @@ package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.model.dto.MessageDTO;
 import hu.me.fdsz.model.dto.UserDTO;
-import hu.me.fdsz.model.entities.User;
+import hu.me.fdsz.model.entity.User;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.MessageRepository;
 import hu.me.fdsz.repository.UserRepository;
@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
@@ -28,6 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class.getName());
@@ -82,7 +84,7 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.findByEmail(userEmail.trim())
                 .filter(user -> passwordEncoder.matches(userPassword, user.getPassword()))
-                .map(user -> jwtTokenProvider.signin(user.getEmail()))
+                .map(user -> jwtTokenProvider.createTokenWithEmail(user.getEmail()))
                 .orElseThrow(() -> new LoginException("hibás bejelentkezési adatok!"));
     }
 

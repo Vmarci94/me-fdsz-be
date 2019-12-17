@@ -1,7 +1,7 @@
 package hu.me.fdsz.service.impl;
 
-import hu.me.fdsz.model.entities.Image;
-import hu.me.fdsz.model.util.HasImage;
+import hu.me.fdsz.model.entity.HasImage;
+import hu.me.fdsz.model.entity.Image;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.service.api.ImageService;
@@ -14,6 +14,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
+@Service
 public class ImageServiceImpl implements ImageService {
 
     private static final Logger logger = LogManager.getLogger(ImageServiceImpl.class);

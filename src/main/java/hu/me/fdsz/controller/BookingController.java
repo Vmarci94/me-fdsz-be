@@ -2,7 +2,6 @@ package hu.me.fdsz.controller;
 
 import hu.me.fdsz.model.dto.BookingDTO;
 import hu.me.fdsz.service.api.BookingService;
-import hu.me.fdsz.service.api.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/booking")
-public abstract class BookingController implements PostService {
+public class BookingController {
 
     private final ModelMapper modelMapper;
 

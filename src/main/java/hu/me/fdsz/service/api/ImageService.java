@@ -1,17 +1,15 @@
 package hu.me.fdsz.service.api;
 
-import hu.me.fdsz.model.entities.Image;
-import hu.me.fdsz.model.util.HasImage;
+import hu.me.fdsz.model.entity.HasImage;
+import hu.me.fdsz.model.entity.Image;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 
-@Service
 public interface ImageService {
 
     /**

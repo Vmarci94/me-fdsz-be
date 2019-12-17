@@ -2,8 +2,8 @@ package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.model.dto.RoomDTO;
 import hu.me.fdsz.model.dto.TurnusDTO;
-import hu.me.fdsz.model.entities.Room;
-import hu.me.fdsz.model.entities.Turnus;
+import hu.me.fdsz.model.entity.Room;
+import hu.me.fdsz.model.entity.Turnus;
 import hu.me.fdsz.repository.TurnusRepository;
 import hu.me.fdsz.service.api.TurnusService;
 import org.modelmapper.ModelMapper;

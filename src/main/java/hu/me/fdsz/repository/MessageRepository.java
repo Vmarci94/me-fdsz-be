@@ -1,7 +1,7 @@
 package hu.me.fdsz.repository;
 
-import hu.me.fdsz.model.entities.Message;
-import hu.me.fdsz.model.entities.User;
+import hu.me.fdsz.model.entity.Message;
+import hu.me.fdsz.model.entity.User;
 import hu.me.fdsz.model.enums.Role;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

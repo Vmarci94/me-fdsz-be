@@ -1,4 +1,4 @@
-package hu.me.fdsz.model.entities;
+package hu.me.fdsz.model.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -2,8 +2,7 @@ package hu.me.fdsz.service.api;
 
 import hu.me.fdsz.model.dto.MessageDTO;
 import hu.me.fdsz.model.dto.UserDTO;
-import hu.me.fdsz.model.entities.User;
-import org.springframework.stereotype.Service;
+import hu.me.fdsz.model.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
@@ -12,7 +11,6 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public interface UserService {
 
     List<User> getAllUsers();

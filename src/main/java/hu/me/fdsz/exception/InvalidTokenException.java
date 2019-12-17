@@ -1,5 +1,6 @@
 package hu.me.fdsz.exception;
 
+import hu.me.fdsz.model.dto.CustomExceptionDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +33,7 @@ public class InvalidTokenException extends RuntimeException {
         return status.value();
     }
 
-    public ResponseEntity<CustomExceptionDTO> getResponse() {
+    ResponseEntity<CustomExceptionDTO> getResponse() {
         HttpHeaders headers = new HttpHeaders();
         CustomExceptionDTO body = new CustomExceptionDTO(this.getMessage());
         return new ResponseEntity<>(body, headers, status);

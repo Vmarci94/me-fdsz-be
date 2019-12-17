@@ -19,8 +19,6 @@ public class BookingDTO {
 
     private List<RoomDTO> roomList;
 
-    private List<GuestDTO> guests;
-
     private TurnusDTO turnusDTO;
 
     private int numberOfNights;

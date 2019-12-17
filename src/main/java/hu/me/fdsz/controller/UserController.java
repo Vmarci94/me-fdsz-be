@@ -2,7 +2,7 @@ package hu.me.fdsz.controller;
 
 import hu.me.fdsz.model.dto.JWTTokenDTO;
 import hu.me.fdsz.model.dto.UserDTO;
-import hu.me.fdsz.model.entities.User;
+import hu.me.fdsz.model.entity.User;
 import hu.me.fdsz.service.api.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

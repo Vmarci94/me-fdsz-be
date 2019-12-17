@@ -1,5 +1,6 @@
 package hu.me.fdsz.exception;
 
+import hu.me.fdsz.model.dto.CustomExceptionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,9 @@ import javax.naming.AuthenticationException;
 import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
-public class CustomGlobalExceptionHandlerController extends ResponseEntityExceptionHandler {
+public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomGlobalExceptionHandlerController.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class.getName());
 
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<CustomExceptionDTO> handleInvalidTokenException(InvalidTokenException ex, WebRequest request) {

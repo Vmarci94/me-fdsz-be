@@ -15,6 +15,4 @@ public class MainDTO {
 
     private List<FeedPostDTO> highlightList;
 
-    private List<UserReportDTO> userReports;
-
 }

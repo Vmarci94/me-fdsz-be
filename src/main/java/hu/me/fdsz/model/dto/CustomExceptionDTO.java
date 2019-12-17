@@ -1,5 +1,6 @@
-package hu.me.fdsz.exception;
+package hu.me.fdsz.model.dto;
 
+import hu.me.fdsz.exception.InvalidTokenException;
 import lombok.Getter;
 import lombok.Setter;
 

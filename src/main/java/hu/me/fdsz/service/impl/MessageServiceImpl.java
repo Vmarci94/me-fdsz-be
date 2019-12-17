@@ -2,8 +2,8 @@ package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.model.dto.MailBoxDTO;
 import hu.me.fdsz.model.dto.UserDTO;
-import hu.me.fdsz.model.entities.Message;
-import hu.me.fdsz.model.entities.User;
+import hu.me.fdsz.model.entity.Message;
+import hu.me.fdsz.model.entity.User;
 import hu.me.fdsz.model.enums.Role;
 import hu.me.fdsz.repository.MessageRepository;
 import hu.me.fdsz.repository.UserRepository;

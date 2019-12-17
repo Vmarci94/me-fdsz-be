@@ -1,8 +1,8 @@
 package hu.me.fdsz.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.me.fdsz.exception.CustomExceptionDTO;
 import hu.me.fdsz.exception.InvalidTokenException;
+import hu.me.fdsz.model.dto.CustomExceptionDTO;
 import hu.me.fdsz.service.api.JwtTokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

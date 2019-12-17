@@ -1,8 +1,8 @@
 package hu.me.fdsz.service.impl;
 
 import hu.me.fdsz.model.dto.FeedPostDTO;
-import hu.me.fdsz.model.entities.Image;
-import hu.me.fdsz.model.entities.Post;
+import hu.me.fdsz.model.entity.Image;
+import hu.me.fdsz.model.entity.Post;
 import hu.me.fdsz.repository.ImageContentStore;
 import hu.me.fdsz.repository.ImageRepository;
 import hu.me.fdsz.repository.PostRepository;

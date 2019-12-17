@@ -1,4 +1,4 @@
-package hu.me.fdsz.model.entities;
+package hu.me.fdsz.model.entity;
 
 import hu.me.fdsz.model.enums.RoomType;
 import lombok.*;
