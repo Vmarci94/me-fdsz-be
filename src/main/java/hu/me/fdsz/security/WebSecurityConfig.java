@@ -1,6 +1,7 @@
 package hu.me.fdsz.security;
 
 import hu.me.fdsz.service.api.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -10,6 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
@@ -19,13 +21,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
     public WebSecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**");
         registry.addMapping("/**")
                 .allowedHeaders("*")
                 .allowedOrigins("*")
@@ -51,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .antMatchers("/users/get-currnet-user").permitAll()//
                 .antMatchers("/users/get-all").permitAll()
                 .antMatchers("/post/get-all").permitAll()//
-                // Disallow everything else..
+        // Disallow everything else..
 //                .anyRequest().authenticated();/
         ; //FIXME
         // If a user try to access a resource without having enough permissions
@@ -72,6 +74,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .antMatchers("/configuration/**")//
                 .antMatchers("/webjars/**")//
                 .antMatchers("/public");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
 }
