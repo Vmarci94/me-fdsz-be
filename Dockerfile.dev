@@ -1,9 +1,6 @@
 FROM openjdk
 LABEL maintainer="vmarci94@gmail.com"
 
-#RUN apt-get update && apt-get install -y git
-#RUN git clone https://github.com/Vmarci94/me-fdsz-be && cd me-fdsz-be && mvn clean package
-
 # compiled binary path
 ARG JAR_FILE_PATH=target/me-fdsz-1.0-SNAPSHOT.jar
 ARG DEF_IMAGE_PATH=files/test*

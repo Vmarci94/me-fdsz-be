@@ -11,13 +11,9 @@ import lombok.Setter;
 public class RoomDTO {
 
     private Long roomNumber;
-
     private RoomType roomType;
-
     private Long price;
-
     private boolean available;
-
     private Boolean selected;
 
 }

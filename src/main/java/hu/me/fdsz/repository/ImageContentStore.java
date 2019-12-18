@@ -6,3 +6,7 @@ import org.springframework.content.commons.repository.ContentStore;
 public interface ImageContentStore extends ContentStore<Image, String> {
 
 }
+
+
+
+
