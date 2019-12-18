@@ -1,5 +1,6 @@
 package hu.me.fdsz.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +11,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
-import static javax.persistence.TemporalType.DATE;
 
 @Entity
 @Getter
@@ -31,7 +30,7 @@ public class Booking extends BaseEntity {
     private User lastModifiedBy;
 
     @Column(name = "booking_date", nullable = false)
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date bookingDate;
 
     @Column(name = "number_of_nights", nullable = false)

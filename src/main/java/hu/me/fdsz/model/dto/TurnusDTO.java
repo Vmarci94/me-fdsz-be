@@ -1,12 +1,10 @@
 package hu.me.fdsz.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.Temporal;
 import java.util.Date;
 import java.util.List;
-
-import static javax.persistence.TemporalType.DATE;
 
 @Getter
 @Setter
@@ -17,10 +15,10 @@ public class TurnusDTO {
 
     private Long id;
 
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
     private Boolean enabled;

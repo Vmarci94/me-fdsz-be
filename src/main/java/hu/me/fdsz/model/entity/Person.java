@@ -1,11 +1,13 @@
 package hu.me.fdsz.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import java.util.Date;
-
-import static javax.persistence.TemporalType.DATE;
 
 @Entity
 @Getter
@@ -29,7 +31,7 @@ public abstract class Person extends BaseEntity {
 
     private String fullName = "";
 
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthDay;
 
     private String phoneNumber;

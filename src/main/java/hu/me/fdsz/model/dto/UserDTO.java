@@ -1,12 +1,10 @@
 package hu.me.fdsz.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import hu.me.fdsz.model.enums.Role;
 import lombok.*;
 
-import javax.persistence.Temporal;
 import java.util.Date;
-
-import static javax.persistence.TemporalType.DATE;
 
 @Getter
 @Setter
@@ -41,7 +39,7 @@ public class UserDTO {
 
     private String location;
 
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthDay;
 
     private Boolean admin;

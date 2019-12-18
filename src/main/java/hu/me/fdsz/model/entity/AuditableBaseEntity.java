@@ -1,5 +1,6 @@
 package hu.me.fdsz.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -8,11 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
 import java.io.Serializable;
 import java.util.Date;
-
-import static javax.persistence.TemporalType.DATE;
 
 @Getter
 @Setter
@@ -25,12 +23,12 @@ public abstract class AuditableBaseEntity implements Serializable {
 
     @Column(name = "created_date", nullable = false, updatable = false)
     @CreatedDate
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdDate;
 
     @Column(name = "modified_date")
     @LastModifiedDate
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date lastModifiedDate;
 
 }

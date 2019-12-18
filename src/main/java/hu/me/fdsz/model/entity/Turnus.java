@@ -1,5 +1,6 @@
 package hu.me.fdsz.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +14,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static javax.persistence.TemporalType.DATE;
-
 @Entity
 @Getter
 @Setter
@@ -23,11 +22,11 @@ import static javax.persistence.TemporalType.DATE;
 public class Turnus extends BaseEntity {
 
     @Column(name = "start_date", unique = true, nullable = false)
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
 
     @Column(name = "end_date", unique = true, nullable = false)
-    @Temporal(DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
     @Type(type = "yes_no")
