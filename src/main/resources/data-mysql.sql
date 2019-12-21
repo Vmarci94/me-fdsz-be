@@ -37,6 +37,29 @@ insert into user (id, created_date, modified_date, birth_day, first_name, full_n
            'minden.aron');
 
 
+insert into post (id, created_date, modified_date, content_text, introduction, title, author, image, last_modified_by)
+values (-1, CURDATE(), CURDATE(),
+        '<p>
+            Pellentesque volutpat ipsum diam, at consequat neque imperdiet in. Etiam pharetra lorem in augue sollicitudin facilisis. Vivamus dignissim, augue luctus eleifend dictum, mi felis accumsan neque, vel malesuada odio lectus eget odio. Nam sed condimentum magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sollicitudin convallis cursus. Ut semper velit mauris, ut faucibus ipsum bibendum non. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce maximus, felis et rutrum bibendum, lectus nisl posuere ante, quis facilisis lorem arcu nec lorem. Etiam sit amet vehicula dui. Aenean fermentum ullamcorper augue. Cras ut sem lobortis mauris hendrerit blandit sed vitae libero. Donec viverra elementum dui. Nam euismod, lacus in lobortis molestie, nulla urna facilisis ipsum, id efficitur magna odio nec purus. Suspendisse potenti.
+            </p>
+            <p>
+            Maecenas ornare ipsum ac pharetra gravida. In viverra ligula vel massa pellentesque laoreet. Nulla eu scelerisque mauris. Pellentesque ut mi ut turpis consequat aliquet. Proin vitae sem sem. Donec eu mauris fermentum, rutrum justo nec, pellentesque sem. Nulla eleifend, turpis non sollicitudin convallis, turpis diam posuere eros, vel ullamcorper urna mi id nisi. Proin vel tellus a neque sollicitudin dignissim. Suspendisse fermentum ex vitae odio faucibus, at tincidunt leo feugiat. Nam sed lacus eu nunc gravida faucibus sed non urna.
+            </p>',
+        concat(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum facilisis tortor pretium dui cursus imperdiet.'
+            ,
+                ' Sed nec est vitae orci aliquam faucibus. Aliquam erat volutpat. Nullam facilisis, felis eu commodo semper,'
+            ,
+                ' mi leo sollicitudin est, vitae tempor turpis ante at lorem. Suspendisse eget lectus ac nisi placerat tempor sit amet et lorem.'
+            ,
+                ' Donec efficitur, dolor ut ultricies pellentesque, mi orci pulvinar felis, eu finibus lectus mauris a ex.'
+            ,
+                ' Quisque dapibus lacus a sapien bibendum, lacinia placerat ante convallis. Pellentesque tempor mauris porttitor sollicitudin ornare.'
+            ,
+                ' Maecenas sit amet elit pharetra, luctus nisl sit amet, congue dui. Nam eros neque, sagittis non neque eget, faucibus vestibulum erat.'),
+        'ME-FDSZ', 4, null, 4);
+
+
 -- Alap posztok generálása
 insert into post (id, created_date, modified_date, content_text, introduction, title, author, image, last_modified_by)
 values (6, CURDATE(), CURDATE(), 'Ez az első poszt hosszú tartalma. Sok érdekes infóval.',
@@ -52,19 +75,6 @@ insert into post (id, created_date, modified_date, content_text, introduction, t
 values (8, CURDATE(), CURDATE(), 'Ez a harmadik poszt hosszú tartalma. Sok érdekes infóval.',
         'Ez a harmadik poszt rövid leírása',
         'Ez a harmadik poszt címe.', 4, 2, 4);
-
--- Alap felhasználói visszajelzések generálása
-insert into user_report (id, created_date, modified_date, report)
-values (9, CURDATE(), CURDATE(), 'Ez az első véleményem, és király');
-
-insert into user_report (id, created_date, modified_date, report)
-values (10, CURDATE(), CURDATE(), 'Ez az mádosik véleményem, és király');
-
-insert into user_report (id, created_date, modified_date, report)
-values (11, CURDATE(), CURDATE(), 'Ez az harmadik véleményem, és király');
-
-insert into user_report (id, created_date, modified_date, report)
-values (12, CURDATE(), CURDATE(), 'Ez most egy másik felhasználó véleménye');
 
 -- Szobák felvétele TODO: (ez egyébként nem árt ha majd mindig incializálódik)
 
@@ -235,6 +245,6 @@ WHERE id = 26;
 -- Hibernate seq frissítése, hogy tudomást szerezzen a test adatok insertálásáról
 -- direkt az összes sort frissítem
 update hibernate_sequence
-set next_val= 44;
+set next_val= 50;
 
 commit;

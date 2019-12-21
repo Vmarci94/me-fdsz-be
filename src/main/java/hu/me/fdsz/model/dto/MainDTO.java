@@ -11,8 +11,13 @@ import java.util.List;
 @Builder
 public class MainDTO {
 
-    private String introductionInHTML;
+    private String introduction;
+
+    private String title;
+
+    private String contentText;
 
     private List<FeedPostDTO> highlightList;
+
 
 }

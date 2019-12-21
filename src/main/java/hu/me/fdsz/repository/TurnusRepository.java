@@ -8,13 +8,9 @@ import java.util.List;
 
 public interface TurnusRepository extends CrudRepository<Turnus, Long> {
 
+    @Override
     List<Turnus> findAll();
 
-    List<Turnus> findAllByStartDateIsGreaterThanOrderByStartDateAsc(Date startDate);
-
-    List<Turnus> findAllByStartDateIsGreaterThanEqualAndEndDateIsLessThanEqualOrderByStartDateAsc(Date startDate, Date endDate);
-
     boolean existsByStartDateIsGreaterThanEqualAndEndDateIsLessThanEqualOrderByStartDate(Date startDate, Date endDate);
-
 
 }

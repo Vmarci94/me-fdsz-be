@@ -18,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.AuthenticationException;
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,8 +48,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<FeedPostDTO> getAll() {
+    public List<FeedPostDTO> getAllOrderedByCreatedDate() {
         return postRepository.findAll().stream()
+                .filter(post -> post.getId() >= 0)
+                .sorted((m1, m2) -> m2.getCreatedDate().compareTo(m1.getCreatedDate()))
                 .map(post -> modelMapper.getTypeMap(Post.class, FeedPostDTO.class).map(post))
                 .collect(Collectors.toList());
     }
@@ -73,15 +75,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<FeedPostDTO> getPostsWithLimit(int limit) {
         return postRepository.findByOrderByLastModifiedDate(PageRequest.of(0, 5))
-                .stream().map(post -> modelMapper.map(post, FeedPostDTO.class))
+                .stream()
+                .filter(post -> post.getId() >= 0)
+                .map(post -> modelMapper.map(post, FeedPostDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public FeedPostDTO findById(long postId) {
-        return postRepository.findById(postId)
-                .map(post -> modelMapper.getTypeMap(Post.class, FeedPostDTO.class).map(post))
-                .orElseThrow(EntityNotFoundException::new);
+    public Optional<Post> findById(long postId) {
+        return postRepository.findById(postId);
     }
 
     @Override

@@ -14,4 +14,5 @@ public interface MessageService {
     List<MailBoxDTO> getMailboxContent();
 
     Optional<Message> add(Long userId, String messageContent) throws AuthenticationException;
+
 }

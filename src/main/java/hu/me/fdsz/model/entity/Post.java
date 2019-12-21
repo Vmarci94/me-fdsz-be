@@ -20,10 +20,10 @@ public class Post extends BaseEntity implements HasImage {
     @ToString.Include
     private String title;
 
-    @Column(name = "introduction", nullable = false)
+    @Column(name = "introduction", length = Integer.MAX_VALUE, nullable = false)
     private String introduction;
 
-    @Column(name = "content_text")
+    @Column(name = "content_text", length = Integer.MAX_VALUE)
     private String contentText;
 
     @OneToOne(cascade = CascadeType.ALL)

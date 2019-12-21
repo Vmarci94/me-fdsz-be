@@ -14,5 +14,4 @@ public interface RoomRepository extends CrudRepository<Room, Long> {
 
     Optional<List<Room>> findAllByRoomNumberIsNotIn(Collection<Long> roomNumber);
 
-
 }

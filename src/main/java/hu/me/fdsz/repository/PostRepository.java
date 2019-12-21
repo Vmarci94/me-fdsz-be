@@ -13,8 +13,6 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     Optional<Post> findById(Long id);
 
     @Override
-    Iterable<Post> findAllById(Iterable<Long> iterable);
-
     List<Post> findAll();
 
     List<Post> findByOrderByLastModifiedDate(Pageable pageable);
